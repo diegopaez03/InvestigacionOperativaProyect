@@ -13,6 +13,7 @@ public class ArticuloServicesImpl extends BaseServicesImpl<Articulo,Long> implem
     private ArticuloRepository articuloRepository;
 
     public ArticuloServicesImpl(BaseRepository<Articulo, Long> baseRepository){
+
         super(baseRepository);
     }
 }
