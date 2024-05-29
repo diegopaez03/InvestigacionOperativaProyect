@@ -4,12 +4,11 @@ import com.utn.prototipo1.BaseEntidad.BaseEntidad;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import jakarta.persistence.*;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "ordenDecompra")
+@Table(name = "OrdenDeCompra")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -26,18 +25,18 @@ public class OrdenDeCompra extends BaseEntidad {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaOrdenDeCompra;
 
-    @NotNull
+    @NonNull
     @ManyToOne()
     @JoinColumn(name = "codArticulo")
     private Articulo articulo;
 
 
-    @NotNull
+    @NonNull
     @ManyToOne()
     @JoinColumn(name = "codEOC")
     private EstadoOrdenDeCompra estadoOrdenDeCompra;
 
-    @NotNull
+    @NonNull
     @ManyToOne()
     @JoinColumn(name = "codProveedor")
     private Proveedor proveedor;

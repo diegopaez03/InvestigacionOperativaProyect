@@ -7,7 +7,7 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "estadoEOC")
+@Table(name = "EstadoOrdenCompra")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -16,12 +16,11 @@ import java.util.Date;
 @Builder
 public class EstadoOrdenDeCompra extends BaseEntidad {
 
-
     private int codEOC;
 
     private String nombreEOC;
 
-    @Column(name = "fecha_baja")
+    @Column(name = "fecha_baja", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaBaja;
 }
