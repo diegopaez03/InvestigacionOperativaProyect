@@ -13,7 +13,6 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-@Data
 @Builder
 public class OrdenDeCompra extends BaseEntidad {
 
@@ -21,7 +20,7 @@ public class OrdenDeCompra extends BaseEntidad {
 
     private int tamanoLote;
 
-    @Column(name = "fecha_OC")
+    @Column(name = "fechaOrdenDeCompra")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaOrdenDeCompra;
 

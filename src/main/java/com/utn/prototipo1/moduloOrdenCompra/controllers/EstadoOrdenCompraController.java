@@ -3,6 +3,7 @@ package com.utn.prototipo1.moduloOrdenCompra.controllers;
 import com.utn.prototipo1.moduloOrdenCompra.entities.EstadoOrdenDeCompra;
 import com.utn.prototipo1.moduloOrdenCompra.services.EstadoOrdenCompraService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,5 +40,12 @@ public class EstadoOrdenCompraController {
         estadoOrdenDeCompra.setNombreEOC(estadoOrdenDeCompraRecibido.getNombreEOC());
 
         return estadoOrdenCompraService.saveEstadoOrdenDeCompra(estadoOrdenDeCompra);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteEstadoOrdenDeCompra(@PathVariable Long id){
+        var eoc = estadoOrdenCompraService.getEstadoOrdenDeCompraById(id);
+        estadoOrdenCompraService.deleteEstadoOrdenCompra(eoc);
+        return ("Objeto eliminado, id: " + id);
     }
 }

@@ -12,16 +12,14 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-@Data
 @Builder
 public class Proveedor extends BaseEntidad {
-
 
     private int codProveedor;
 
     private String nombreProveedor;
 
-    @Column(name = "fecha_bajaProveedor")
+    @Column(name = "fecha_bajaProveedor", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaBajaProveedor;
 
