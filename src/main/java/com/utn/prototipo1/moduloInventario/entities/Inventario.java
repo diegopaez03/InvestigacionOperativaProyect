@@ -23,10 +23,7 @@ public class Inventario extends BaseEntidad {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHasta;
 
-
     private int codInventario;
-
-
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
     @JoinColumn(name = "codInventario")

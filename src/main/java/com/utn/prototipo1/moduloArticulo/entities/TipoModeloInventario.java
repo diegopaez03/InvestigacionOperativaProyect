@@ -1,4 +1,4 @@
-package com.utn.prototipo1.moduloInventario.entities;
+package com.utn.prototipo1.moduloArticulo.entities;
 
 import com.utn.prototipo1.Base.entities.BaseEntidad;
 import jakarta.persistence.*;
