@@ -5,7 +5,9 @@ import com.utn.prototipo1.Base.services.BaseServicesImpl;
 import com.utn.prototipo1.moduloArticulo.entities.TipoModeloInventario;
 import com.utn.prototipo1.moduloArticulo.repositories.TipoModeloInventarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TipoModeloInventarioServicesImpl extends BaseServicesImpl<TipoModeloInventario, Long> implements TipoModeloInventarioServices {
     @Autowired
 
