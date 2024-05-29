@@ -2,19 +2,19 @@ package com.utn.prototipo1.Base.services;
 
 import com.utn.prototipo1.Base.entities.BaseEntidad;
 import com.utn.prototipo1.Base.repositories.BaseRepository;
-import com.utn.prototipo1.moduloInventario.entities.Inventario;
 import jakarta.transaction.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class BaseServicesImpl<E extends BaseEntidad, ID extends Serializable> implements BaseServices<E, Id> {
-    protected BaseRepository<E, ID> baseRepository;
+public abstract class BaseServicesImpl<E extends BaseEntidad, ID extends Serializable> implements BaseServices<E, ID> {
 
+    protected BaseRepository<E, ID> baseRepository;
     public BaseServicesImpl(BaseRepository<E, ID> baseRepository){
         this.baseRepository=baseRepository;
     }
+
     @Override
     @Transactional
     public List<E> findAll() throws Exception {
@@ -48,7 +48,7 @@ public abstract class BaseServicesImpl<E extends BaseEntidad, ID extends Seriali
     }
     @Override
     @Transactional
-    public Inventario save(ID id, E entity) throws Exception {
+    public E update(ID id, E entity) throws Exception {
         try {
             Optional<E> entityOptional = baseRepository.findById(id);
             E entityUpdate = baseRepository.save(entity);

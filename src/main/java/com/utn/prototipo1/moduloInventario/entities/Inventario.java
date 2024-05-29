@@ -3,7 +3,6 @@ package com.utn.prototipo1.moduloInventario.entities;
 import com.utn.prototipo1.Base.entities.BaseEntidad;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,8 +11,6 @@ import java.util.List;
 @Table(name = "inventario")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Data
 @Builder
 public class Inventario extends BaseEntidad {
