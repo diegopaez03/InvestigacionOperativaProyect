@@ -1,6 +1,6 @@
 package com.utn.prototipo1.moduloArticulo.entities;
 
-import com.utn.prototipo1.BaseEntidad.BaseEntidad;
+import com.utn.prototipo1.Base.entities.BaseEntidad;
 import jakarta.persistence.*;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
