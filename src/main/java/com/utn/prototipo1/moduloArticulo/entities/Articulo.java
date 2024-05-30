@@ -24,6 +24,8 @@ public class Articulo extends BaseEntidad {
 
     private String nombreArticulo;
 
+    private int precio;
+
     @Column(name = "fecha_baja")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaBaja;

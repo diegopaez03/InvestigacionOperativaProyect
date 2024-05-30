@@ -15,7 +15,6 @@ import org.antlr.v4.runtime.misc.NotNull;
 @AllArgsConstructor
 @Getter
 @Setter
-@Data
 @Builder
 public class DetalleFactura extends BaseEntidad {
 
@@ -26,5 +25,14 @@ public class DetalleFactura extends BaseEntidad {
     @ManyToOne()
     @JoinColumn(name = "codArticulo")
     private Articulo articulo;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "nrofactura")
+    private Factura factura;
+
+    public double getLinea() {
+        return cantidad * articulo.getPrecio();
+    }
 
 }

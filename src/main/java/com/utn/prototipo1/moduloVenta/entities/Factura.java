@@ -19,21 +19,29 @@ import java.util.List;
 public class Factura extends BaseEntidad {
 
 
-    private  int nroFactura;
+    private  Long nroFactura;
 
     @Column(name = "fecha_factura")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFactura;
 
+    private double total;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
     @JoinColumn(name = "nrofactura")
     @Builder.Default
     private List<DetalleFactura> detalleFacturas = new ArrayList<>();
 
-    public void agregarDetalleFactura(DetalleFactura detalleFactura){
+    public void addDetalleFactura(DetalleFactura detalleFactura) {
+        this.detalleFacturas.add(detalleFactura);
+        detalleFactura.setFactura(this);
+        calcularTotal();
+    }
 
-        detalleFacturas.add(detalleFactura);
+    public void calcularTotal() {
+        total = detalleFacturas.stream()
+                .mapToDouble(DetalleFactura::getLinea)
+                .sum();
     }
 
 }
