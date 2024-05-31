@@ -1,4 +1,4 @@
-package com.utn.prototipo1.BaseEntidad;
+package com.utn.prototipo1.Base.entities;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

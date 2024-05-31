@@ -1,9 +1,8 @@
 package com.utn.prototipo1.moduloInventario.entities;
 
-import com.utn.prototipo1.BaseEntidad.BaseEntidad;
+import com.utn.prototipo1.Base.entities.BaseEntidad;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,8 +11,6 @@ import java.util.List;
 @Table(name = "inventario")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Data
 @Builder
 public class Inventario extends BaseEntidad {
@@ -26,12 +23,9 @@ public class Inventario extends BaseEntidad {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHasta;
 
-
     private int codInventario;
 
-
-
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)  //Sirve que cuando eliminemos un inventario se borre todos los inventariosarticulos
     @JoinColumn(name = "codInventario")
     @Builder.Default
     private List<InventarioArticulo> inventarioArticulos = new ArrayList<>();
