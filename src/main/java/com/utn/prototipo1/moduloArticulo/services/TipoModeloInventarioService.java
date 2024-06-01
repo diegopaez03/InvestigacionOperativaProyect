@@ -3,9 +3,10 @@ package com.utn.prototipo1.moduloArticulo.services;
 import com.utn.prototipo1.moduloArticulo.entities.TipoModeloInventario;
 import com.utn.prototipo1.moduloArticulo.repositories.TipoModeloInventarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class TipoModeloInventarioService implements ITipoModeloInventarioService{
 
     @Autowired

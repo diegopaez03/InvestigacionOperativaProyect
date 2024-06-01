@@ -5,9 +5,11 @@ import com.utn.prototipo1.moduloArticulo.entities.ArticuloCategoria;
 import com.utn.prototipo1.moduloArticulo.repositories.ArticuloCategoriaRepository;
 import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ArticuloCategoriaService implements IArticuloCategoria {
     @Autowired
     private ArticuloCategoriaRepository articuloCategoriaRepository;

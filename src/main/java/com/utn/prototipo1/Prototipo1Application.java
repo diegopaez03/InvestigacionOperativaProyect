@@ -24,16 +24,12 @@ public class Prototipo1Application {
 		return args -> {
 
 			Articulo articulo1 = Articulo.builder()
-					.codArticulo(015)
 					.nombreArticulo("Tornillo")
-					.loteOptimo(56)
 					.precio(900)
 					.build();
 
 			Articulo articulo2 = Articulo.builder()
-					.codArticulo(05)
 					.nombreArticulo("Clavo")
-					.loteOptimo(5)
 					.precio(600)
 					.build();
 
