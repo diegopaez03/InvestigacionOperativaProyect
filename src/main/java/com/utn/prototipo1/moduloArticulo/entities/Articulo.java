@@ -18,10 +18,6 @@ import java.util.Date;
 public class Articulo extends BaseEntidad {
 
 
-    private int codArticulo;
-
-    private int loteOptimo;
-
     private String nombreArticulo;
 
     @Column(name = "fecha_baja")

@@ -16,7 +16,6 @@ import java.util.Date;
 @Builder
 public class TipoModeloInventario extends BaseEntidad {
 
-    private int codTMI;
 
     private String nombreTMI;
 
