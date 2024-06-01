@@ -38,6 +38,7 @@ public class ArticuloControllers {
 
         articulo.setNombreArticulo(articuloRecibido.getNombreArticulo());
         articulo.setFechaBaja(articuloRecibido.getFechaBaja());
+        articulo.setPrecio(articuloRecibido.getPrecio());
 
         return articuloService.saveArticulo(articulo);
     }
