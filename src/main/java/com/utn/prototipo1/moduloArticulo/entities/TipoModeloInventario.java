@@ -1,6 +1,6 @@
 package com.utn.prototipo1.moduloArticulo.entities;
 
-import com.utn.prototipo1.BaseEntidad.BaseEntidad;
+import com.utn.prototipo1.Base.entities.BaseEntidad;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,8 +16,6 @@ import java.util.Date;
 @Builder
 public class TipoModeloInventario extends BaseEntidad {
 
-
-    private int codTMI;
 
     private String nombreTMI;
 
