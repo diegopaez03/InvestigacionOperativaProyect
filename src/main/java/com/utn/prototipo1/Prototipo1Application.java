@@ -16,28 +16,5 @@ public class Prototipo1Application {
 		SpringApplication.run(Prototipo1Application.class, args);
 		System.out.println("Estoy funcionando");
 	}
-	@Autowired
-	ArticuloRepository articuloRepository;
-
-	@Bean
-	CommandLineRunner init(ArticuloRepository ArticuloRepository)	{
-		return args -> {
-
-			Articulo articulo1 = Articulo.builder()
-					.nombreArticulo("Tornillo")
-					.precio(900)
-					.build();
-
-			Articulo articulo2 = Articulo.builder()
-					.nombreArticulo("Clavo")
-					.precio(600)
-					.build();
-
-			articuloRepository.save(articulo1);
-			articuloRepository.save(articulo2);
-
-
-		};
-
-	}
 }
+

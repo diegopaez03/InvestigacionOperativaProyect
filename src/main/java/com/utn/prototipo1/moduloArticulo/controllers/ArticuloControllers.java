@@ -2,20 +2,23 @@ package com.utn.prototipo1.moduloArticulo.controllers;
 
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
+import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
 import com.utn.prototipo1.moduloOrdenCompra.entities.EstadoOrdenDeCompra;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(path = "api/v1/articulos")
+@RequestMapping(path = "articulos")
 
 public class ArticuloControllers {
 
     @Autowired
     private ArticuloService articuloService;
+
 
     @GetMapping()
     public List<Articulo> getAllArticulos(){
