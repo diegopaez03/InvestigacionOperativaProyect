@@ -1,54 +1,57 @@
 package com.utn.prototipo1.moduloArticulo.controllers;
 
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
-import com.utn.prototipo1.moduloArticulo.services.ArticuloCategoriaService;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
+import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
 import com.utn.prototipo1.moduloOrdenCompra.entities.EstadoOrdenDeCompra;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "*")
+@RequestMapping(path = "articulos")
 
 public class ArticuloControllers {
 
     @Autowired
     private ArticuloService articuloService;
 
-    @Autowired
-    private ArticuloCategoriaService articuloCategoriaService;
 
-
-    @GetMapping("/articulos")
-    public String listarArticulos(Model modelo) {
-        modelo.addAttribute("articulos", articuloService.getAllArticulos());
-        return "articulos";
+    @GetMapping()
+    public List<Articulo> getAllArticulos(){
+        return articuloService.getArticulo();
     }
 
-    @GetMapping("/articulos/nuevo")
-    public String mostrarFormularioCrearArticulo(Model modelo) {
-        Articulo articulo = new Articulo();
-        modelo.addAttribute("articulo", articulo);
-        modelo.addAttribute("categorias", articuloCategoriaService.getAllCategorias());
-        return "registroArticulo";
+    @PostMapping()
+    public  Articulo createArticulo(@RequestBody Articulo articulo){
+        return  articuloService.saveArticulo(articulo);
     }
 
-    @PostMapping("/articulos")
-    public String guardarArticulo(@ModelAttribute("articulo") Articulo articulo) {
-        articuloService.saveArticulo(articulo);
-        return "redirect:/articulos";
+    @GetMapping("/{id}")
+    public Articulo getArticulo(@PathVariable Long id){
+        return articuloService.getArticuloById(id);
     }
 
-    @GetMapping("/articulos/{id}")
-    public String eliminarArticulo(@PathVariable("id") Long id) {
-        articuloService.deleteArticulo(id);
-        return "redirect:/articulos";
+    @PutMapping("/{id}")
+    public Articulo updateArticulo(@PathVariable Long id, @RequestBody Articulo articuloRecibido){
+        Articulo articulo = articuloService.getArticuloById(id);
+
+        articulo.setNombreArticulo(articuloRecibido.getNombreArticulo());
+        articulo.setFechaBaja(articuloRecibido.getFechaBaja());
+        articulo.setPrecio(articuloRecibido.getPrecio());
+
+        return articuloService.saveArticulo(articulo);
     }
 
-
+    @DeleteMapping("/{id}")
+    public String deleteArticulo(@PathVariable Long id){
+        var articulo = articuloService.getArticuloById(id);
+        articuloService.deleteArticulo(articulo);
+        return ("Objeto eliminado, id: " + id);
+    }
 }
 
 

@@ -8,6 +8,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "inventarioArticulo")
@@ -22,7 +23,7 @@ public class InventarioArticulo extends BaseEntidad {
     private int stockActual;
     private int stockSeguridad;
 
-    @NotNull
+    @NonNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "codArticulo")
     private Articulo articulo;
