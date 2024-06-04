@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(path = "api/v1/inventarioarticulo")
+@RequestMapping(path = "inventarioarticulo")
+
 public class InventarioArticuloController extends BaseControllerImpl<InventarioArticulo, InventarioArticuloServiceImpl> {
 }

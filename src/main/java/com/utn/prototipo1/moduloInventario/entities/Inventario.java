@@ -26,8 +26,11 @@ public class Inventario extends BaseEntidad {
     private int codInventario;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)  //Sirve que cuando eliminemos un inventario se borre todos los inventariosarticulos
-    @JoinColumn(name = "codInventario")
-    @Builder.Default
+    @JoinTable(
+            name = "inventario_articulo",
+            joinColumns = @JoinColumn(name = "inventario_id"),
+            inverseJoinColumns = @JoinColumn(name = "inventarioarticulo_id")
+    )
     private List<InventarioArticulo> inventarioArticulos = new ArrayList<>();
 
     public void agregarInventarioArticulo(InventarioArticulo inventarioArticulo){

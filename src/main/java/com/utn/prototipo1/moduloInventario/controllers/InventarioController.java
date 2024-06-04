@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(path = "api/v1/inventarios")
+@RequestMapping(path = "inventarios")
 
 public class InventarioController extends BaseControllerImpl<Inventario, InventarioServicesImpl> {
 
