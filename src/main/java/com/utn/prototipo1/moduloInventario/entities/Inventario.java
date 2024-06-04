@@ -11,7 +11,8 @@ import java.util.List;
 @Table(name = "inventario")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 public class Inventario extends BaseEntidad {
 
@@ -25,11 +26,11 @@ public class Inventario extends BaseEntidad {
 
     private int codInventario;
 
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)  //Sirve que cuando eliminemos un inventario se borre todos los inventariosarticulos
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)  //el de true sirve que cuando eliminemos un inventario se borre todos los inventariosarticulos
     @JoinColumn(name = "codInventario")
     @Builder.Default
-    private List<InventarioArticulo> inventarioArticulos = new ArrayList<>();
 
+    private List<InventarioArticulo> inventarioArticulos = new ArrayList<>();
     public void agregarInventarioArticulo(InventarioArticulo inventarioArticulo){
 
         inventarioArticulos.add(inventarioArticulo);

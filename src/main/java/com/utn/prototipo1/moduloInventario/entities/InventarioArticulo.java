@@ -15,7 +15,6 @@ import org.antlr.v4.runtime.misc.NotNull;
 @AllArgsConstructor
 @Getter
 @Setter
-@Data
 @Builder
 public class InventarioArticulo extends BaseEntidad {
 
