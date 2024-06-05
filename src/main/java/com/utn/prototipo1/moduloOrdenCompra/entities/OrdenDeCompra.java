@@ -4,8 +4,10 @@ import com.utn.prototipo1.Base.entities.BaseEntidad;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.NonNull;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "OrdenDeCompra")
@@ -29,6 +31,10 @@ public class OrdenDeCompra extends BaseEntidad {
     @JoinColumn(name = "codArticulo")
     private Articulo articulo;
 
+    @NonNull
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "nroOrdenDeCompra")
+    private List<DetalleOrdenCompra> detalleOrdenCompra;
 
     @NonNull
     @ManyToOne()

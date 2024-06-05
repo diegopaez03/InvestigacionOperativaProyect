@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Proveedor")
@@ -22,5 +23,10 @@ public class Proveedor extends BaseEntidad {
     @Column(name = "fecha_bajaProveedor", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaBajaProveedor;
+
+    @NonNull
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "codProveedor")
+    private List<ProveedorArticulo> proveedorArticulo;
 
 }
