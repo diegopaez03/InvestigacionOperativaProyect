@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface FacturaService {
 
-    Factura createFactura(Factura factura);
-    void addDetalleFactura(Long nroFactura, List<DetalleFactura> detalles);
+    List<Factura> obtenerTodasLasFacturas();
+    void crearFactura(Factura factura);
+    public Factura deleteFactura(Long id);
+    Factura obtenerFacturaPorId(Long id);
+   // public DetalleFactura deleteDetalleFactura(Long id);
 
 }
