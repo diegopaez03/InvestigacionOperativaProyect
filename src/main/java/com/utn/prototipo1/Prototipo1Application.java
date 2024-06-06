@@ -47,8 +47,6 @@ public class Prototipo1Application {
 			articuloRepository.save(articulo2);
 
 
-
-
 			Factura factura1 = Factura.builder()
 					.nroFactura(15L)
 					.fechaFactura(new Date())
