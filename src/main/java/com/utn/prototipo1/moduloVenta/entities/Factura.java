@@ -32,11 +32,12 @@ public class Factura extends BaseEntidad {
     @Builder.Default
     private List<DetalleFactura> detalleFacturas = new ArrayList<>();
 
-    public void addDetalleFactura(DetalleFactura detalleFactura) {
+    public void agregarDetalle(DetalleFactura detalleFactura) {
         this.detalleFacturas.add(detalleFactura);
         detalleFactura.setFactura(this);
         calcularTotal();
     }
+
 
     public void calcularTotal() {
         total = detalleFacturas.stream()
