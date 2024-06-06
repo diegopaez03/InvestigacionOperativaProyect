@@ -19,6 +19,6 @@ public class ProveedorArticulo extends BaseEntidad {
 
     @NonNull
     @ManyToOne()
-    @JoinColumn(name = "codArticulo")
+    @JoinColumn(name = "idArticulo")
     private Articulo articulo;
 }

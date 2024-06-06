@@ -34,7 +34,6 @@ public class ProveedorController {
     public Proveedor updateProveedor(@PathVariable Long id, @RequestBody Proveedor proveedorRecibido){
         Proveedor proveedor = proveedorService.getProveedorById(id);
 
-        proveedor.setCodProveedor(proveedorRecibido.getCodProveedor());
         proveedor.setNombreProveedor(proveedorRecibido.getNombreProveedor());
         proveedor.setFechaBajaProveedor(proveedorRecibido.getFechaBajaProveedor());
 

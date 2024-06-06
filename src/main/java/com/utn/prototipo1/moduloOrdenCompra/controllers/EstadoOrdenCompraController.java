@@ -35,7 +35,6 @@ public class EstadoOrdenCompraController {
     public EstadoOrdenDeCompra updateEstadoOrdenDeCompra(@PathVariable Long id, @RequestBody EstadoOrdenDeCompra estadoOrdenDeCompraRecibido){
         EstadoOrdenDeCompra estadoOrdenDeCompra = estadoOrdenCompraService.getEstadoOrdenDeCompraById(id);
 
-        estadoOrdenDeCompra.setCodEOC(estadoOrdenDeCompraRecibido.getCodEOC());
         estadoOrdenDeCompra.setFechaBaja(estadoOrdenDeCompraRecibido.getFechaBaja());
         estadoOrdenDeCompra.setNombreEOC(estadoOrdenDeCompraRecibido.getNombreEOC());
 

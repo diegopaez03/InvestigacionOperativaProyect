@@ -4,7 +4,6 @@ import com.utn.prototipo1.Base.entities.BaseEntidad;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.NonNull;
 
 import java.util.Date;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.List;
 @Builder
 public class OrdenDeCompra extends BaseEntidad {
 
-    private int nroOrdenDeCompra;
-
     private int tamanoLote;
 
     @Column(name = "fechaOrdenDeCompra")
@@ -27,23 +24,22 @@ public class OrdenDeCompra extends BaseEntidad {
     private Date fechaOrdenDeCompra;
 
     @NonNull
-    @ManyToOne()
-    @JoinColumn(name = "codArticulo")
-    private Articulo articulo;
-
-    @NonNull
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "nroOrdenDeCompra")
+    @JoinColumn(name = "idOrdenDeCompra")
     private List<DetalleOrdenCompra> detalleOrdenCompra;
 
     @NonNull
     @ManyToOne()
-    @JoinColumn(name = "codEOC")
+    @JoinColumn(name = "idEstadoOrdenDeCompra")
     private EstadoOrdenDeCompra estadoOrdenDeCompra;
 
     @NonNull
     @ManyToOne()
-    @JoinColumn(name = "codProveedor")
+    @JoinColumn(name = "idProveedor")
     private Proveedor proveedor;
 
+    @PrePersist
+    protected void onCreate() {
+        this.fechaOrdenDeCompra = new Date();
+    }
 }

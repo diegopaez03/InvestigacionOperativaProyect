@@ -2,6 +2,7 @@ package com.utn.prototipo1.moduloOrdenCompra.services;
 
 import com.utn.prototipo1.Base.repositories.BaseRepository;
 import com.utn.prototipo1.Base.services.BaseServicesImpl;
+import com.utn.prototipo1.moduloOrdenCompra.dto.OrdenDeCompraDTO;
 import com.utn.prototipo1.moduloOrdenCompra.entities.OrdenDeCompra;
 import com.utn.prototipo1.moduloOrdenCompra.repositories.OrdenDeCompraRepository;
 import org.springframework.beans.factory.annotation.Autowired;

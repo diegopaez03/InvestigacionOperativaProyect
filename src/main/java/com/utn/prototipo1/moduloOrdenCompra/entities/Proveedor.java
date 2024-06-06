@@ -16,8 +16,6 @@ import java.util.List;
 @Builder
 public class Proveedor extends BaseEntidad {
 
-    private int codProveedor;
-
     private String nombreProveedor;
 
     @Column(name = "fecha_bajaProveedor", nullable = true)
@@ -26,7 +24,7 @@ public class Proveedor extends BaseEntidad {
 
     @NonNull
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "codProveedor")
+    @JoinColumn(name = "idProveedor")
     private List<ProveedorArticulo> proveedorArticulo;
 
 }

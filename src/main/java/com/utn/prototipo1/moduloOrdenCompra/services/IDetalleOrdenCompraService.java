@@ -4,4 +4,5 @@ import com.utn.prototipo1.Base.services.BaseServices;
 import com.utn.prototipo1.moduloOrdenCompra.entities.DetalleOrdenCompra;
 
 public interface IDetalleOrdenCompraService extends BaseServices<DetalleOrdenCompra, Long> {
+    public DetalleOrdenCompra generarDetalle(float cantidad, long idArticulo);
 }
