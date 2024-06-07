@@ -1,5 +1,6 @@
 package com.utn.prototipo1.moduloOrdenCompra.controllers;
 
+import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloOrdenCompra.dto.OrdenDeCompraDTO;
 import com.utn.prototipo1.moduloOrdenCompra.entities.DetalleOrdenCompra;
 import com.utn.prototipo1.moduloOrdenCompra.entities.EstadoOrdenDeCompra;
@@ -34,16 +35,20 @@ public class OrdenDeCompraController {
     @Autowired
     private ProveedorService proveedorService;
 
+    @Autowired
+    private ArticuloService articuloService;
+
     @GetMapping("/generar")
     public String formularioGenerarOC(Model model){
         model.addAttribute("ordenDeCompra", new OrdenDeCompraDTO());
         model.addAttribute("proveedores", proveedorService.getProveedor());
         model.addAttribute("estadoOrdenCompra", estadoOrdenCompraService.getEstadoOrdenCompra());
+        model.addAttribute("articulos", articuloService.getArticulo());
         return "moduloOrdenCompra/generarOrdenDeCompra";
     }
 
     @PostMapping("/generar")
-    public OrdenDeCompra generarOrdenDeCompra(@RequestBody OrdenDeCompraDTO ordenDeCompraDTO) {
+    public OrdenDeCompra generarOrdenDeCompra(@ModelAttribute("ordenDeCompra") OrdenDeCompraDTO ordenDeCompraDTO) {
         try {
             Proveedor proveedor = this.proveedorService.getProveedorById(ordenDeCompraDTO.getIdProveedor());
 
