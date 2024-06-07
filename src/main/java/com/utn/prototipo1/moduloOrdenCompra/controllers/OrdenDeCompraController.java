@@ -10,12 +10,14 @@ import com.utn.prototipo1.moduloOrdenCompra.services.EstadoOrdenCompraService;
 import com.utn.prototipo1.moduloOrdenCompra.services.OrdenDeCompraService;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("ordenDeCompra")
 @CrossOrigin(origins = "*")
 public class OrdenDeCompraController {
@@ -31,6 +33,14 @@ public class OrdenDeCompraController {
 
     @Autowired
     private ProveedorService proveedorService;
+
+    @GetMapping("/generar")
+    public String formularioGenerarOC(Model model){
+        model.addAttribute("ordenDeCompra", new OrdenDeCompraDTO());
+        model.addAttribute("proveedores", proveedorService.getProveedor());
+        model.addAttribute("estadoOrdenCompra", estadoOrdenCompraService.getEstadoOrdenCompra());
+        return "moduloOrdenCompra/generarOrdenDeCompra";
+    }
 
     @PostMapping("/generar")
     public OrdenDeCompra generarOrdenDeCompra(@RequestBody OrdenDeCompraDTO ordenDeCompraDTO) {
