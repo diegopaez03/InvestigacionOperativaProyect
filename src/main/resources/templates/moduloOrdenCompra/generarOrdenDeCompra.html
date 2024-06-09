@@ -54,7 +54,7 @@
                     </div>
                     <div class="mb-3" style="width: 15%; margin-left: auto; margin-right: auto;">
                         <button type="button" style="width: 100%;" class="btn btn-secondary" onclick="agregarDetalle()">
-                            Agregar Detalle
+                            Añadir Artículo
                         </button>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <table id="detallesOrdenDeCompra" class="table table-striped">
                             <caption>
-                                Detalles de la orden de compra
+                                Detalle de la orden de compra
                             </caption>
                             <thead>
                                 <tr>
@@ -100,7 +100,7 @@
             }
 
             function agregarDetalle() {
-                const cantidad = parseInt(document.getElementById('cantidad').value);
+                const cantidad = parseFloat(document.getElementById('cantidad').value);
                 const idArticulo = document.getElementById('idArticulo').value;
                 const nombreArticulo = document.getElementById('idArticulo').selectedOptions[0].text;
 
@@ -115,7 +115,7 @@
 
                         if (idArticuloDetalle === nombreArticulo) {
                             // Si ya existe un detalle para el artículo, actualizar la cantidad
-                            const cantidadExistente = parseInt(row.cells[1].textContent);
+                            const cantidadExistente = parseFloat(row.cells[1].textContent);
                             const nuevaCantidad = cantidadExistente + cantidad;
                             row.cells[1].textContent = nuevaCantidad;
 
@@ -171,17 +171,24 @@
             document.getElementById('mainForm').addEventListener('submit', function(event) {
                 event.preventDefault();  // Prevent form from submitting the default way
 
+                const detallesTableBody = document.getElementById('tableBody_detalles');
+                if (detallesTableBody.rows.length === 0) {
+                    // No hay detalles agregados, mostrar alerta
+                    alert('Por favor, agregue al menos un artículo antes de generar la orden de compra.');
+                    return;  // Detiene el envío del formulario
+                }
+
                 const form = event.target;
-                const detallesTable = document.getElementById('tableBody_detalles');
-                const detallesInputs = detallesTable.querySelectorAll('input[type="hidden"]');
+                const detallesInputs = detallesTableBody.querySelectorAll('input[type="hidden"]');
                 detallesInputs.forEach(input => {
                     const clone = input.cloneNode(true);
                     form.appendChild(clone);
                 });
 
-                // Submits the form programmatically
+                // Submits the form programmatically if validation passes
                 form.submit();
             });
+
         </script>
     </div>
 </body>

@@ -14,9 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("ordenDeCompra")
@@ -38,6 +42,7 @@ public class OrdenDeCompraController {
     @Autowired
     private ArticuloService articuloService;
 
+    //Métodos de front
     @GetMapping("/generar")
     public String formularioGenerarOC(Model model){
         model.addAttribute("ordenDeCompra", new OrdenDeCompraDTO());
@@ -47,8 +52,17 @@ public class OrdenDeCompraController {
         return "moduloOrdenCompra/generarOrdenDeCompra";
     }
 
+    @GetMapping("/list")
+    public String inicioOrdenCompra(Model model) throws Exception{
+        model.addAttribute("orden", ordenDeCompraService.findAll());
+
+        return "moduloOrdenCompra/menuOrdenDeCompra";
+    }
+    
+
+    //Métodos de funcionamiento
     @PostMapping("/generar")
-    public OrdenDeCompra generarOrdenDeCompra(@ModelAttribute("ordenDeCompra") OrdenDeCompraDTO ordenDeCompraDTO) {
+    public ModelAndView generarOrdenDeCompra(@ModelAttribute("ordenDeCompra") OrdenDeCompraDTO ordenDeCompraDTO) {
         try {
             Proveedor proveedor = this.proveedorService.getProveedorById(ordenDeCompraDTO.getIdProveedor());
 
@@ -73,7 +87,8 @@ public class OrdenDeCompraController {
             });
             ordenDeCompra.setDetalleOrdenCompra(detalleOrdenCompras);
 
-            return ordenDeCompraService.save(ordenDeCompra);
+            ordenDeCompraService.save(ordenDeCompra);
+            return new ModelAndView("redirect:/ordenDeCompra/list"); 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
