@@ -40,7 +40,7 @@ public class FacturaController {
         Factura factura = new Factura();
         factura.getDetalleFacturas().add(new DetalleFactura()); // Agrega un detalle de factura por defecto
         model.addAttribute("factura", factura);
-        model.addAttribute("articulos", articuloService.getArticulo());
+        model.addAttribute("articulos", articuloService.getAllArticulos());
         return "crear-factura";
     }
 
@@ -69,7 +69,7 @@ public class FacturaController {
     @GetMapping("/facturas/{facturaId}/detalles/nuevo")
     public String mostrarFormularioCrearDetalle(@PathVariable("facturaId") Long facturaId, Model model) {
         Factura factura = facturaService.obtenerFacturaPorId(facturaId);
-        List<Articulo> articulos = articuloService.getArticulo();
+        List<Articulo> articulos = articuloService.getAllArticulos();
         DetalleFactura detalleFactura = new DetalleFactura();
         detalleFactura.setFactura(factura);
         model.addAttribute("detalleFactura", detalleFactura);

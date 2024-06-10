@@ -6,48 +6,43 @@ import com.utn.prototipo1.moduloArticulo.entities.ArticuloCategoria;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloCategoriaService;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@CrossOrigin(origins = "*")
-@RequestMapping(path = "api/v1/articuloCategoria")
+@Controller
+
 public class ArticuloCategoriaController {
 
     @Autowired
     private ArticuloCategoriaService articuloCategoriaService;
 
-    @GetMapping()
-    public List<ArticuloCategoria> getAllArticuloCategoria(){
-        return articuloCategoriaService.getArticuloCategoria();
+    @GetMapping("/categorias")
+    public String listarCategorias(Model modelo) {
+        modelo.addAttribute("categorias", articuloCategoriaService.getAllCategorias());
+        return "categorias";
     }
 
-    @PostMapping()
-    public  ArticuloCategoria createArticuloCategoria(@RequestBody ArticuloCategoria articuloCategoria){
-        return  articuloCategoriaService.saveArticuloCategoria(articuloCategoria);
+    @GetMapping("/categorias/nuevo")
+    public String mostrarFormularioCrearCategoria(Model modelo) {
+        ArticuloCategoria articuloCategoria = new ArticuloCategoria();
+        modelo.addAttribute("categoria", articuloCategoria);
+        return "registroCategoria";
     }
 
-    @GetMapping("/{id}")
-    public ArticuloCategoria getArticuloCategoria(@PathVariable Long id){
-        return articuloCategoriaService.getArticuloCategoriaById(id);
+    @PostMapping("/categorias")
+    public String guardarCategoria(@ModelAttribute("categoria") ArticuloCategoria articuloCategoria) {
+        articuloCategoriaService.saveCategoria(articuloCategoria);
+        return "redirect:/categorias";
     }
 
-    @PutMapping("/{id}")
-    public ArticuloCategoria updateArticuloCategoria(@PathVariable Long id, @RequestBody ArticuloCategoria articuloCategoriaRecibido){
-        ArticuloCategoria articuloCategoria = articuloCategoriaService.getArticuloCategoriaById(id);
-
-        articuloCategoria.setNombreCategoria(articuloCategoriaRecibido.getNombreCategoria());
-        articuloCategoria.setFechaBaja(articuloCategoriaRecibido.getFechaBaja());
-
-        return articuloCategoriaService.saveArticuloCategoria(articuloCategoria);
+    @GetMapping("/categorias/{id}")
+    public String eliminarCategoria(@PathVariable Long id) {
+        articuloCategoriaService.deleteCategoria(id);
+        return "redirect:/categorias";
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteArticuloCategoria(@PathVariable Long id){
-        var articuloCategoria = articuloCategoriaService.getArticuloCategoriaById(id);
-        articuloCategoriaService.deleteArticuloCategoria(articuloCategoria);
-        return ("Objeto eliminado, id: " + id);
-    }
 
 }

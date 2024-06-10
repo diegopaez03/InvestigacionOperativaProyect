@@ -18,14 +18,15 @@ import java.util.Date;
 public class Articulo extends BaseEntidad {
 
 
+
     private String nombreArticulo;
-    private int precio;
 
 
+    private float precioCompra;
 
-    @Column(name = "fecha_baja")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaBaja;
+    private float precioVenta;
+
+    private String fechaBaja;
 
     @NotNull
     @ManyToOne()

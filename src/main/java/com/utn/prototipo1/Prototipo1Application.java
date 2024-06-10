@@ -35,12 +35,14 @@ public class Prototipo1Application {
 
 			Articulo articulo1 = Articulo.builder()
 					.nombreArticulo("Tornillo")
-					.precio(900)
+					.precioCompra(600)
+					.precioVenta(900)
 					.build();
 
 			Articulo articulo2 = Articulo.builder()
 					.nombreArticulo("Clavo")
-					.precio(600)
+					.precioCompra(400)
+					.precioVenta(600)
 					.build();
 
 			articuloRepository.save(articulo1);
@@ -66,6 +68,7 @@ public class Prototipo1Application {
 					.factura(factura1)
 					.build();
 			detalleFacturaRepository.save(detalleFactura1);
+
 
 
 		};

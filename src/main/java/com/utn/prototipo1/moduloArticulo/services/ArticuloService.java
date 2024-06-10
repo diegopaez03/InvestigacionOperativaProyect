@@ -13,14 +13,8 @@ public class ArticuloService implements IArticuloService {
     private ArticuloRepository articuloRepository;
 
     @Override
-    public List<Articulo> getArticulo() {
+    public List<Articulo> getAllArticulos() {
         return articuloRepository.findAll();
-    }
-
-    @Override
-    public Articulo getArticuloById(Long id) {
-        Articulo articulo = articuloRepository.findById(id).orElse(null);
-        return articulo;
     }
 
     @Override
@@ -29,7 +23,14 @@ public class ArticuloService implements IArticuloService {
     }
 
     @Override
-    public void deleteArticulo(Articulo articulo) {
-        articuloRepository.delete(articulo);
+    public Articulo getArticuloById(Long id) {
+        return articuloRepository.findById(id).get();
     }
+
+    @Override
+    public void deleteArticulo(Long id) {
+        articuloRepository.deleteById(id);
+    }
+
+
 }

@@ -6,11 +6,11 @@ import com.utn.prototipo1.moduloArticulo.entities.ArticuloCategoria;
 import java.util.List;
 
 public interface IArticuloCategoria {
-    public List<ArticuloCategoria> getArticuloCategoria();
+    public List<ArticuloCategoria> getAllCategorias();
 
-    public ArticuloCategoria getArticuloCategoriaById(Long id);
+    public ArticuloCategoria saveCategoria(ArticuloCategoria articuloCategoria);
 
-    public ArticuloCategoria saveArticuloCategoria(ArticuloCategoria articuloCategoria);
+    public ArticuloCategoria getCategoriaById(Long id);
 
-    public void deleteArticuloCategoria(ArticuloCategoria articuloCategoria);
+    public void deleteCategoria(Long id);
 }
