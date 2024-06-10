@@ -18,9 +18,6 @@ public class TipoModeloInventario extends BaseEntidad {
 
 
     private String nombreTMI;
-
-    @Column(name = "fecha_bajaTMI")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaBajaTMI;
+    private String fechaBajaTMI;
 
 }

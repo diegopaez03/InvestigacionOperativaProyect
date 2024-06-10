@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Categorias</title>
+    <title>Lista de modelos de inventario</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -31,13 +31,13 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h1>Lista de Categorias</h1>
+            <h1>Lista de modelos de inventario</h1>
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col-lg-3">
-            <a th:href="@{/categorias/nuevo}" class="btn btn-primary btn-sm mb-3">Agregar Categoria</a>
+            <a th:href="@{/tiposModelosInventario/nuevo}" class="btn btn-primary btn-sm mb-3">Agregar modelo de inventario</a>
         </div>
     </div>
     <table class="table">
@@ -45,17 +45,15 @@
         <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Fecha Baja</th>
-            <th scope="col">Tipo Modelo Inventario</th>
             <th scope="col">Acciones</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="categoria : ${categorias}">
-            <td th:text="${categoria.nombreCategoria}">Nombre</td>
-            <td th:text="${categoria.fechaBaja}">Fecha Baja</td>
-            <td th:text="${categoria.tipoModeloInventario != null ? categoria.tipoModeloInventario.nombre : 'N/A'}">Tipo Modelo Inventario</td>
+        <tr th:each="tipoModeloInventario : ${tiposModelosInventario}">
+            <td th:text="${tipoModeloInventario.nombreTMI}">Nombre</td>
+            <td th:text="${tipoModeloInventario.fechaBajaTMI}">Fecha Baja</td>
             <td>
-                <a th:href="@{/categorias/{id}(id=${categoria.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                <a th:href="@{/tiposModelosInventario/{id}(id=${tipoModeloInventario.id})}" class="btn btn-danger btn-sm">Borrar</a>
             </td>
         </tr>
         </tbody>
@@ -66,4 +64,3 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-

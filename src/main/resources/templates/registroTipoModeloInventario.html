@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Categorias</title>
+    <title>Registro de modelo de inventario</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -28,42 +28,32 @@
         </ul>
     </div>
 </nav>
+<br>
 <div class="container">
     <div class="row">
-        <div class="col">
-            <h1>Lista de Categorias</h1>
+        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+            <h1 class="text-center">Registro de modelo de inventario</h1>
+            <div class="card-body">
+                <form th:action="@{/tiposModelosInventario}" th:object="${tipoModeloInventario}" method="POST">
+                    <div class="form-group">
+                        <label>Nombre: </label>
+                        <input type="text" name="nombre" th:field="*{nombreTMI}" class="form-control" placeholder="Digite el nombre del modelo de inventario">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>Fecha Baja: </label>
+                        <input type="text" name="fechaBaja" th:field="*{fechaBajaTMI}" class="form-control" placeholder="Digite la fecha de baja del modelo de inventario">
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-lg-3">
-            <a th:href="@{/categorias/nuevo}" class="btn btn-primary btn-sm mb-3">Agregar Categoria</a>
-        </div>
-    </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Fecha Baja</th>
-            <th scope="col">Tipo Modelo Inventario</th>
-            <th scope="col">Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="categoria : ${categorias}">
-            <td th:text="${categoria.nombreCategoria}">Nombre</td>
-            <td th:text="${categoria.fechaBaja}">Fecha Baja</td>
-            <td th:text="${categoria.tipoModeloInventario != null ? categoria.tipoModeloInventario.nombre : 'N/A'}">Tipo Modelo Inventario</td>
-            <td>
-                <a th:href="@{/categorias/{id}(id=${categoria.id})}" class="btn btn-danger btn-sm">Borrar</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-

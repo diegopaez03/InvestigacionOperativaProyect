@@ -47,6 +47,7 @@
             <th scope="col">Precio Compra</th>
             <th scope="col">Precio Venta</th>
             <th scope="col">Fecha Baja</th>
+            <th scope="col">Categoría</th>
             <th scope="col">Acciones</th>
         </tr>
         </thead>
@@ -56,6 +57,7 @@
             <td th:text="${articulo.precioCompra}">Precio Compra</td>
             <td th:text="${articulo.precioVenta}">Precio Venta</td>
             <td th:text="${articulo.fechaBaja}">Fecha Baja</td>
+            <td th:text="${articulo.articuloCategoria?.nombreCategoria ?: 'Sin Categoría'}">Categoría</td> <!-- Manejo de nulos -->
             <td>
                 <a th:href="@{/articulos/{id}(id=${articulo.id})}" class="btn btn-danger btn-sm">Borrar</a>
             </td>
@@ -68,5 +70,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+
+
 
 

@@ -2,68 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registro de Artículos</title>
+    <title>Registrar Artículo</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li>
-        </ul>
-    </div>
-</nav>
-<br>
 <div class="container">
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-            <h1 class="text-center">Registro de Artículo</h1>
-            <div class="card-body">
-                <form th:action="@{/articulos}" th:object="${articulo}" method="POST">
-                    <div class="form-group">
-                        <label>Nombre: </label>
-                        <input type="text" name="nombre" th:field="*{nombreArticulo}" class="form-control" placeholder="Digite el nombre del artículo">
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label>Precio Compra: </label>
-                        <input type="text" name="precioCompra" th:field="*{precioCompra}" class="form-control" placeholder="Digite el precio de compra del artículo">
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label>Precio Venta: </label>
-                        <input type="text" name="precioVenta" th:field="*{precioVenta}" class="form-control" placeholder="Digite el precio de venta del artículo">
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label>Fecha Baja: </label>
-                        <input type="text" name="fechaBaja" th:field="*{fechaBaja}" class="form-control" placeholder="Digite la fecha de baja del artículo">
-                    </div>
-                    <div class="box-footer">
-                        <button class="btn btn-success">Guardar</button>
-                    </div>
-                </form>
-            </div>
+        <div class="col">
+            <h1>Registrar Artículo</h1>
         </div>
     </div>
+    <br>
+    <form th:action="@{/articulos}" th:object="${articulo}" method="post">
+        <div class="form-group">
+            <label for="nombreArticulo">Nombre</label>
+            <input type="text" id="nombreArticulo" th:field="*{nombreArticulo}" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="precioCompra">Precio Compra</label>
+            <input type="text" id="precioCompra" th:field="*{precioCompra}" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="precioVenta">Precio Venta</label>
+            <input type="text" id="precioVenta" th:field="*{precioVenta}" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="fechaBaja">Fecha Baja</label>
+            <input type="date" id="fechaBaja" th:field="*{fechaBaja}" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="articuloCategoria">Categoría</label>
+            <select id="articuloCategoria" th:field="*{articuloCategoria}" class="form-control">
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombreCategoria}">Categoría</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
