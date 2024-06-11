@@ -36,9 +36,5 @@ public class Inventario extends BaseEntidad {
     public void agregarInventarioArticulo(InventarioArticulo inventarioArticulo){
         this.inventarioArticulos.add(inventarioArticulo);
         inventarioArticulo.setInventario(this);
-        calcularCantidad();
-    }
-    public void calcularCantidad(){
-        this.cantidad = this.inventarioArticulos.stream().mapToInt(InventarioArticulo::getTotalLinea).sum();
     }
 }

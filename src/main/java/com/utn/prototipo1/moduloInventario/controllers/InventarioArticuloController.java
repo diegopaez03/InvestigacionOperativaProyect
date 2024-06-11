@@ -11,5 +11,5 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "inventarioarticulo")
 
-public class InventarioArticuloController extends BaseControllerImpl<InventarioArticulo, InventarioArticuloServiceImpl> {
+public class InventarioArticuloController {
 }

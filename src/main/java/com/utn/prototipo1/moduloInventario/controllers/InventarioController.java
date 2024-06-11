@@ -86,7 +86,8 @@ public class InventarioController  {
             Articulo articulo = articuloService.getArticuloById(articuloId);
             inventarioArticulo.setInventario(inventario);
             inventarioArticulo.setArticulo(articulo);
-            //inventarioArticulo.calcularLinea(); // Llama al método que calcula el valor de la línea
+            inventarioArticulo.calcularLoteOptimo();
+            inventarioArticulo.cacularCGI();
             inventarioArticuloService.save(inventarioArticulo);
             inventarioServices.actualizarInventario(InventarioId);
             return "redirect:/maestoInventario" ;

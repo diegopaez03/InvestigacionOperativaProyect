@@ -44,13 +44,5 @@ public class InventarioServicesImpl implements InventarioServices{
     @Override
     public void actualizarInventario(Long InventarioId) {
         Inventario inventario = obtenerInventarioId(InventarioId);
-        int cantidad = 0; // Inicializa el total en 0.0
-
-        // Itera sobre todos los inventarioarticulo de inventario asociados a la inventario
-        for (InventarioArticulo inventarioArticulo : inventarioArticuloRepository.findByfindByInventarioId(InventarioId)) {
-            cantidad += inventarioArticulo.getTotalLinea();
-        }
-        inventario.setCantidad(cantidad); //
-        inventarioRepository.save(inventario); // Guarda el inventario actualizado en la base de datos
     }
 }
