@@ -20,11 +20,11 @@ import org.springframework.lang.NonNull;
 public class InventarioArticulo extends BaseEntidad {
 
     private int puntoPedido;
-    private int stockActual;
+    private int LoteOptimo;
     private int stockSeguridad;
 
     @NonNull
     @ManyToOne(optional = false)
-    @JoinColumn(name = "codArticulo")
+    @JoinColumn(name = "idArticulo")
     private Articulo articulo;
 }
