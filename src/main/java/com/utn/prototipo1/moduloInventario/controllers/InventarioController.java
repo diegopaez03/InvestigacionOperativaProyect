@@ -30,13 +30,13 @@ public class InventarioController  {
         private InventarioArticuloService inventarioArticuloService;
 
         //Listar los inventarios que se crean
-        @GetMapping("/maestoInventario")
+        @GetMapping("/maestroInventario")
         public String mostrarTodosloInventarios(Model model) {
             model.addAttribute("inventario", inventarioServices.obtenerTodosLosInventarios());
             return "MaestroInventario";
         }
 
-        @GetMapping("/maestoInventario/nuevo")
+        @GetMapping("/maestroInventario/nuevo")
         public String mostrarFormularioCrearInventario(Model model) {
             Inventario inventario = new Inventario();
             inventario.getInventarioArticulos().add(new InventarioArticulo()); // Agrega un detalle de factura por defecto
@@ -53,14 +53,14 @@ public class InventarioController  {
                 inventarioArticulo.setInventario(inventario); // Establece la relación entre la factura y sus detalles
             }
             inventarioServices.crearInventario(inventario);
-            return "redirect:/maestoInventario";
+            return "redirect:/maestroInventario";
         }
 
         //borrar el inventario
         @GetMapping("/maestoInventario/{id}")
         public String eliminarInventario(@PathVariable Long id){
             inventarioServices.deleteInventario(id);
-            return "redirect:/maestoInventario";
+            return "redirect:/maestroInventario";
         }
 
 
@@ -89,8 +89,7 @@ public class InventarioController  {
             inventarioArticulo.calcularLoteOptimo();
             inventarioArticulo.cacularCGI();
             inventarioArticuloService.save(inventarioArticulo);
-            inventarioServices.actualizarInventario(InventarioId);
-            return "redirect:/maestoInventario" ;
+            return "redirect:/maestroInventario" ;
         }
 
 
@@ -98,7 +97,7 @@ public class InventarioController  {
         public String verInventarioArticulo(@PathVariable Long InventarioId, Model model) {
             List<InventarioArticulo> inventarioArticulos = inventarioArticuloService.obtenerInventarioArticulos(InventarioId);
             model.addAttribute("inventarioArticulo", inventarioArticulos);
-            return "MaestroDetalleInventario";
+            return "InventarioArticulo";
         }
 
     }
