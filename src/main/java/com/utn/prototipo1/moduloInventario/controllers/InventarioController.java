@@ -41,13 +41,13 @@ public class InventarioController  {
             Inventario inventario = new Inventario();
             inventario.getInventarioArticulos().add(new InventarioArticulo()); // Agrega un detalle de factura por defecto
             model.addAttribute("inventario", inventario);
-            model.addAttribute("articulos", articuloService.getArticulo());
+            model.addAttribute("articulos", articuloService.getAllArticulos());
             return "crear-inventario";
         }
 
 
         @PostMapping("/inventario")
-        public String crearInventario(@ModelAttribute("invetario") Inventario inventario) {
+        public String crearInventario(@ModelAttribute("inventario") Inventario inventario) {
             inventario.setFechaDesde(new Date()); // Asignar la fecha y hora actual
             for (InventarioArticulo inventarioArticulo : inventario.getInventarioArticulos()) {
                 inventarioArticulo.setInventario(inventario); // Establece la relación entre la factura y sus detalles
@@ -57,7 +57,7 @@ public class InventarioController  {
         }
 
         //borrar el inventario
-        @GetMapping("/maestoInventario/{id}")
+        @GetMapping("/maestroInventario/{id}")
         public String eliminarInventario(@PathVariable Long id){
             inventarioServices.deleteInventario(id);
             return "redirect:/maestroInventario";
@@ -69,7 +69,7 @@ public class InventarioController  {
         @GetMapping("/inventario/{InventarioId}/inventarioArticulo/nuevo")
         public String mostrarFormularioCrearInventarioArticulo(@PathVariable("InventarioId") Long InventarioId, Model model) {
             Inventario inventario = inventarioServices.obtenerInventarioId(InventarioId);
-            List<Articulo> articulos = articuloService.getArticulo();
+            List<Articulo> articulos = articuloService.getAllArticulos();
             InventarioArticulo inventarioArticulo = new InventarioArticulo();
             inventarioArticulo.setInventario(inventario);
             model.addAttribute("inventarioArticulo", inventarioArticulo);
@@ -86,8 +86,9 @@ public class InventarioController  {
             Articulo articulo = articuloService.getArticuloById(articuloId);
             inventarioArticulo.setInventario(inventario);
             inventarioArticulo.setArticulo(articulo);
+            /*
             inventarioArticulo.calcularLoteOptimo();
-            inventarioArticulo.cacularCGI();
+            inventarioArticulo.cacularCGI();*/
             inventarioArticuloService.save(inventarioArticulo);
             return "redirect:/maestroInventario" ;
         }

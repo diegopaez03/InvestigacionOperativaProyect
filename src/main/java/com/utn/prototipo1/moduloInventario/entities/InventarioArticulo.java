@@ -36,7 +36,7 @@ public class InventarioArticulo extends BaseEntidad {
     @JoinColumn(name = "CodInventario")
     private Inventario inventario;
 
-    public double getLoteOptimo(){
+  /* public double getLoteOptimo(){
         return LoteOptimo = Math.sqrt(2*cantidad*(CostoPedido/CostoAlamcenamiento));
     }
     public double getCGI(){
@@ -49,4 +49,5 @@ public class InventarioArticulo extends BaseEntidad {
     public void cacularCGI(){
         this.CGI = (this.articulo.getPrecio()*this.cantidad) + (this.CostoAlamcenamiento*(this.LoteOptimo/2))+ (this.CostoPedido*(this.cantidad/this.LoteOptimo));
     }
+*/
 }
