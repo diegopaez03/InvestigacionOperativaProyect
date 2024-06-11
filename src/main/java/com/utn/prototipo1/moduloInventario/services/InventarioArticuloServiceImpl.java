@@ -33,7 +33,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
 
     @Override
     public InventarioArticulo save(InventarioArticulo inventarioArticulo) {
-        inventarioArticulo.getTotalLinea();
+        inventarioArticulo.getCantidad();
         inventarioArticulo.getLoteOptimo();
         inventarioArticulo.getPuntoPedido();
         inventarioArticulo.getStockSeguridad();

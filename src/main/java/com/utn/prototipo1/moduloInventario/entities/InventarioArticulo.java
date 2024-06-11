@@ -7,7 +7,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.lang.NonNull;
 
 @Entity
@@ -19,10 +18,13 @@ import org.springframework.lang.NonNull;
 @Builder
 public class InventarioArticulo extends BaseEntidad {
 
-    private int puntoPedido;
-    private int LoteOptimo;
-    private int stockSeguridad;
-    private int totalLinea;
+    private double puntoPedido;
+    private double LoteOptimo;
+    private double stockSeguridad;
+    private double CGI;
+    private int cantidad;
+    private int CostoAlamcenamiento;
+    private int CostoPedido;
 
     @NonNull
     @ManyToOne(optional = false)
@@ -34,5 +36,17 @@ public class InventarioArticulo extends BaseEntidad {
     @JoinColumn(name = "CodInventario")
     private Inventario inventario;
 
+    public double getLoteOptimo(){
+        return LoteOptimo = Math.sqrt(2*cantidad*(CostoPedido/CostoAlamcenamiento));
+    }
+    public double getCGI(){
+        return CGI = (articulo.getPrecio()*cantidad) + (CostoAlamcenamiento*(LoteOptimo/2))+ (CostoPedido*(cantidad/LoteOptimo));
+    }
 
+    public void calcularLoteOptimo(){
+        this.LoteOptimo = Math.sqrt(2*this.cantidad*(this.CostoPedido/this.CostoAlamcenamiento));
+    }
+    public void cacularCGI(){
+        this.CGI = (this.articulo.getPrecio()*this.cantidad) + (this.CostoAlamcenamiento*(this.LoteOptimo/2))+ (this.CostoPedido*(this.cantidad/this.LoteOptimo));
+    }
 }
