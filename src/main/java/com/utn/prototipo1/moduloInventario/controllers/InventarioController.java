@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+
 @Controller
 
 public class InventarioController  {
@@ -32,13 +33,13 @@ public class InventarioController  {
         private InventarioArticuloService inventarioArticuloService;
 
         //Listar los inventarios que se crean
-        @GetMapping("/maestroInventario")
-        public String mostrarTodosloInventarios(Model model) {
-            model.addAttribute("inventario", inventarioServices.obtenerTodosLosInventario());
+        @GetMapping("/maestroinventario")
+        public String mostrarTodosLosInventarios(Model model) {
+            model.addAttribute("inventarios", inventarioServices.obtenerTodosLosInventario());
             return "MaestroInventario";
         }
 
-        @GetMapping("/maestroInventario/nuevo")
+        @GetMapping("/maestroinventario/nuevo")
         public String mostrarFormularioCrearInventario(Model model) {
             Inventario inventario = new Inventario();
             inventario.getInventarioArticulos().add(new InventarioArticulo()); // Agrega un detalle de factura por defecto
@@ -48,28 +49,28 @@ public class InventarioController  {
         }
 
 
-        @PostMapping("/inventario")
+        @PostMapping("/inventarios")
         public String crearInventario(@ModelAttribute("inventario") Inventario inventario) {
             inventario.setFechaDesde(new Date()); // Asignar la fecha y hora actual
             for (InventarioArticulo inventarioArticulo : inventario.getInventarioArticulos()) {
                 inventarioArticulo.setInventario(inventario);// Establece la relación entre la factura y sus detalles
             }
             inventarioServices.crearInventario(inventario);
-            return "redirect:/maestroInventario";
+            return "redirect:/maestroinventario";
         }
 
         //borrar el inventario
-        @GetMapping("/maestroInventario/{id}")
+        @GetMapping("/maestroinventario/{id}")
         public String eliminarInventario(@PathVariable Long id){
             inventarioServices.deleteInventario(id);
-            return "redirect:/maestroInventario";
+            return "redirect:/maestroinventario";
         }
 
 
         //DETALLE FACTURA ------------------------------
 
-        @GetMapping("/inventario/{InventarioId}/inventarioArticulo/nuevo")
-        public String mostrarFormularioCrearInventarioArticulo(@PathVariable("InventarioId") Long InventarioId, Model model) {
+        @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/nuevo")
+        public String mostrarFormularioCrearInventarioArticulo(@PathVariable("inventarioId") Long InventarioId, Model model) {
             Inventario inventario = inventarioServices.obtenerInventarioPorId(InventarioId);
             List<Articulo> articulos = articuloService.getAllArticulos();
             InventarioArticulo inventarioArticulo = new InventarioArticulo();
@@ -80,27 +81,24 @@ public class InventarioController  {
             return "crear-inventario-articulo";
         }
 
-        @PostMapping("/inventario/{InventarioId}/inventarioArticulo")
-        public String crearinventarioArticulo(@PathVariable("InventarioId") Long InventarioId,
+        @PostMapping("/inventario/{inventarioId}/inventarioArticulos")
+        public String crearinventarioArticulo(@PathVariable("inventarioId") Long InventarioId,
                                           @ModelAttribute("inventarioArticulo") InventarioArticulo inventarioArticulo,
                                           @RequestParam("articulo.id") Long articuloId) {
             Inventario inventario = inventarioServices.obtenerInventarioPorId(InventarioId);
             Articulo articulo = articuloService.getArticuloById(articuloId);
             inventarioArticulo.setInventario(inventario);
             inventarioArticulo.setArticulo(articulo);
-            /*
-            inventarioArticulo.calcularLoteOptimo();
-            inventarioArticulo.cacularCGI();*/
             inventarioArticuloService.save(inventarioArticulo);
-            return "redirect:/maestroInventario" ;
+            return "redirect:/maestroinventario";
         }
 
 
-        @GetMapping("/inventario/{InventarioId}/inventarioArticulo")
+        @GetMapping("/inventarios/{inventarioId}/inventarioArticulos")
         public String verInventarioArticulo(@PathVariable Long InventarioId, Model model) {
             List<InventarioArticulo> inventarioArticulos = inventarioArticuloService.obtenerInventarioArticulos(InventarioId);
             model.addAttribute("inventarioArticulo", inventarioArticulos);
-            return "InventarioArticulo";
+            return "MaestroInventarioArticulo";
         }
 
     }
