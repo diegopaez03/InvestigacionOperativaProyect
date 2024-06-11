@@ -18,7 +18,7 @@ import java.util.List;
 public class Factura extends BaseEntidad {
 
 
-    private  Long nroFactura;
+   // private  Long nroFactura;
 
     @Column(name = "fecha_factura")
     @Temporal(TemporalType.TIMESTAMP)
@@ -31,16 +31,18 @@ public class Factura extends BaseEntidad {
     @Builder.Default
     private List<DetalleFactura> detalleFacturas = new ArrayList<>();
 
-    public void addDetalleFactura(DetalleFactura detalleFactura) {
+    public void agregarDetalle(DetalleFactura detalleFactura) {
         this.detalleFacturas.add(detalleFactura);
         detalleFactura.setFactura(this);
         calcularTotal();
     }
 
+
     public void calcularTotal() {
-        total = detalleFacturas.stream()
+        this.total = this.detalleFacturas.stream()
                 .mapToDouble(DetalleFactura::getLinea)
                 .sum();
     }
+
 
 }

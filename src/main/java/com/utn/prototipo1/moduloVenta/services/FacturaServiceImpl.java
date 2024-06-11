@@ -1,9 +1,9 @@
 package com.utn.prototipo1.moduloVenta.services;
 
-import com.utn.prototipo1.moduloArticulo.entities.Articulo;
-import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
+
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
+import com.utn.prototipo1.moduloVenta.repositories.DetalleFacturaRepository;
 import com.utn.prototipo1.moduloVenta.repositories.FacturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,33 +16,43 @@ public class FacturaServiceImpl implements FacturaService {
     @Autowired
     private FacturaRepository facturaRepository;
     @Autowired
-    private ArticuloRepository articuloRepository;
+    private  DetalleFacturaRepository detalleFacturaRepository;
 
     @Override
-    public Factura createFactura(Factura factura) {
-        for (DetalleFactura detalle : factura.getDetalleFacturas()) {
-            Articulo articulo = articuloRepository.findById(detalle.getArticulo().getId())
-                    .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
-            detalle.setArticulo(articulo);
-            detalle.setLinea(detalle.getCantidad() * articulo.getPrecio());
-            detalle.setFactura(factura);
-        }
-        factura.calcularTotal();
-        return facturaRepository.save(factura);
+    public Factura deleteFactura(Long id) {
+        facturaRepository.deleteById(id);
+        return null;
     }
 
     @Override
-    public void addDetalleFactura(Long facturaId, List<DetalleFactura> detalles) {
-        Factura factura = facturaRepository.findById(facturaId)
-                .orElseThrow(() -> new RuntimeException("Factura no encontrada"));
+    public Factura obtenerFacturaPorId(Long id) {
+        return facturaRepository.findById(id).orElse(null);
+    }
 
-        for (DetalleFactura detalle : detalles) {
-            Articulo articulo = articuloRepository.findById(detalle.getArticulo().getId())
-                    .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
-            detalle.setArticulo(articulo);
-            detalle.setLinea(detalle.getCantidad() * articulo.getPrecio());
-            factura.addDetalleFactura(detalle);
-        }
+    @Override
+    public List<Factura> obtenerTodasLasFacturas() {
+        return facturaRepository.findAll();
+    }
+
+    @Override
+    public void crearFactura(Factura factura) {
         facturaRepository.save(factura);
     }
+
+    @Override
+    public void actualizarTotalFactura(Long facturaId) {
+        Factura factura = obtenerFacturaPorId(facturaId);
+        double total = 0.0; // Inicializa el total en 0.0
+
+        // Itera sobre todos los detalles de factura asociados a la factura
+        for (DetalleFactura detalle : detalleFacturaRepository.findByFacturaId(facturaId)) {
+            total += detalle.getLinea(); // Suma el valor de línea de cada detalle
+        }
+
+        factura.setTotal(total); // Establece el total en la factura
+        facturaRepository.save(factura); // Guarda la factura actualizada en la base de datos
+    }
+
 }
+
+

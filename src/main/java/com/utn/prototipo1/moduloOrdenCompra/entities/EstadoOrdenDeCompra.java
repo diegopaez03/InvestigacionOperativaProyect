@@ -15,8 +15,6 @@ import java.util.Date;
 @Builder
 public class EstadoOrdenDeCompra extends BaseEntidad {
 
-    private int codEOC;
-
     private String nombreEOC;
 
     @Column(name = "fecha_baja", nullable = true)

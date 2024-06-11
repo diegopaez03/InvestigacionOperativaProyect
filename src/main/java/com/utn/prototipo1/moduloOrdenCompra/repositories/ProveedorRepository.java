@@ -1,7 +1,9 @@
 package com.utn.prototipo1.moduloOrdenCompra.repositories;
 
+import com.utn.prototipo1.Base.repositories.BaseRepository;
 import com.utn.prototipo1.moduloOrdenCompra.entities.Proveedor;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ProveedorRepository extends JpaRepository<Proveedor,Long> {
+@Repository
+public interface ProveedorRepository extends BaseRepository<Proveedor,Long> {
 }

@@ -6,21 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
-public class TipoModeloInventarioService implements ITipoModeloInventarioService{
+public class TipoModeloInventarioService implements ITipoModeloInventarioService {
 
     @Autowired
     private TipoModeloInventarioRepository tipoModeloInventarioRepository;
 
     @Override
-    public List<TipoModeloInventario> getTipoModeloInventario() {
+    public List<TipoModeloInventario> getAllTiposModelosInventario() {
         return tipoModeloInventarioRepository.findAll();
-    }
-
-    @Override
-    public TipoModeloInventario getTipoModeloInventarioById(Long id) {
-        TipoModeloInventario tipoModeloInventario = tipoModeloInventarioRepository.findById(id).orElse(null);
-        return tipoModeloInventario;
     }
 
     @Override
@@ -29,8 +24,13 @@ public class TipoModeloInventarioService implements ITipoModeloInventarioService
     }
 
     @Override
-    public void deleteTipoModeloInventario(TipoModeloInventario tipoModeloInventario) {
-        tipoModeloInventarioRepository.delete(tipoModeloInventario);
+    public TipoModeloInventario getTipoModeloInventarioById(Long id) {
+        return tipoModeloInventarioRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public void deleteTipoModeloInventario(Long id) {
+        tipoModeloInventarioRepository.deleteById(id);
+    }
 }
+

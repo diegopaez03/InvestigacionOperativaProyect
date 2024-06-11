@@ -3,49 +3,39 @@ package com.utn.prototipo1.moduloArticulo.controllers;
 import com.utn.prototipo1.moduloArticulo.entities.TipoModeloInventario;
 import com.utn.prototipo1.moduloArticulo.services.TipoModeloInventarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
-@CrossOrigin(origins = "*")
-@RequestMapping(path = "api/v1/tipomodeloinventario")
-
+@Controller
 public class TipoModeloInventarioController {
+
     @Autowired
     private TipoModeloInventarioService tipoModeloInventarioService;
 
-    @GetMapping()
-    public List<TipoModeloInventario> getAllTipoModeloInventarios(){
-        return tipoModeloInventarioService.getTipoModeloInventario();
+    @GetMapping("/tiposModelosInventario")
+    public String listarTiposModelosInventario(Model modelo) {
+        modelo.addAttribute("tiposModelosInventario", tipoModeloInventarioService.getAllTiposModelosInventario());
+        return "tiposModelosInventario";
     }
 
-    @PostMapping()
-    public TipoModeloInventario createTipoModeloInventario(@RequestBody TipoModeloInventario tipoModeloInventario){
-        return tipoModeloInventarioService.saveTipoModeloInventario(tipoModeloInventario);
+    @GetMapping("/tiposModelosInventario/nuevo")
+    public String mostrarFormularioCrearTipoModeloInventario(Model modelo) {
+        TipoModeloInventario tipoModeloInventario = new TipoModeloInventario();
+        modelo.addAttribute("tipoModeloInventario", tipoModeloInventario);
+        return "registroTipoModeloInventario";
     }
 
-    @GetMapping("/{id}")
-    public TipoModeloInventario getTipoModeloInventario(@PathVariable Long id){
-        return tipoModeloInventarioService.getTipoModeloInventarioById(id);
+    @PostMapping("/tiposModelosInventario")
+    public String guardarTipoModeloInventario(@ModelAttribute("tipoModeloInventario") TipoModeloInventario tipoModeloInventario) {
+        tipoModeloInventarioService.saveTipoModeloInventario(tipoModeloInventario);
+        return "redirect:/tiposModelosInventario";
     }
 
-    @PutMapping("/{id}")
-    public TipoModeloInventario updateTipoModeloInventario(@PathVariable Long id, @RequestBody TipoModeloInventario tipoModeloInventarioRecibido){
-        TipoModeloInventario tipoModeloInventario = tipoModeloInventarioService.getTipoModeloInventarioById(id);
-
-        tipoModeloInventario.setNombreTMI(tipoModeloInventarioRecibido.getNombreTMI());
-        tipoModeloInventario.setFechaBajaTMI(tipoModeloInventarioRecibido.getFechaBajaTMI());
-
-        return tipoModeloInventarioService.saveTipoModeloInventario(tipoModeloInventario);
+    @GetMapping("/tiposModelosInventario/{id}")
+    public String eliminarTipoModeloInventario(@PathVariable Long id) {
+        tipoModeloInventarioService.deleteTipoModeloInventario(id);
+        return "redirect:/tiposModelosInventario";
     }
-
-    @DeleteMapping("/{id}")
-    public String deleteTipoModeloInventario(@PathVariable Long id){
-        var tipoModeloInventario = tipoModeloInventarioService.getTipoModeloInventarioById(id);
-        tipoModeloInventarioService.deleteTipoModeloInventario(tipoModeloInventario);
-        return ("Objeto eliminado, id: " + id);
-    }
-
-
 }
+

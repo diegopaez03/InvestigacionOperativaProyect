@@ -1,11 +1,11 @@
 package com.utn.prototipo1.moduloOrdenCompra.entities;
 
 import com.utn.prototipo1.Base.entities.BaseEntidad;
-import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "OrdenDeCompra")
@@ -16,8 +16,6 @@ import java.util.Date;
 @Builder
 public class OrdenDeCompra extends BaseEntidad {
 
-    private int nroOrdenDeCompra;
-
     private int tamanoLote;
 
     @Column(name = "fechaOrdenDeCompra")
@@ -25,19 +23,22 @@ public class OrdenDeCompra extends BaseEntidad {
     private Date fechaOrdenDeCompra;
 
     @NonNull
-    @ManyToOne()
-    @JoinColumn(name = "codArticulo")
-    private Articulo articulo;
-
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "idOrdenDeCompra")
+    private List<DetalleOrdenCompra> detalleOrdenCompra;
 
     @NonNull
     @ManyToOne()
-    @JoinColumn(name = "codEOC")
+    @JoinColumn(name = "idEstadoOrdenDeCompra")
     private EstadoOrdenDeCompra estadoOrdenDeCompra;
 
     @NonNull
     @ManyToOne()
-    @JoinColumn(name = "codProveedor")
+    @JoinColumn(name = "idProveedor")
     private Proveedor proveedor;
 
+    @PrePersist
+    protected void onCreate() {
+        this.fechaOrdenDeCompra = new Date();
+    }
 }

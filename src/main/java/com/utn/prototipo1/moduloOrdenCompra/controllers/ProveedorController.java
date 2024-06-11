@@ -26,15 +26,14 @@ public class ProveedorController {
     }
 
     @GetMapping("/{id}")
-    public Proveedor getProveedor(@PathVariable Long id){
+    public Proveedor getProveedor(@PathVariable("id") Long id){
         return proveedorService.getProveedorById(id);
     }
 
     @PutMapping("/{id}")
-    public Proveedor updateProveedor(@PathVariable Long id, @RequestBody Proveedor proveedorRecibido){
+    public Proveedor updateProveedor(@PathVariable("id") Long id, @RequestBody Proveedor proveedorRecibido){
         Proveedor proveedor = proveedorService.getProveedorById(id);
 
-        proveedor.setCodProveedor(proveedorRecibido.getCodProveedor());
         proveedor.setNombreProveedor(proveedorRecibido.getNombreProveedor());
         proveedor.setFechaBajaProveedor(proveedorRecibido.getFechaBajaProveedor());
 
@@ -42,7 +41,7 @@ public class ProveedorController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProveedor(@PathVariable Long id){
+    public String deleteProveedor(@PathVariable("id") Long id){
         var proveedor = proveedorService.getProveedorById(id);
         proveedorService.deleteProveedor(proveedor);
         return ("Objeto eliminado, id: " + id);
