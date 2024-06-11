@@ -35,4 +35,9 @@ public class DetalleFactura extends BaseEntidad {
         return cantidad * articulo.getPrecio();
     }
 
+    public void calcularLinea() {
+        this.linea = this.cantidad * this.articulo.getPrecio();
+    }
+
+
 }

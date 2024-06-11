@@ -19,7 +19,7 @@ import java.util.List;
 public class Factura extends BaseEntidad {
 
 
-    private  Long nroFactura;
+   // private  Long nroFactura;
 
     @Column(name = "fecha_factura")
     @Temporal(TemporalType.TIMESTAMP)
@@ -40,9 +40,10 @@ public class Factura extends BaseEntidad {
 
 
     public void calcularTotal() {
-        total = detalleFacturas.stream()
+        this.total = this.detalleFacturas.stream()
                 .mapToDouble(DetalleFactura::getLinea)
                 .sum();
     }
+
 
 }

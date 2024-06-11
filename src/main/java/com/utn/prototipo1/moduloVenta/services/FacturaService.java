@@ -11,6 +11,6 @@ public interface FacturaService {
     void crearFactura(Factura factura);
     public Factura deleteFactura(Long id);
     Factura obtenerFacturaPorId(Long id);
-   // public DetalleFactura deleteDetalleFactura(Long id);
+    void actualizarTotalFactura(Long facturaId);
 
 }

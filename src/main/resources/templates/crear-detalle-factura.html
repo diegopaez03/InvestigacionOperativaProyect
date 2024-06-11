@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="mt-5">Crear Detalle para Factura</h1>
+    <h1 class="mt-5">Crear Detalles Factura</h1>
     <form th:action="@{/facturas/{facturaId}/detalles(facturaId=${factura.id})}" th:object="${detalleFactura}" method="post" class="mt-4">
         <input type="hidden" th:field="*{factura.id}" th:value="${factura.id}" />
 
@@ -23,7 +23,7 @@
             <input type="number" th:field="*{cantidad}" class="form-control" id="cantidad" />
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
         <a th:href ="@{/maestrofactura}" class="btn btn-danger">Cancelar</a>
     </form>
 </div>

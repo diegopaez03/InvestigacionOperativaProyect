@@ -33,15 +33,15 @@ public class DetalleFacturaImpl implements DetalleFacturaService{
 
     }
 
-
     @Override
     public List<DetalleFactura> obtenerDetallesPorFactura(Long facturaId) {
         return detalleFacturaRepository.findByFacturaId(facturaId);
     }
 
-    /*@Override
-    public void deleteById(Long id) {
-        detalleFacturaRepository.deleteById(id);
-    }*/
+    @Override
+    public DetalleFactura deleteById(Long detalleId) {
+        detalleFacturaRepository.deleteById(detalleId);
+        return null;
+    }
 
 }

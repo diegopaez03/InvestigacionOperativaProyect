@@ -11,5 +11,5 @@ public interface DetalleFacturaService {
     DetalleFactura findById(Long id);
     DetalleFactura save(DetalleFactura detalleFactura);
     List<DetalleFactura> obtenerDetallesPorFactura(Long facturaId);
-    //void deleteById(Long id);
+    public DetalleFactura deleteById(Long detalleId);
 }

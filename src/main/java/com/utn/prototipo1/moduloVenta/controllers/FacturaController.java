@@ -86,7 +86,9 @@ public class FacturaController {
         Articulo articulo = articuloService.getArticuloById(articuloId);
         detalleFactura.setFactura(factura);
         detalleFactura.setArticulo(articulo);
+        detalleFactura.calcularLinea(); // Llama al método que calcula el valor de la línea
         detalleFacturaService.save(detalleFactura);
+        facturaService.actualizarTotalFactura(facturaId);
         return "redirect:/maestrofactura" ;
     }
 
@@ -97,8 +99,6 @@ public class FacturaController {
         model.addAttribute("detallesFactura", detallesFactura);
         return "MaestroDetalleFactura";
     }
-
-
 
 
 

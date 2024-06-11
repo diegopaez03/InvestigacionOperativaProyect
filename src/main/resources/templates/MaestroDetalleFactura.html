@@ -22,24 +22,22 @@
             <th scope="col">Cantidad</th>
             <th scope="col">Articulo</th>
             <th scope="col">Linea</th>
-            <th scope="col">Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="detalles : ${detallesFactura}">
-            <td th:text="${detalles.factura.id}"></td>
-            <td th:text="${detalles.id}"></td>
-            <td th:text="${detalles.cantidad}"></td>
-            <td th:text="${detalles.articulo.nombreArticulo}"></td>
-            <td th:text="${detalles.linea}"></td>
-            <td>
-                <a th:href="@{/facturas/{facturaId}/detalles/eliminar/{detalleId}(facturaId=${facturaId}, detalleId=${detalles.id})}" class="btn btn-danger">Eliminar</a>
-            </td>
-        </tr>
-
-
-        </tbody>
-    </table>
+            <!--<th scope="col">Acciones</th>-->
+       </tr>
+       </thead>
+       <tbody>
+       <tr th:each="detalles : ${detallesFactura}">
+           <td th:text="${detalles.factura.id}"></td>
+           <td th:text="${detalles.id}"></td>
+           <td th:text="${detalles.cantidad}"></td>
+           <td th:text="${detalles.articulo.nombreArticulo}"></td>
+           <td th:text="${detalles.linea}"></td>
+           <!--<td>
+              <a th:href="@{/facturas/{facturaId}/detalles/eliminar/{detalleId}(facturaId=${facturaId}, detalleId=${detalles.id})}" class="btn btn-danger">Eliminar</a>
+          </td>-->
+       </tr>
+       </tbody>
+   </table>
 
 </div>
 </body>

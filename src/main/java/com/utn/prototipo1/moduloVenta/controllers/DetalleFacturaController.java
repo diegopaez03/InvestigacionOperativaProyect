@@ -26,27 +26,6 @@ public class DetalleFacturaController {
     @Autowired
     private FacturaService facturaService;
 
-    @GetMapping("/maestrodetallefactura")
-    public String listarDetallesFactura(Model model) {
-        List<DetalleFactura> detallesFactura = detalleFacturaService.findAll();
-        model.addAttribute("detallesFactura", detallesFactura);
-        return "MaestroDetalleFactura";
-    }
-
-   /* @GetMapping("/detallesfactura/eliminar/{id}")
-    public String eliminarDetalleFactura(@PathVariable("id") Long id) {
-        DetalleFactura detalle = detalleFacturaService.findById(id);
-        Long facturaId = detalle.getFactura().getId();
-        detalleFacturaService.deleteById(id);
-        return "redirect:/facturas/" + facturaId + "/detalles";
-    }
-
-    //borrar la factura
-    /*@GetMapping("/maestrodetallefactura/{id}")
-    public String eliminarDetalleFactura(@PathVariable Long id){
-        detalleFacturaService.deleteDetalleFactura(id);
-        return "redirect:/maestrodetallefactura";
-    }*/
 
 
 
