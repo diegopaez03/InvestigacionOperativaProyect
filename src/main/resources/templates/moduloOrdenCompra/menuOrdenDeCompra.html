@@ -7,11 +7,15 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h2>Listado de Órdenes de Compra</h2>
-        <table class="table">
-            <thead>
+        <div style="display: flex; justify-content: space-between;">
+            <h2>Listado de Órdenes de Compra</h2>
+            <a th:href="@{/ordenDeCompra/generar}" class="btn btn-primary" style="font-size: large; align-content: center;">Generar orden de compra</a>
+        </div>
+        <table class="table table-striped table-bordered rounded mt-4">
+            <thead class="table-light">
                 <tr>
                     <th>#</th>
+                    <th>Orden N°</th>
                     <th>Proveedor</th>
                     <th>Fecha</th>
                     <th>Estado</th>
@@ -21,11 +25,12 @@
             <tbody>
                 <tr th:each="orden, iterStat : ${orden}">
                     <td th:text="${iterStat.count}"></td>
+                    <td th:text="${orden.id}"></td>
                     <td th:text="${orden.proveedor.nombreProveedor}"></td>
-                    <td th:text="${#dates.format(orden.fechaOrdenDeCompra, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${#dates.format(orden.fechaOrdenDeCompra, 'dd-MM-yyyy HH:mm')}"></td>
                     <td th:text="${orden.estadoOrdenDeCompra.nombreEOC}"></td>
                     <td>
-                        <a th:href="@{/ordenDeCompra/(id=${orden.id})}" class="btn btn-info">Ver Orden de Compra</a>
+                        <a th:href="@{/ordenDeCompra/{id}(id=${orden.id})}" class="btn btn-primary">Ver Orden de Compra</a>
                     </td>
                 </tr>
             </tbody>

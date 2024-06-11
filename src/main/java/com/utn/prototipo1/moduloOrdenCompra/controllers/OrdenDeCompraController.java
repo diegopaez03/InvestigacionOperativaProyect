@@ -18,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -43,6 +41,27 @@ public class OrdenDeCompraController {
     private ArticuloService articuloService;
 
     //Métodos de front
+    @GetMapping("/{id}")
+    public String verOrdenDeCompra(@PathVariable("id") Long id, Model model) throws Exception {
+        OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);
+        
+        if (ordenDeCompra!= null) {
+            
+            float total = 0;
+            if (ordenDeCompra.getDetalleOrdenCompra()!= null) {
+                for (DetalleOrdenCompra detalle : ordenDeCompra.getDetalleOrdenCompra()) {
+                    total += detalle.getTotalDetalleOrdenCompra();
+                }
+            }
+            
+            model.addAttribute("totalOrden", total);
+            model.addAttribute("ordenDeCompra", ordenDeCompra);
+            return "moduloOrdenCompra/verOrdenDeCompra";
+        } else {
+            return "redirect:/ordenDeCompra/list";
+        }
+    }
+
     @GetMapping("/generar")
     public String formularioGenerarOC(Model model){
         model.addAttribute("ordenDeCompra", new OrdenDeCompraDTO());
@@ -93,4 +112,5 @@ public class OrdenDeCompraController {
             throw new RuntimeException(e);
         }
     }
+
 }
