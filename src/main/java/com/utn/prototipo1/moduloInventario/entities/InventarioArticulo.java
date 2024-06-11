@@ -6,9 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
-import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "inventarioArticulo")
@@ -20,15 +20,16 @@ import org.springframework.lang.NonNull;
 public class InventarioArticulo extends BaseEntidad {
 
 
-    @NotNull
+    @NonNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "idArticulo")
     private Articulo articulo;
 
     @NonNull
-    @ManyToOne
-    @JoinColumn(name = "CodInventario")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idInventario")
     private Inventario inventario;
+
 
   /* public double getLoteOptimo(){
         return LoteOptimo = Math.sqrt(2*cantidad*(CostoPedido/CostoAlamcenamiento));

@@ -12,11 +12,13 @@ import com.utn.prototipo1.moduloInventario.services.InventarioServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+@Controller
 
 public class InventarioController  {
 
@@ -32,7 +34,7 @@ public class InventarioController  {
         //Listar los inventarios que se crean
         @GetMapping("/maestroInventario")
         public String mostrarTodosloInventarios(Model model) {
-            model.addAttribute("inventario", inventarioServices.obtenerTodosLosInventarios());
+            model.addAttribute("inventario", inventarioServices.obtenerTodosLosInventario());
             return "MaestroInventario";
         }
 
@@ -50,7 +52,7 @@ public class InventarioController  {
         public String crearInventario(@ModelAttribute("inventario") Inventario inventario) {
             inventario.setFechaDesde(new Date()); // Asignar la fecha y hora actual
             for (InventarioArticulo inventarioArticulo : inventario.getInventarioArticulos()) {
-                inventarioArticulo.setInventario(inventario); // Establece la relación entre la factura y sus detalles
+                inventarioArticulo.setInventario(inventario);// Establece la relación entre la factura y sus detalles
             }
             inventarioServices.crearInventario(inventario);
             return "redirect:/maestroInventario";
@@ -68,7 +70,7 @@ public class InventarioController  {
 
         @GetMapping("/inventario/{InventarioId}/inventarioArticulo/nuevo")
         public String mostrarFormularioCrearInventarioArticulo(@PathVariable("InventarioId") Long InventarioId, Model model) {
-            Inventario inventario = inventarioServices.obtenerInventarioId(InventarioId);
+            Inventario inventario = inventarioServices.obtenerInventarioPorId(InventarioId);
             List<Articulo> articulos = articuloService.getAllArticulos();
             InventarioArticulo inventarioArticulo = new InventarioArticulo();
             inventarioArticulo.setInventario(inventario);
@@ -82,7 +84,7 @@ public class InventarioController  {
         public String crearinventarioArticulo(@PathVariable("InventarioId") Long InventarioId,
                                           @ModelAttribute("inventarioArticulo") InventarioArticulo inventarioArticulo,
                                           @RequestParam("articulo.id") Long articuloId) {
-            Inventario inventario = inventarioServices.obtenerInventarioId(InventarioId);
+            Inventario inventario = inventarioServices.obtenerInventarioPorId(InventarioId);
             Articulo articulo = articuloService.getArticuloById(articuloId);
             inventarioArticulo.setInventario(inventario);
             inventarioArticulo.setArticulo(articulo);
