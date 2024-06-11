@@ -46,7 +46,7 @@ public class ArticuloCategoriaController {
     }
 
     @GetMapping("/categorias/{id}")
-    public String eliminarCategoria(@PathVariable Long id) {
+    public String eliminarCategoria(@PathVariable("id") Long id) {
         articuloCategoriaService.deleteCategoria(id);
         return "redirect:/categorias";
     }
