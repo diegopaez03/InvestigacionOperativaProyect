@@ -19,8 +19,9 @@
         <tr>
             <th scope="col">Numero de factura</th>
             <th scope="col">Numero de detalle factura</th>
-            <th scope="col">Cantidad</th>
             <th scope="col">Articulo</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Precio de Venta</th>
             <th scope="col">Linea</th>
             <!--<th scope="col">Acciones</th>-->
        </tr>
@@ -29,8 +30,9 @@
        <tr th:each="detalles : ${detallesFactura}">
            <td th:text="${detalles.factura.id}"></td>
            <td th:text="${detalles.id}"></td>
-           <td th:text="${detalles.cantidad}"></td>
            <td th:text="${detalles.articulo.nombreArticulo}"></td>
+           <td th:text="${detalles.cantidad}"></td>
+           <td th:text="${detalles.articulo.precioVenta}"></td>
            <td th:text="${detalles.linea}"></td>
            <!--<td>
               <a th:href="@{/facturas/{facturaId}/detalles/eliminar/{detalleId}(facturaId=${facturaId}, detalleId=${detalles.id})}" class="btn btn-danger">Eliminar</a>
