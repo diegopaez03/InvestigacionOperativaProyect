@@ -50,7 +50,7 @@
         </thead>
         <tbody>
         <tr th:each="tipoModeloInventario : ${tiposModelosInventario}">
-            <td th:text="${tipoModeloInventario.nombreTMI}">Nombre</td>
+            <td th:text="${tipoModeloInventario.nombre}">Nombre</td>
             <td th:text="${tipoModeloInventario.fechaBajaTMI}">Fecha Baja</td>
             <td>
                 <a th:href="@{/tiposModelosInventario/{id}(id=${tipoModeloInventario.id})}" class="btn btn-danger btn-sm">Borrar</a>

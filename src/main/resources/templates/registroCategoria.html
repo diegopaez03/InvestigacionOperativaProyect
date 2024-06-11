@@ -6,28 +6,6 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
-    </ul>
-  </div>
-</nav>
 <br>
 <div class="container">
   <div class="row">
@@ -46,8 +24,8 @@
           </div>
           <div class="form-group">
             <label>Tipo Modelo Inventario: </label>
-            <select th:field="*{tipoModeloInventario}" class="form-control">
-              <option th:each="tmi : ${tiposModeloInventario}" th:value="${tmi.id}" th:text="${tmi.nombreTMI}">Tipo Modelo Inventario</option>
+            <select id="tipoModeloInventario" th:field="*{tipoModeloInventario}" class="form-control">
+              <option th:each="tipoModeloInventario : ${tiposModelosInventario}" th:value="${tipoModeloInventario.id}" th:text="${tipoModeloInventario.nombre}">Selecciona un tipo</option>
             </select>
           </div>
           <div class="box-footer">

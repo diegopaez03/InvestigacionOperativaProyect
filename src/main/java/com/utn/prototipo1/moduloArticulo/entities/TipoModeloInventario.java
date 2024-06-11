@@ -17,7 +17,7 @@ import java.util.Date;
 public class TipoModeloInventario extends BaseEntidad {
 
 
-    private String nombreTMI;
+    private String nombre;
     private String fechaBajaTMI;
 
 }

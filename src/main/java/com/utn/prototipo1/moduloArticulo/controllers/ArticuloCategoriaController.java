@@ -3,6 +3,7 @@ package com.utn.prototipo1.moduloArticulo.controllers;
 
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.entities.ArticuloCategoria;
+import com.utn.prototipo1.moduloArticulo.entities.TipoModeloInventario;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloCategoriaService;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloArticulo.services.TipoModeloInventarioService;
@@ -33,7 +34,8 @@ public class ArticuloCategoriaController {
     public String mostrarFormularioCrearCategoria(Model modelo) {
         ArticuloCategoria articuloCategoria = new ArticuloCategoria();
         modelo.addAttribute("categoria", articuloCategoria);
-        modelo.addAttribute("tiposModeloInventario", tipoModeloInventarioService.getAllTiposModelosInventario());
+        List<TipoModeloInventario> tiposModelosInventario = tipoModeloInventarioService.getAllTiposModelosInventario();
+        modelo.addAttribute("tiposModelosInventario", tiposModelosInventario);
         return "registroCategoria";
     }
 
