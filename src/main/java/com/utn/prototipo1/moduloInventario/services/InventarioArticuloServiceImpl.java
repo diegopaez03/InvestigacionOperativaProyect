@@ -37,6 +37,9 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
         inventarioArticulo.getLoteOptimo();
         inventarioArticulo.getPuntoPedido();
         inventarioArticulo.getStockSeguridad();
+        inventarioArticulo.getCGI();
+        inventarioArticulo.getCostoAlamcenamiento();
+        inventarioArticulo.getCostoPedido();
         return inventarioArticuloRepository.save(inventarioArticulo);
 
     }

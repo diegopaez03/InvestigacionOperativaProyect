@@ -41,8 +41,4 @@ public class InventarioServicesImpl implements InventarioServices{
         inventarioRepository.save(inventario);
     }
 
-    @Override
-    public void actualizarInventario(Long InventarioId) {
-        Inventario inventario = obtenerInventarioId(InventarioId);
     }
-}
