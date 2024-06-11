@@ -36,7 +36,7 @@ public class DetalleFactura extends BaseEntidad {
     }
 
     public void calcularLinea() {
-        this.linea = this.cantidad * this.articulo.getPrecio();
+        this.linea = this.cantidad * this.articulo.getPrecioVenta();
     }
 
 

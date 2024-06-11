@@ -22,7 +22,7 @@ public class Prototipo1Application {
 		SpringApplication.run(Prototipo1Application.class, args);
 		System.out.println("Estoy funcionando");
 	}
-	@Autowired
+	/*@Autowired
 	ArticuloRepository articuloRepository;
 	@Autowired
 	FacturaRepository facturaRepository;
@@ -36,26 +36,24 @@ public class Prototipo1Application {
 			Articulo articulo1 = Articulo.builder()
 					.nombreArticulo("Tornillo")
 					.precioCompra(600)
-					.precioVenta(900)
+					.precioVenta(10)
 					.build();
 
 			Articulo articulo2 = Articulo.builder()
 					.nombreArticulo("Clavo")
 					.precioCompra(400)
-					.precioVenta(600)
+					.precioVenta(20)
 					.build();
 
 			articuloRepository.save(articulo1);
 			articuloRepository.save(articulo2);
 
 
-			Factura factura1 = Factura.builder()
-					.nroFactura(15L)
+			/*-Factura factura1 = Factura.builder()
 					.fechaFactura(new Date())
 					.build();
 
 			Factura factura2 = Factura.builder()
-					.nroFactura(155L)
 					.fechaFactura(new Date())
 					.build();
 
@@ -67,11 +65,11 @@ public class Prototipo1Application {
 					.articulo(articulo1)
 					.factura(factura1)
 					.build();
-			detalleFacturaRepository.save(detalleFactura1);
+			detalleFacturaRepository.save(detalleFactura1);*/
 
 
 
-		};
+		//};
 
-	}
+	//}
 }

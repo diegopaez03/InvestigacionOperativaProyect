@@ -24,7 +24,7 @@ public class Articulo extends BaseEntidad {
 
     private float precioCompra;
 
-    private float precioVenta;
+    private int precioVenta;
 
     private String fechaBaja;
 
