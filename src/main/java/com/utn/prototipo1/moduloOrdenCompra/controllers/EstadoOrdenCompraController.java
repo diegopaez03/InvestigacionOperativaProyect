@@ -3,7 +3,6 @@ package com.utn.prototipo1.moduloOrdenCompra.controllers;
 import com.utn.prototipo1.moduloOrdenCompra.entities.EstadoOrdenDeCompra;
 import com.utn.prototipo1.moduloOrdenCompra.services.EstadoOrdenCompraService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,12 +26,12 @@ public class EstadoOrdenCompraController {
     }
 
     @GetMapping("/{id}")
-    public EstadoOrdenDeCompra getEstadoOrdenDeCompra(@PathVariable Long id){
+    public EstadoOrdenDeCompra getEstadoOrdenDeCompra(@PathVariable("id") Long id){
             return estadoOrdenCompraService.getEstadoOrdenDeCompraById(id);
         }
 
     @PutMapping("/{id}")
-    public EstadoOrdenDeCompra updateEstadoOrdenDeCompra(@PathVariable Long id, @RequestBody EstadoOrdenDeCompra estadoOrdenDeCompraRecibido){
+    public EstadoOrdenDeCompra updateEstadoOrdenDeCompra(@PathVariable("id") Long id, @RequestBody EstadoOrdenDeCompra estadoOrdenDeCompraRecibido){
         EstadoOrdenDeCompra estadoOrdenDeCompra = estadoOrdenCompraService.getEstadoOrdenDeCompraById(id);
 
         estadoOrdenDeCompra.setFechaBaja(estadoOrdenDeCompraRecibido.getFechaBaja());
@@ -42,7 +41,7 @@ public class EstadoOrdenCompraController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteEstadoOrdenDeCompra(@PathVariable Long id){
+    public String deleteEstadoOrdenDeCompra(@PathVariable("id") Long id){
         var eoc = estadoOrdenCompraService.getEstadoOrdenDeCompraById(id);
         estadoOrdenCompraService.deleteEstadoOrdenCompra(eoc);
         return ("Objeto eliminado, id: " + id);

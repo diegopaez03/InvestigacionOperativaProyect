@@ -18,7 +18,6 @@ import java.util.List;
 @Controller
 public class FacturaController {
 
-
     @Autowired
     private FacturaService facturaService;
 

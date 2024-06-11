@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2024-06-09 18:24:31.853357-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Columna "PRECIO_COMPRA" no encontrada
 Column "PRECIO_COMPRA" not found; SQL statement:
@@ -682,3 +683,9 @@ insert into articulo (cod_categoria,fecha_baja,nombre_articulo,precio_compra,pre
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
 	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+=======
+2024-06-06 18:01:23.232378-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * WHERE ID_ORDEN_DE_COMPRA = 33 [*]FROM DETALLE_ORDEN_COMPRA"
+Syntax error in SQL statement "SELECT * WHERE ID_ORDEN_DE_COMPRA = 33 [*]FROM DETALLE_ORDEN_COMPRA"; SQL statement:
+SELECT * WHERE ID_ORDEN_DE_COMPRA = 33 FROM DETALLE_ORDEN_COMPRA [42000-224]
+>>>>>>> diego
