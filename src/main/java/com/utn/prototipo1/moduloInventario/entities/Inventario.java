@@ -25,7 +25,6 @@ public class Inventario extends BaseEntidad {
     private Date fechaHasta;
 
     private int codInventario;
-    private int cantidad;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)  //Sirve que cuando eliminemos un inventario se borre todos los inventariosarticulos
     @JoinColumn(name = "CodArticulo")

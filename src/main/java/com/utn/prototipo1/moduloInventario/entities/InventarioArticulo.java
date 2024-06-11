@@ -7,6 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.hibernate.annotations.NotFound;
 import org.springframework.lang.NonNull;
 
 @Entity
@@ -18,15 +19,8 @@ import org.springframework.lang.NonNull;
 @Builder
 public class InventarioArticulo extends BaseEntidad {
 
-    private double puntoPedido;
-    private double LoteOptimo;
-    private double stockSeguridad;
-    private double CGI;
-    private int cantidad;
-    private int CostoAlamcenamiento;
-    private int CostoPedido;
 
-    @NonNull
+    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "idArticulo")
     private Articulo articulo;
