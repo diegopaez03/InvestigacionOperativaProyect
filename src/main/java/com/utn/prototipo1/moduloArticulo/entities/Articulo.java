@@ -38,4 +38,8 @@ public class Articulo extends BaseEntidad {
     @JoinColumn(name = "codCategoria")
     private ArticuloCategoria articuloCategoria;
 
+    @ManyToOne()
+    @JoinColumn(name = "codArticuloInventario")
+    private InventarioArticulo inventarioArticulo;
+
 }

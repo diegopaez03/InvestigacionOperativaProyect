@@ -24,13 +24,11 @@ public class Inventario extends BaseEntidad {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHasta;
 
-    private int codInventario;
-    private int cantidad;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)  //Sirve que cuando eliminemos un inventario se borre todos los inventariosarticulos
-    @JoinColumn(name = "CodArticulo")
-
+    @JoinColumn(name = "idInventario")
     @Builder.Default
+
     private List<InventarioArticulo> inventarioArticulos = new ArrayList<>();
 
     public void agregarInventarioArticulo(InventarioArticulo inventarioArticulo){

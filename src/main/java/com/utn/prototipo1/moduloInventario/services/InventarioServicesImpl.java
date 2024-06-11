@@ -25,14 +25,13 @@ public class InventarioServicesImpl implements InventarioServices{
         inventarioRepository.deleteById(id);
         return null;
     }
-
     @Override
-    public Inventario obtenerInventarioId(Long id) {
+    public Inventario obtenerInventarioPorId(Long id) {
         return inventarioRepository.findById(id).orElse(null);
     }
 
     @Override
-    public List<Inventario> obtenerTodosLosInventarios() {
+    public List<Inventario> obtenerTodosLosInventario() {
         return inventarioRepository.findAll();
     }
 
@@ -41,4 +40,4 @@ public class InventarioServicesImpl implements InventarioServices{
         inventarioRepository.save(inventario);
     }
 
-    }
+}

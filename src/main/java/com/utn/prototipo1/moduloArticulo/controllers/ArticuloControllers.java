@@ -22,7 +22,7 @@ public class ArticuloControllers {
 
     @GetMapping()
     public List<Articulo> getAllArticulos(){
-        return articuloService.getArticulo();
+        return articuloService.getAllArticulos();
     }
 
     @PostMapping()
@@ -49,7 +49,7 @@ public class ArticuloControllers {
     @DeleteMapping("/{id}")
     public String deleteArticulo(@PathVariable Long id){
         var articulo = articuloService.getArticuloById(id);
-        articuloService.deleteArticulo(articulo);
+        articuloService.deleteArticulo(articulo.getId());
         return ("Objeto eliminado, id: " + id);
     }
 }
