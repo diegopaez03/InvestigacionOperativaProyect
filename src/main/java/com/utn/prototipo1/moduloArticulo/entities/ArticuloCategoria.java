@@ -18,10 +18,7 @@ public class ArticuloCategoria extends BaseEntidad {
 
 
     private String nombreCategoria;
-
-    @Column(name = "fecha_baja")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaBaja;
+    private String fechaBaja;
 
     @NotNull
     @ManyToOne()

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Artículo</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Registrar Artículo</h1>
+        </div>
+    </div>
+    <br>
+    <form th:action="@{/articulos}" th:object="${articulo}" method="post">
+        <div class="form-group">
+            <label for="nombreArticulo">Nombre</label>
+            <input type="text" id="nombreArticulo" th:field="*{nombreArticulo}" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="precioCompra">Precio Compra</label>
+            <input type="text" id="precioCompra" th:field="*{precioCompra}" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="precioVenta">Precio Venta</label>
+            <input type="text" id="precioVenta" th:field="*{precioVenta}" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="fechaBaja">Fecha Baja</label>
+            <input type="date" id="fechaBaja" th:field="*{fechaBaja}" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="articuloCategoria">Categoría</label>
+            <select id="articuloCategoria" th:field="*{articuloCategoria}" class="form-control">
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombreCategoria}">Categoría</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+

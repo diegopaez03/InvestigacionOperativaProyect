@@ -6,12 +6,13 @@ import java.util.List;
 
 public interface IArticuloService {
 
-    public List<Articulo> getArticulo();
-
-    public Articulo getArticuloById(Long id);
+    public List<Articulo> getAllArticulos();
 
     public Articulo saveArticulo(Articulo articulo);
 
-    public void deleteArticulo(Articulo articulo);
+    public Articulo getArticuloById(Long id);
+
+    public void deleteArticulo(Long id);
+
 
 }

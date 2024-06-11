@@ -32,7 +32,7 @@ public class DetalleFactura extends BaseEntidad {
     private Factura factura;
 
     public double getLinea() {
-        return cantidad * articulo.getPrecio();
+        return cantidad * articulo.getPrecioVenta();
     }
 
     public void calcularLinea() {

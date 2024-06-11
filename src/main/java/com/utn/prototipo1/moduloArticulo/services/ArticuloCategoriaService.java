@@ -15,23 +15,22 @@ public class ArticuloCategoriaService implements IArticuloCategoria {
     private ArticuloCategoriaRepository articuloCategoriaRepository;
 
     @Override
-    public List<ArticuloCategoria> getArticuloCategoria() {
+    public List<ArticuloCategoria> getAllCategorias() {
         return articuloCategoriaRepository.findAll();
     }
 
     @Override
-    public ArticuloCategoria getArticuloCategoriaById(Long id) {
-        ArticuloCategoria articuloCategoria = articuloCategoriaRepository.findById(id).orElse(null);
-        return articuloCategoria;
-    }
-
-    @Override
-    public ArticuloCategoria saveArticuloCategoria(ArticuloCategoria articuloCategoria) {
+    public ArticuloCategoria saveCategoria(ArticuloCategoria articuloCategoria) {
         return articuloCategoriaRepository.save(articuloCategoria);
     }
 
     @Override
-    public void deleteArticuloCategoria(ArticuloCategoria articuloCategoria) {
-        articuloCategoriaRepository.delete(articuloCategoria);
+    public ArticuloCategoria getCategoriaById(Long id) {
+        return articuloCategoriaRepository.findById(id).get();
+    }
+
+    @Override
+    public void deleteCategoria(Long id) {
+        articuloCategoriaRepository.deleteById(id);
     }
 }
