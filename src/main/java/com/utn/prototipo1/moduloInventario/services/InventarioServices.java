@@ -2,6 +2,15 @@ package com.utn.prototipo1.moduloInventario.services;
 
 import com.utn.prototipo1.Base.services.BaseServices;
 import com.utn.prototipo1.moduloInventario.entities.Inventario;
+import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
 
-public interface InventarioServices extends BaseServices<Inventario, Long> {
+import java.util.List;
+
+public interface InventarioServices  {
+
+    List<Inventario> obtenerTodosLosInventarios();
+    void crearInventario(Inventario inventario);
+    public Inventario deleteInventario(Long id);
+    Inventario obtenerInventarioId(Long id);
+    void actualizarInventario(Long InventarioId);
 }

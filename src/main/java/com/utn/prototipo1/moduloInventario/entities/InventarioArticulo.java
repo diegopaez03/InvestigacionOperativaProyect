@@ -22,9 +22,17 @@ public class InventarioArticulo extends BaseEntidad {
     private int puntoPedido;
     private int LoteOptimo;
     private int stockSeguridad;
+    private int totalLinea;
 
     @NonNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "idArticulo")
     private Articulo articulo;
+
+    @NonNull
+    @ManyToOne
+    @JoinColumn(name = "CodInventario")
+    private Inventario inventario;
+
+
 }
