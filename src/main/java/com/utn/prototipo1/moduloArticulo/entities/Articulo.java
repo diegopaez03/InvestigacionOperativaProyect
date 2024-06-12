@@ -33,8 +33,8 @@ public class Articulo extends BaseEntidad {
     private Date fechaBaja;
 
 
-    @NonNull
-    @ManyToOne(optional = false)
+    @NotNull
+    @ManyToOne()
     @JoinColumn(name = "codCategoria")
     private ArticuloCategoria articuloCategoria;
 
