@@ -7,12 +7,13 @@ import com.utn.prototipo1.moduloInventario.services.InventarioArticuloService;
 import com.utn.prototipo1.moduloInventario.services.InventarioArticuloServiceImpl;
 import com.utn.prototipo1.moduloInventario.services.InventarioServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "*")
+@RequestMapping(path = "inventarioarticulo")
 
 public class InventarioArticuloController {
     @Autowired

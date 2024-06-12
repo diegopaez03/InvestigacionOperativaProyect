@@ -12,14 +12,11 @@ import com.utn.prototipo1.moduloInventario.services.InventarioServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-
-@Controller
 
 public class InventarioController  {
 
@@ -33,46 +30,46 @@ public class InventarioController  {
         private InventarioArticuloService inventarioArticuloService;
 
         //Listar los inventarios que se crean
-        @GetMapping("/maestroinventario")
-        public String mostrarTodosLosInventarios(Model model) {
-            model.addAttribute("inventarios", inventarioServices.obtenerTodosLosInventario());
+        @GetMapping("/maestroInventario")
+        public String mostrarTodosloInventarios(Model model) {
+            model.addAttribute("inventario", inventarioServices.obtenerTodosLosInventarios());
             return "MaestroInventario";
         }
 
-        @GetMapping("/maestroinventario/nuevo")
+        @GetMapping("/maestroInventario/nuevo")
         public String mostrarFormularioCrearInventario(Model model) {
             Inventario inventario = new Inventario();
             inventario.getInventarioArticulos().add(new InventarioArticulo()); // Agrega un detalle de factura por defecto
             model.addAttribute("inventario", inventario);
-            model.addAttribute("articulos", articuloService.getAllArticulos());
+            model.addAttribute("articulos", articuloService.getArticulo());
             return "crear-inventario";
         }
 
 
-        @PostMapping("/inventarios")
-        public String crearInventario(@ModelAttribute("inventario") Inventario inventario) {
+        @PostMapping("/inventario")
+        public String crearInventario(@ModelAttribute("invetario") Inventario inventario) {
             inventario.setFechaDesde(new Date()); // Asignar la fecha y hora actual
             for (InventarioArticulo inventarioArticulo : inventario.getInventarioArticulos()) {
-                inventarioArticulo.setInventario(inventario);// Establece la relación entre la factura y sus detalles
+                inventarioArticulo.setInventario(inventario); // Establece la relación entre la factura y sus detalles
             }
             inventarioServices.crearInventario(inventario);
-            return "redirect:/maestroinventario";
+            return "redirect:/maestroInventario";
         }
 
         //borrar el inventario
-        @GetMapping("/maestroinventario/{id}")
+        @GetMapping("/maestoInventario/{id}")
         public String eliminarInventario(@PathVariable Long id){
             inventarioServices.deleteInventario(id);
-            return "redirect:/maestroinventario";
+            return "redirect:/maestroInventario";
         }
 
 
         //DETALLE FACTURA ------------------------------
 
-        @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/nuevo")
-        public String mostrarFormularioCrearInventarioArticulo(@PathVariable("inventarioId") Long InventarioId, Model model) {
-            Inventario inventario = inventarioServices.obtenerInventarioPorId(InventarioId);
-            List<Articulo> articulos = articuloService.getAllArticulos();
+        @GetMapping("/inventario/{InventarioId}/inventarioArticulo/nuevo")
+        public String mostrarFormularioCrearInventarioArticulo(@PathVariable("InventarioId") Long InventarioId, Model model) {
+            Inventario inventario = inventarioServices.obtenerInventarioId(InventarioId);
+            List<Articulo> articulos = articuloService.getArticulo();
             InventarioArticulo inventarioArticulo = new InventarioArticulo();
             inventarioArticulo.setInventario(inventario);
             model.addAttribute("inventarioArticulo", inventarioArticulo);
@@ -81,24 +78,26 @@ public class InventarioController  {
             return "crear-inventario-articulo";
         }
 
-        @PostMapping("/inventario/{inventarioId}/inventarioArticulos")
-        public String crearinventarioArticulo(@PathVariable("inventarioId") Long InventarioId,
+        @PostMapping("/inventario/{InventarioId}/inventarioArticulo")
+        public String crearinventarioArticulo(@PathVariable("InventarioId") Long InventarioId,
                                           @ModelAttribute("inventarioArticulo") InventarioArticulo inventarioArticulo,
                                           @RequestParam("articulo.id") Long articuloId) {
-            Inventario inventario = inventarioServices.obtenerInventarioPorId(InventarioId);
+            Inventario inventario = inventarioServices.obtenerInventarioId(InventarioId);
             Articulo articulo = articuloService.getArticuloById(articuloId);
             inventarioArticulo.setInventario(inventario);
             inventarioArticulo.setArticulo(articulo);
+            inventarioArticulo.calcularLoteOptimo();
+            inventarioArticulo.cacularCGI();
             inventarioArticuloService.save(inventarioArticulo);
-            return "redirect:/maestroinventario";
+            return "redirect:/maestroInventario" ;
         }
 
 
-        @GetMapping("/inventarios/{inventarioId}/inventarioArticulos")
+        @GetMapping("/inventario/{InventarioId}/inventarioArticulo")
         public String verInventarioArticulo(@PathVariable Long InventarioId, Model model) {
             List<InventarioArticulo> inventarioArticulos = inventarioArticuloService.obtenerInventarioArticulos(InventarioId);
             model.addAttribute("inventarioArticulo", inventarioArticulos);
-            return "MaestroInventarioArticulo";
+            return "InventarioArticulo";
         }
 
     }

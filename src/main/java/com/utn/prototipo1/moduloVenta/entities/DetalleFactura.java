@@ -26,16 +26,17 @@ public class DetalleFactura extends BaseEntidad {
     @JoinColumn(name = "codArticulo")
     private Articulo articulo;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "nrofactura")
     private Factura factura;
 
     public double getLinea() {
-        return cantidad * articulo.getPrecio();
+        return cantidad * articulo.getPrecioVenta();
     }
 
     public void calcularLinea() {
-        this.linea = this.cantidad * this.articulo.getPrecio();
+        this.linea = this.cantidad * this.articulo.getPrecioVenta();
     }
 
 
