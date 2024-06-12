@@ -6,8 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
-import org.springframework.lang.NonNull;
+import org.hibernate.annotations.NotFound;
 
 @Entity
 @Table(name = "inventarioArticulo")
@@ -19,34 +20,19 @@ import org.springframework.lang.NonNull;
 public class InventarioArticulo extends BaseEntidad {
 
     private double puntoPedido;
-    private double LoteOptimo;
     private double stockSeguridad;
-    private double CGI;
-    private int cantidad;
-    private int CostoAlamcenamiento;
-    private int CostoPedido;
 
-    @NotNull
+
+    @NonNull
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idArticulo")
+    @JoinColumn(name = "codArticulo")
     private Articulo articulo;
 
     @NonNull
-    @ManyToOne
-    @JoinColumn(name = "CodInventario")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "codInventario")
     private Inventario inventario;
 
-    public double getLoteOptimo(){
-        return LoteOptimo = Math.sqrt(2*cantidad*(CostoPedido/CostoAlamcenamiento));
-    }
-    public double getCGI(){
-        return CGI = (articulo.getPrecio()*cantidad) + (CostoAlamcenamiento*(LoteOptimo/2))+ (CostoPedido*(cantidad/LoteOptimo));
-    }
 
-    public void calcularLoteOptimo(){
-        this.LoteOptimo = Math.sqrt(2*this.cantidad*(this.CostoPedido/this.CostoAlamcenamiento));
-    }
-    public void cacularCGI(){
-        this.CGI = (this.articulo.getPrecio()*this.cantidad) + (this.CostoAlamcenamiento*(this.LoteOptimo/2))+ (this.CostoPedido*(this.cantidad/this.LoteOptimo));
-    }
+
 }

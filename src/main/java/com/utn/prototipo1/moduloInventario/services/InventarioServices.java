@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface InventarioServices  {
 
-    List<Inventario> obtenerTodosLosInventarios();
+    List<Inventario> obtenerTodosLosInventario();
     void crearInventario(Inventario inventario);
     public Inventario deleteInventario(Long id);
-    Inventario obtenerInventarioId(Long id);
+    Inventario obtenerInventarioPorId(Long id);
 }
