@@ -44,7 +44,7 @@
                         <select id="idArticulo" class="form-control" onchange="actualizarPrecio()">
                             <option value="">--Seleccione un artículo--</option>
                             <option th:each="articulo : ${articulos}" th:value="${articulo.id}"
-                                    th:data-precio="${'$ ' + articulo.precioCompra}"
+                                    th:data-precio="${'$ ' + articulo.precio}"
                                     th:text="${articulo.nombreArticulo}">Artículo</option>
                         </select>
                     </div>
