@@ -61,7 +61,7 @@ public class InventarioController  {
 
         //borrar el inventario
         @GetMapping("/maestroinventario/{id}")
-        public String eliminarInventario(@PathVariable Long id){
+        public String eliminarInventario(@PathVariable("id") Long id){
             inventarioServices.deleteInventario(id);
             return "redirect:/maestroinventario";
         }
@@ -95,7 +95,7 @@ public class InventarioController  {
 
 
         @GetMapping("/inventarios/{inventarioId}/inventarioArticulos")
-        public String verInventarioArticulo(@PathVariable Long InventarioId, Model model) {
+        public String verInventarioArticulo(@PathVariable("inventarioId") Long InventarioId, Model model) {
             List<InventarioArticulo> inventarioArticulos = inventarioArticuloService.obtenerInventarioArticulos(InventarioId);
             model.addAttribute("inventarioArticulo", inventarioArticulos);
             return "MaestroInventarioArticulo";

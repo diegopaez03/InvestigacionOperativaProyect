@@ -57,7 +57,7 @@ public class FacturaController {
 
     //borrar la factura
     @GetMapping("/maestrofactura/{id}")
-    public String eliminarFactura(@PathVariable Long id){
+    public String eliminarFactura(@PathVariable("id") Long id){
         facturaService.deleteFactura(id);
         return "redirect:/maestrofactura";
     }
@@ -93,7 +93,7 @@ public class FacturaController {
 
 
     @GetMapping("/facturas/{facturaId}/detalles")
-    public String verDetallesFactura(@PathVariable Long facturaId, Model model) {
+    public String verDetallesFactura(@PathVariable("facturaId") Long facturaId, Model model) {
         List<DetalleFactura> detallesFactura = detalleFacturaService.obtenerDetallesPorFactura(facturaId);
         model.addAttribute("detallesFactura", detallesFactura);
         return "MaestroDetalleFactura";

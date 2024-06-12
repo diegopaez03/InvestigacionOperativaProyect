@@ -33,7 +33,7 @@ public class TipoModeloInventarioController {
     }
 
     @GetMapping("/tiposModelosInventario/{id}")
-    public String eliminarTipoModeloInventario(@PathVariable Long id) {
+    public String eliminarTipoModeloInventario(@PathVariable("id") Long id) {
         tipoModeloInventarioService.deleteTipoModeloInventario(id);
         return "redirect:/tiposModelosInventario";
     }

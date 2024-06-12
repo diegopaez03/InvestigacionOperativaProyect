@@ -32,7 +32,7 @@
             <td>
                 <a th:href="@{/inventarios/{inventarioId}/inventarioArticulos/nuevo(inventarioId=${inventario.id})}" class="btn btn-primary">Agregar InventarioArticulo</a>
                 <a th:href="@{inventarios/{inventarioId}/inventarioArticulos(inventarioId=${inventario.id})}" class="btn btn-warning">Ver InventarioArticulo</a>
-                <a th:href="@{/maestroarticulo/{id}(id=${inventario.id})}" class="btn btn-danger">Eliminar</a>
+                <a th:href="@{/maestroinventario/{id}(id=${inventario.id})}" class="btn btn-danger">Eliminar</a>
             </td>
         </tr>
 
@@ -43,4 +43,3 @@
 </div>
 </body>
 </html>
-
