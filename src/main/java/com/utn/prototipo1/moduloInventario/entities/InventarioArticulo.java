@@ -23,7 +23,7 @@ public class InventarioArticulo extends BaseEntidad {
     private double stockSeguridad;
 
 
-    @NonNull
+    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "codArticulo")
     private Articulo articulo;

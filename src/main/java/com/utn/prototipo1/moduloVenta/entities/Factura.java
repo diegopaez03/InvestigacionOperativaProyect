@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@Data
 @Builder
 public class Factura extends BaseEntidad {
 

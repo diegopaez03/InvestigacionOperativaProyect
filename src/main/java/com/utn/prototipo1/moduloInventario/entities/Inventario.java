@@ -30,7 +30,6 @@ public class Inventario extends BaseEntidad {
     @Builder.Default
 
     private List<InventarioArticulo> inventarioArticulos = new ArrayList<>();
-
     public void agregarInventarioArticulo(InventarioArticulo inventarioArticulo){
         this.inventarioArticulos.add(inventarioArticulo);
         inventarioArticulo.setInventario(this);
