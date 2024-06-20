@@ -15,7 +15,6 @@ import java.util.Date;
 @Builder
 public class ArticuloCategoria extends BaseEntidad {
 
-    private int codCategoria;
     private String nombreCategoria;
     private String fechaBaja;
 

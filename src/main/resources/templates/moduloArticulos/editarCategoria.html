@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Categoria</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        padding-top: 20px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+
+    .box-footer {
+        margin-top: 20px;
+    }
+
+    button[type="submit"] {
+        padding: 10px 30px;
+        background-color: #28a745;
+        border: none;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #218838;
+    }
+  </style>
+</head>
+
+<body>
+<br>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-6 col-sm-6">
+      <div class="card">
+        <h1 class="text-center">Editar Categoria</h1>
+        <div class="card-body">
+          <form th:action="@{/categorias/{id}(id=${categoria.id})}" th:object="${categoria}" method="POST">
+            <div class="form-group">
+              <label for="nombreCategoria">Nombre: </label>
+              <input type="text" id="nombreCategoria" th:field="*{nombreCategoria}" class="form-control" placeholder="Digite el nombre de la categoría">
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="fechaBaja">Fecha Baja: </label>
+              <input type="date" id="fechaBaja" th:field="*{fechaBaja}" class="form-control" placeholder="Digite la fecha de baja de la categoría">
+            </div>
+            <div class="form-group">
+              <label for="tipoModeloInventario">Tipo Modelo Inventario: </label>
+              <select id="tipoModeloInventario" th:field="*{tipoModeloInventario}" class="form-control">
+                <option th:each="tipoModeloInventario : ${tiposModelosInventario}" th:value="${tipoModeloInventario.id}" th:text="${tipoModeloInventario.nombre}">Selecciona un tipo</option>
+              </select>
+            </div>
+            <div class="box-footer text-center">
+              <button type="submit" class="btn btn-success">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+
+

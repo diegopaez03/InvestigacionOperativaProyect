@@ -27,7 +27,7 @@ public class ArticuloCategoriaController {
     @GetMapping("/categorias")
     public String listarCategorias(Model modelo) {
         modelo.addAttribute("categorias", articuloCategoriaService.getAllCategorias());
-        return "categorias";
+        return "moduloArticulos/categorias";
     }
 
     @GetMapping("/categorias/nuevo")
@@ -36,7 +36,7 @@ public class ArticuloCategoriaController {
         modelo.addAttribute("categoria", articuloCategoria);
         List<TipoModeloInventario> tiposModelosInventario = tipoModeloInventarioService.getAllTiposModelosInventario();
         modelo.addAttribute("tiposModelosInventario", tiposModelosInventario);
-        return "registroCategoria";
+        return "moduloArticulos/registroCategoria";
     }
 
     @PostMapping("/categorias")
@@ -48,6 +48,26 @@ public class ArticuloCategoriaController {
     @GetMapping("/categorias/{id}")
     public String eliminarCategoria(@PathVariable("id") Long id) {
         articuloCategoriaService.deleteCategoria(id);
+        return "redirect:/categorias";
+    }
+
+    @GetMapping("/categorias/editar/{id}")
+    public String mostrarFormularioEditarCategoria(@PathVariable Long id, Model modelo){
+        modelo.addAttribute("categoria",articuloCategoriaService.getCategoriaById(id));
+        List<TipoModeloInventario> tiposModelosInventario = tipoModeloInventarioService.getAllTiposModelosInventario();
+        modelo.addAttribute("tiposModelosInventario", tiposModelosInventario);
+        return "moduloArticulos/editarCategoria";
+    }
+
+    @PostMapping("categorias/{id}")
+    public String editarCategoria(@PathVariable Long id, @ModelAttribute("categoria") ArticuloCategoria articuloCategoria, Model modelo){
+        ArticuloCategoria categoria1 = articuloCategoriaService.getCategoriaById(id);
+        categoria1.setId(id);
+        categoria1.setNombreCategoria(articuloCategoria.getNombreCategoria());
+        categoria1.setFechaBaja(articuloCategoria.getFechaBaja());
+        categoria1.setTipoModeloInventario(articuloCategoria.getTipoModeloInventario());
+
+        articuloCategoriaService.saveCategoria(categoria1);
         return "redirect:/categorias";
     }
 

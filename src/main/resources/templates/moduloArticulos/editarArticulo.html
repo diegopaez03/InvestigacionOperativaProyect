@@ -2,18 +2,65 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Artículo</title>
+    <title>Editar Artículo</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="col">
-            <h1>Registrar Artículo</h1>
+            <h1>Editar Artículo</h1>
         </div>
     </div>
     <br>
-    <form th:action="@{/articulos}" th:object="${articulo}" method="post">
+    <form th:action="@{/articulos/{id}(id=${articulo.id})}" th:object="${articulo}" method="post">
         <div class="form-group">
             <label for="nombreArticulo">Nombre</label>
             <input type="text" id="nombreArticulo" th:field="*{nombreArticulo}" class="form-control" />
@@ -33,7 +80,7 @@
         <div class="form-group">
             <label for="articuloCategoria">Categoría</label>
             <select id="articuloCategoria" th:field="*{articuloCategoria}" class="form-control">
-                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombreCategoria}">Categoría</option>
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nombreCategoria}"></option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -44,4 +91,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+
 

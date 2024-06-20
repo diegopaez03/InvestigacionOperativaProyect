@@ -1,14 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Lista de Artículos</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+    </style>
 </head>
+
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="#">Lista de Artículos</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -28,20 +61,17 @@
         </ul>
     </div>
 </nav>
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h1>Lista de Artículos</h1>
-        </div>
-    </div>
-    <br>
-    <div class="row">
+
+<div class="container mt-4">
+    <h1 class="mb-4">Lista de Artículos</h1>
+    <div class="row mb-3">
         <div class="col-lg-3">
-            <a th:href="@{/articulos/nuevo}" class="btn btn-primary btn-sm mb-3">Agregar Artículo</a>
+            <a th:href="@{/articulos/nuevo}" class="btn btn-primary btn-sm">Agregar Artículo</a>
         </div>
     </div>
+
     <table class="table">
-        <thead>
+        <thead class="thead-dark">
         <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Precio Compra</th>
@@ -57,19 +87,25 @@
             <td th:text="${articulo.precioCompra}">Precio Compra</td>
             <td th:text="${articulo.precioVenta}">Precio Venta</td>
             <td th:text="${articulo.fechaBaja}">Fecha Baja</td>
-            <td th:text="${articulo.articuloCategoria?.nombreCategoria ?: 'Sin Categoría'}">Categoría</td> <!-- Manejo de nulos -->
+            <td th:text="${articulo.articuloCategoria?.nombreCategoria ?: 'Sin Categoría'}">Categoría</td>
             <td>
-                <a th:href="@{/articulos/{id}(id=${articulo.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                <a th:href="@{/articulos/editar/{id}(id=${articulo.id})}"
+                   class="btn btn-info btn-sm mr-2">Editar</a>
+                <a th:href="@{/articulos/{id}(id=${articulo.id})}"
+                   class="btn btn-danger btn-sm">Borrar</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
+
 
 
 

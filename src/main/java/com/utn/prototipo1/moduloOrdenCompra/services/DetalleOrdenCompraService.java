@@ -27,7 +27,7 @@ public class DetalleOrdenCompraService extends BaseServicesImpl<DetalleOrdenComp
     public DetalleOrdenCompra generarDetalle(float cantidad, long idArticulo) {
         Articulo articulo = articuloRepository.findById(idArticulo).orElseThrow(() -> new EntityNotFoundException("Articulo not found"));
 
-        float precio = articulo.getPrecio();
+        float precio = articulo.getPrecioVenta();
         float total = cantidad*precio;
 
         DetalleOrdenCompra detalleOrdenCompra = new DetalleOrdenCompra();

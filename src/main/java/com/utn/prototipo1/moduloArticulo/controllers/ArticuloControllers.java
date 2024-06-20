@@ -25,7 +25,7 @@ public class ArticuloControllers {
     @GetMapping("/articulos")
     public String listarArticulos(Model modelo) {
         modelo.addAttribute("articulos", articuloService.getAllArticulos());
-        return "articulos";
+        return "moduloArticulos/articulos";
     }
 
     @GetMapping("/articulos/nuevo")
@@ -33,7 +33,7 @@ public class ArticuloControllers {
         Articulo articulo = new Articulo();
         modelo.addAttribute("articulo", articulo);
         modelo.addAttribute("categorias", articuloCategoriaService.getAllCategorias());
-        return "registroArticulo";
+        return "moduloArticulos/registroArticulo";
     }
 
     @PostMapping("/articulos")
@@ -48,6 +48,26 @@ public class ArticuloControllers {
         return "redirect:/articulos";
     }
 
+    @GetMapping("/articulos/editar/{id}")
+    public String mostrarFormularioEditarArticulo(@PathVariable Long id, Model modelo){
+        modelo.addAttribute("articulo",articuloService.getArticuloById(id));
+        modelo.addAttribute("categorias", articuloCategoriaService.getAllCategorias());
+        return "moduloArticulos/editarArticulo";
+    }
+
+    @PostMapping("articulos/{id}")
+    public String editarArticulo(@PathVariable Long id, @ModelAttribute("articulo") Articulo articulo, Model modelo){
+        Articulo articulo1 = articuloService.getArticuloById(id);
+        articulo1.setId(id);
+        articulo1.setNombreArticulo(articulo.getNombreArticulo());
+        articulo1.setFechaBaja(articulo.getFechaBaja());
+        articulo1.setPrecioCompra(articulo.getPrecioCompra());
+        articulo1.setPrecioVenta(articulo.getPrecioVenta());
+        articulo1.setArticuloCategoria(articulo.getArticuloCategoria());
+
+        articuloService.saveArticulo(articulo1);
+        return "redirect:/articulos";
+    }
 
 }
 
