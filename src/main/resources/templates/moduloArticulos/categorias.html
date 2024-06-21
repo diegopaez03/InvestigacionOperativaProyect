@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Lista de Categorías</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+    <!--<style>
         body {
             padding-top: 20px;
             font-family: Arial, sans-serif;
@@ -34,11 +34,11 @@
             background-color: #c82333;
             border-color: #bd2130;
         }
-    </style>
+    </style>-->
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Lista de Categorías</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,15 +60,19 @@
             </li>
         </ul>
     </div>
-</nav>
+</nav>-->
 
-<div class="container mt-4">
-    <h1 class="mb-4">Lista de Categorías</h1>
-    <div class="row mb-3">
-        <div class="col-lg-3">
-            <a th:href="@{/categorias/nuevo}" class="btn btn-primary btn-sm">Agregar Categoría</a>
+<div class="container">
+    <h1 class="mt-1">Lista de Categorias</h1>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <a th:href="@{/categorias/nuevo}" class="btn btn-primary">Agregar Categorias</a>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <a href="/" class="btn btn-success">Volver al Home</a>
         </div>
     </div>
+    <br>
 
     <table class="table">
         <thead class="thead-dark">
