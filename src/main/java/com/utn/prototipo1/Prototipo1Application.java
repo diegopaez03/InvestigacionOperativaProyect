@@ -3,11 +3,17 @@ package com.utn.prototipo1;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.entities.ArticuloCategoria;
 import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
+import com.utn.prototipo1.moduloVenta.entities.Factura;
+import com.utn.prototipo1.moduloVenta.repositories.FacturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 @SpringBootApplication
 public class Prototipo1Application {
@@ -18,93 +24,49 @@ public class Prototipo1Application {
 		System.out.println("Estoy funcionando");
 	}
 
-	@Bean
-	CommandLineRunner init(ArticuloRepository articuloRepository) {
+	/*@Bean
+	CommandLineRunner init(FacturaRepository facturaRepository) {
 		return args -> {
 
-		Articulo articulo1 = Articulo.builder()
-				.nombreArticulo("Televisor LED 55 pulgadas")
-				.precioCompra(550)
-				.precioVenta(900)
-				.fechaBaja(null)
-				.build();
+			Date fechaFactura1 = new GregorianCalendar(2024, Calendar.JANUARY, 19).getTime();
+			Date fechaFactura4 = new GregorianCalendar(2024, Calendar.FEBRUARY, 22).getTime();
+			Date fechaFactura3 = new GregorianCalendar(2023, Calendar.DECEMBER, 15).getTime();
+			Date fechaFactura5 = new GregorianCalendar(2023, Calendar.MARCH, 10).getTime();
+			Date fechaFactura7 = new GregorianCalendar(2023, Calendar.AUGUST, 20).getTime();
+			Date fechaFactura8 = new GregorianCalendar(2020, Calendar.DECEMBER, 16).getTime();
+			Date fechaFactura10 = new GregorianCalendar(2022, Calendar.FEBRUARY, 12).getTime();
+			Date fechaFactura100 = new GregorianCalendar(2022, Calendar.AUGUST, 28).getTime();
+			Date fechaFactura11 = new GregorianCalendar(2021, Calendar.FEBRUARY, 24).getTime();
+			Date fechaFactura6 = new GregorianCalendar(2018, Calendar.FEBRUARY, 3).getTime();
+			Date fechaFactura9 = new GregorianCalendar(2018, Calendar.AUGUST, 21).getTime();
 
-		Articulo articulo2 = Articulo.builder()
-				.nombreArticulo("Camisa de vestir blanca")
-				.precioCompra(30)
-				.precioVenta(60)
-				.fechaBaja(null)
-				.build();
 
-		Articulo articulo3 = Articulo.builder()
-				.nombreArticulo("Taladro inalámbrico Bosch")
-				.precioCompra(120)
-				.precioVenta(180)
-				.fechaBaja(null)
-				.build();
+			Factura factura1 = Factura.builder().fechaFactura(fechaFactura9).build();
+			Factura factura2 = Factura.builder().fechaFactura(fechaFactura6).build();
+			Factura factura3 = Factura.builder().fechaFactura(fechaFactura8).build();
+			Factura factura4 = Factura.builder().fechaFactura(fechaFactura11).build();
+			Factura factura6 = Factura.builder().fechaFactura(fechaFactura10).build();
+			Factura factura7 = Factura.builder().fechaFactura(fechaFactura100).build();
+			Factura factura8 = Factura.builder().fechaFactura(fechaFactura7).build();
+			Factura factura9 = Factura.builder().fechaFactura(fechaFactura5).build();
+			Factura factura10 = Factura.builder().fechaFactura(fechaFactura3).build();
+			Factura factura11 = Factura.builder().fechaFactura(fechaFactura4).build();
+			Factura factura12 = Factura.builder().fechaFactura(fechaFactura1).build();
 
-		Articulo articulo4 = Articulo.builder()
-				.nombreArticulo("Silla de oficina ergonómica")
-				.precioCompra(80)
-				.precioVenta(150)
-				.fechaBaja(null)
-				.build();
-
-		Articulo articulo5 = Articulo.builder()
-				.nombreArticulo("Zapatillas deportivas Nike")
-				.precioCompra(60)
-				.precioVenta(100)
-				.fechaBaja(null)
-				.build();
-
-		Articulo articulo6 = Articulo.builder()
-				.nombreArticulo("Destornillador eléctrico Black & Decker")
-				.precioCompra(45)
-				.precioVenta(80)
-				.fechaBaja(null)
-				.build();
-
-		Articulo articulo7 = Articulo.builder()
-				.nombreArticulo("Cafetera automática Philips")
-				.precioCompra(70)
-				.precioVenta(120)
-				.fechaBaja(null)
-				.build();
-
-		Articulo articulo8 = Articulo.builder()
-				.nombreArticulo("Jeans azules Levi's")
-				.precioCompra(40)
-				.precioVenta(80)
-				.fechaBaja(null)
-				.build();
-
-		Articulo articulo9 = Articulo.builder()
-				.nombreArticulo("Martillo de carpintero Stanley")
-				.precioCompra(15)
-				.precioVenta(30)
-				.fechaBaja(null)
-				.build();
-
-		Articulo articulo10 = Articulo.builder()
-				.nombreArticulo("Refrigerador Whirlpool 300L")
-				.precioCompra(400)
-				.precioVenta(700)
-				.fechaBaja(null)
-				.build();
-
-		// Guardar los artículos en la base de datos
-		articuloRepository.save(articulo1);
-		articuloRepository.save(articulo2);
-		articuloRepository.save(articulo3);
-		articuloRepository.save(articulo4);
-		articuloRepository.save(articulo5);
-		articuloRepository.save(articulo6);
-		articuloRepository.save(articulo7);
-		articuloRepository.save(articulo8);
-		articuloRepository.save(articulo9);
-		articuloRepository.save(articulo10);
+			facturaRepository.save(factura1);
+			facturaRepository.save(factura2);
+			facturaRepository.save(factura3);
+			facturaRepository.save(factura4);
+			facturaRepository.save(factura6);
+			facturaRepository.save(factura7);
+			facturaRepository.save(factura8);
+			facturaRepository.save(factura9);
+			facturaRepository.save(factura10);
+			facturaRepository.save(factura11);
+			facturaRepository.save(factura12);
 	};
-}
+}*/
+
 }
 
 
