@@ -1,15 +1,21 @@
 package com.utn.prototipo1.moduloDemanda.entities;
 
 import com.utn.prototipo1.Base.entities.BaseEntidad;
-import com.utn.prototipo1.moduloArticulo.entities.Articulo;
-import com.utn.prototipo1.moduloVenta.entities.Factura;
 import jakarta.persistence.*;
-import lombok.Builder;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+@Entity
+@Table(name = "PrediccionDemanda")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class PrediccionDemanda extends BaseEntidad {
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -24,12 +30,12 @@ public class PrediccionDemanda extends BaseEntidad {
 
 
 
-    @OneToOne() //REVISAARRR
+    @ManyToOne() //REVISAARRR
     @JoinColumn(name = "codParametroPredic")
     private ParametrosPrediccion parametrosPrediccion;
 
 
-    @OneToOne() //REVISAARRR
-    @JoinColumn(name = "codParametroPredicMetodo")
+    @ManyToOne() //REVISAARRR
+    @JoinColumn(name = "codPredicDemandaMetodo")
     private PrediccionDemandaMetodo prediccionDemandaMetodo;
 }

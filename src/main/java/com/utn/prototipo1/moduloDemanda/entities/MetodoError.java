@@ -10,18 +10,18 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "PrediccionDemandaMetodo")
+@Table(name = "MetodoError")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class PrediccionDemandaMetodo extends BaseEntidad {
+public class MetodoError extends BaseEntidad {
 
-    private String nombreMetodo;
+    private String nombreMetodoError;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaBajaMetodo;
+    private Date fechaBajaMetodoError;
+
 
 }
-
