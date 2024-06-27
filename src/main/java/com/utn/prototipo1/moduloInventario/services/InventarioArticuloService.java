@@ -12,6 +12,7 @@ public interface InventarioArticuloService{
     List<InventarioArticulo> findAll();
     InventarioArticulo findById(Long id);
     InventarioArticulo save(InventarioArticulo inventarioArticulo);
-    List<InventarioArticulo> obtenerInventarioArticulos(Long InventarioId);
+    List<InventarioArticulo> obtenerArticuloPorInventario(Long InventarioId);
     public InventarioArticulo deleteById(Long InventarioId);
+    public void calcularVariables(Long inventarioArticuloId, String tipoModeloInventario, Double costoAlmacenamiento, Double desviacion);
 }
