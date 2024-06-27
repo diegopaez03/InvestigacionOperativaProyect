@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class InventarioArticuloServiceImpl  implements InventarioArticuloService{
@@ -98,10 +99,11 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
 
     }
 
-
-
-
-
+    public List<InventarioArticulo> getInventariosByArticulo(Long idArticulo) {
+        Articulo articulo = articuloRepository.findById(idArticulo)
+        .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + idArticulo));
+        return inventarioArticuloRepository.findAllByArticulo(articulo);
+    }
 
     @Override
     public void calcularVariables(Long inventarioArticuloId, String tipoModeloInventario, Double costoAlmacenamiento, Double desviacion) {
