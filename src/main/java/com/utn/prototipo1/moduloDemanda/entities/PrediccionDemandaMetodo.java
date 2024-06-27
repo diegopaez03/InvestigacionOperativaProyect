@@ -23,5 +23,9 @@ public class PrediccionDemandaMetodo extends BaseEntidad {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaBajaMetodo;
 
+    private Double coeficienteAlpha; // Para Suavización Exponencial
+
+    private Integer numeroPeriodos; // Para Promedio Móvil y Promedio Ponderado
+
 }
 

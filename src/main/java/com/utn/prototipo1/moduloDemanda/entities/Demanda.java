@@ -29,7 +29,7 @@ public class Demanda  extends BaseEntidad {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHasta;
 
-    @OneToOne() //REVISAARRR
+    @ManyToOne() //REVISAARRR
     @JoinColumn(name = "codArticulo")
     private Articulo articulo;
 

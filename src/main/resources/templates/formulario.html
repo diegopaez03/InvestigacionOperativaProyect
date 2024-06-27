@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Predicción de Demanda</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Seleccione el método de predicción:</h2>
+
+    <form th:action="@{/calcularPromedioMovil}" method="post" class="my-4">
+        <div class="form-group">
+            <label for="demandaRealPM">Demanda Real (separada por comas):</label>
+            <input type="text" id="demandaRealPM" name="demandaReal" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="periodosPM">Periodos:</label>
+            <input type="number" id="periodosPM" name="periodos" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Calcular Promedio Móvil</button>
+    </form>
+
+    <form th:action="@{/calcularPromedioPonderado}" method="post" class="my-4">
+        <div class="form-group">
+            <label for="demandaRealPP">Demanda Real (separada por comas):</label>
+            <input type="text" id="demandaRealPP" name="demandaReal" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="coeficientesPP">Coeficientes (separados por comas):</label>
+            <input type="text" id="coeficientesPP" name="coeficientes" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Calcular Promedio Ponderado</button>
+    </form>
+
+    <form th:action="@{/calcularSuavizacionExponencial}" method="post" class="my-4">
+        <div class="form-group">
+            <label for="demandaRealSE">Demanda Real (separada por comas):</label>
+            <input type="text" id="demandaRealSE" name="demandaReal" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="alfaSE">Alfa (0 a 1):</label>
+            <input type="number" id="alfaSE" name="alfa" class="form-control" step="0.01" min="0" max="1" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Calcular Suavización Exponencial</button>
+    </form>
+</div>
+</body>
+</html>
