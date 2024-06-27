@@ -15,7 +15,7 @@
     <form th:action="@{/calcularPromedioMovil}" method="post" class="my-4">
         <div class="form-group">
             <label for="demandaRealPM">Demanda Real (separada por comas):</label>
-            <input type="text" id="demandaRealPM" name="demandaReal" class="form-control" required>
+            <input type="text" th:value="${cantidadesDemanda}" id="demandaRealPM" name="demandaReal" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="periodosPM">Periodos:</label>
@@ -27,7 +27,7 @@
     <form th:action="@{/calcularPromedioPonderado}" method="post" class="my-4">
         <div class="form-group">
             <label for="demandaRealPP">Demanda Real (separada por comas):</label>
-            <input type="text" id="demandaRealPP" name="demandaReal" class="form-control" required>
+            <input type="text" th:value="${cantidadesDemanda}" id="demandaRealPP" name="demandaReal" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="coeficientesPP">Coeficientes (separados por comas):</label>
@@ -39,7 +39,7 @@
     <form th:action="@{/calcularSuavizacionExponencial}" method="post" class="my-4">
         <div class="form-group">
             <label for="demandaRealSE">Demanda Real (separada por comas --> Pronostico Anterior,Demanda real):</label>
-            <input type="text" id="demandaRealSE" name="demandaReal" class="form-control" required>
+            <input type="text" th:value="${cantidadesDemanda}" id="demandaRealSE" name="demandaReal" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="alfaSE">Alfa (0 a 1):</label>
