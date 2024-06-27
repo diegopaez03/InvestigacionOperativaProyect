@@ -101,7 +101,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
         if ("Lote Fijo".equals(tipoModeloInventario)) {
 
             double costoPedido = proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getTiempoDemoraArticulo();
-            double lotefijo = Math.sqrt(2*demandaRepository.findByArticulo(inventarioArticulo.getArticulo()).getCantidad() * proveedorService.getProveedorArticuloConMenorDemora() / costoAlmacenamiento);
+            double lotefijo = Math.sqrt(2*demandaRepository.findByArticulo(inventarioArticulo.getArticulo()).getCantidad() * proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getCostoPedido() / costoAlmacenamiento);
             double stock = desviacion * Math.sqrt(proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getTiempoDemoraArticulo());
             inventarioArticulo.setLoteFijo(lotefijo);
             inventarioArticulo.setPuntoPedido(costoPedido);
