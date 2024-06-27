@@ -3,6 +3,8 @@ package com.utn.prototipo1.moduloInventario.entities;
 import com.utn.prototipo1.Base.entities.BaseEntidad;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,12 +19,10 @@ import java.util.List;
 public class Inventario extends BaseEntidad {
 
     @Column(name = "fecha_desde")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaDesde;
+    private LocalDate fechaDesde;
 
     @Column(name = "fecha_hasta")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaHasta;
+    private LocalDate fechaHasta;
 
     private int codInventario;
     private int cantidad;

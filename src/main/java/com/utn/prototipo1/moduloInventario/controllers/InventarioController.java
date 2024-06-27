@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class InventarioController  {
         //Listar los inventarios que se crean
         @GetMapping("/maestroinventario")
         public String mostrarTodosLosInventarios(Model model) {
-            model.addAttribute("inventarios", inventarioServices.obtenerTodosLosInventario());
+            model.addAttribute("inventarios", inventarioServices.findAll());
             return "MaestroInventario";
         }
 
@@ -51,7 +52,7 @@ public class InventarioController  {
 
         @PostMapping("/inventarios")
         public String crearInventario(@ModelAttribute("inventario") Inventario inventario) {
-            inventario.setFechaDesde(new Date()); // Asignar la fecha y hora actual
+            inventario.setFechaDesde(LocalDate.now()); // Asignar la fecha y hora actual
             for (InventarioArticulo inventarioArticulo : inventario.getInventarioArticulos()) {
                 inventarioArticulo.setInventario(inventario);// Establece la relación entre la factura y sus detalles
             }
@@ -62,7 +63,7 @@ public class InventarioController  {
         //borrar el inventario
         @GetMapping("/maestroinventario/{id}")
         public String eliminarInventario(@PathVariable("id") Long id){
-            inventarioServices.deleteInventario(id);
+            inventarioServices.deleteById(id);
             return "redirect:/maestroinventario";
         }
 
@@ -96,7 +97,7 @@ public class InventarioController  {
 
         @GetMapping("/inventarios/{inventarioId}/inventarioArticulos")
         public String verInventarioArticulo(@PathVariable("inventarioId") Long InventarioId, Model model) {
-            List<InventarioArticulo> inventarioArticulos = inventarioArticuloService.obtenerInventarioArticulos(InventarioId);
+            List<InventarioArticulo> inventarioArticulos = inventarioArticuloService.obtenerArticuloPorInventario(InventarioId);
             model.addAttribute("inventarioArticulo", inventarioArticulos);
             return "MaestroInventarioArticulo";
         }

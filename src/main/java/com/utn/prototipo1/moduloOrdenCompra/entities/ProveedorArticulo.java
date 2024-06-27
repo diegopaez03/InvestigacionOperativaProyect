@@ -17,6 +17,9 @@ public class ProveedorArticulo extends BaseEntidad {
     @Column(name = "tiempoDemoraArticulo")
     private int tiempoDemoraArticulo;
 
+    @Column
+    private float costoPedido;
+
     @NonNull
     @ManyToOne()
     @JoinColumn(name = "idArticulo")

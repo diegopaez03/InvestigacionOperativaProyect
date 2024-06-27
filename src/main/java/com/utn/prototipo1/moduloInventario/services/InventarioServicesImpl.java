@@ -21,7 +21,7 @@ public class InventarioServicesImpl implements InventarioServices{
     private  InventarioArticuloRepository inventarioArticuloRepository;
 
     @Override
-    public Inventario deleteInventario(Long id) {
+    public Inventario deleteById(Long id) {
         inventarioRepository.deleteById(id);
         return null;
     }
@@ -31,7 +31,7 @@ public class InventarioServicesImpl implements InventarioServices{
     }
 
     @Override
-    public List<Inventario> obtenerTodosLosInventario() {
+    public List<Inventario> findAll() {
         return inventarioRepository.findAll();
     }
 
