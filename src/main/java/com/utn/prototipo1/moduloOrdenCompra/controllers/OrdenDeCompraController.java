@@ -90,7 +90,6 @@ public class OrdenDeCompraController {
             OrdenDeCompra ordenDeCompra = new OrdenDeCompra();
             ordenDeCompra.setEstadoOrdenDeCompra(estadoOrdenDeCompra);
             ordenDeCompra.setProveedor(proveedor);
-            ordenDeCompra.setTamanoLote(ordenDeCompraDTO.getTamanoLote());
 
             List<DetalleOrdenCompra> detalleOrdenCompras = new ArrayList<>();
             ordenDeCompraDTO.getDetalles().forEach(detalle -> {
