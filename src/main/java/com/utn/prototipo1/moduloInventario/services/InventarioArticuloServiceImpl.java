@@ -85,9 +85,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
 
                 inventarioArticulo = new InventarioArticulo();
                 inventarioArticulo.setArticulo(articuloExistente);
-                Inventario inventario1 = inventarioRepository.findById(1L).
-                        orElseThrow(() -> new RuntimeException("Inventario no encontrado"));
-                inventarioArticulo.setInventario(inventario1);
+                inventarioArticulo.setInventario(inventario);
                 inventarioArticulo.setStockActual(0);
             }
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);

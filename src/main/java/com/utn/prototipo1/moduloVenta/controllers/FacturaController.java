@@ -98,9 +98,6 @@ public class FacturaController {
         model.addAttribute("detallesFactura", detallesFactura);
         return "MaestroDetalleFactura";
     }
-
-
-
 }
 
 
