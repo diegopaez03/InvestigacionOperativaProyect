@@ -93,15 +93,28 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
         inventarioArticuloRepository.save(inventarioArticulo);
     }
-
+    @Override
     public void restarStock(Articulo articulo, int cantidad){
+        Articulo articuloExistente = articuloRepository.findById(articulo.getId())
+                .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
 
+        LocalDate fechaActual = LocalDate.now();
+        Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
+                .orElseThrow(() -> new RuntimeException("Inventario no encontrado con esta fecha"));
+
+
+        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articuloExistente);
+        if (inventarioArticulo == null) {
+            throw new RuntimeException("InventarioArticulo no encontrado para el artículo especificado");
+        }
+
+        if (inventarioArticulo.getStockActual() < cantidad) {
+            throw new IllegalArgumentException("Stock insuficiente. Stock actual: "
+                    + inventarioArticulo.getStockActual() + ", Cantidad requerida: " + cantidad);
+        }
+        inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() - cantidad);
+        inventarioArticuloRepository.save(inventarioArticulo);
     }
-
-
-
-
-
 
     @Override
     public void calcularVariables(Long inventarioArticuloId, String tipoModeloInventario, Double costoAlmacenamiento, Double desviacion) {
@@ -115,7 +128,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
 
             double puntoPedido = tiempoPedido * cantdemanda;
             double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
-            double stockSeguridad = desviacion*Math.sqrt(tiempoPedido);
+            double stockSeguridad =1.64 * desviacion*Math.sqrt(tiempoPedido);
             double cgi = precioArt*cantdemanda + costoAlmacenamiento*lotefijo/2 + costoPedido * cantdemanda/lotefijo;
             inventarioArticulo.setCGI(cgi);
             inventarioArticulo.setLoteFijo(lotefijo);
@@ -126,7 +139,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
         } else if ("Intervalo fijo".equals(tipoModeloInventario)) {
 
             double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
-            double stockSeguridad = desviacion*Math.sqrt(tiempoPedido);
+            double stockSeguridad =1.64 * desviacion*Math.sqrt(tiempoPedido);
             double cgi = precioArt*cantdemanda + costoAlmacenamiento*lotefijo/2 + costoPedido * cantdemanda/lotefijo;
             inventarioArticulo.setCGI(cgi);
             inventarioArticulo.setStockSeguridad(stockSeguridad);
