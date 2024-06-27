@@ -31,6 +31,8 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
     private InventarioRepository inventarioRepository;
     @Autowired
     private DemandaRepository demandaRepository;
+    @Autowired
+    private ArticuloService articuloService;
 
 
     @Override
@@ -92,26 +94,42 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
         inventarioArticuloRepository.save(inventarioArticulo);
     }
 
+    public void restarStock(Articulo articulo, int cantidad){
+
+    }
+
+
+
 
 
 
     @Override
     public void calcularVariables(Long inventarioArticuloId, String tipoModeloInventario, Double costoAlmacenamiento, Double desviacion) {
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.getReferenceById(inventarioArticuloId);
-        if ("Lote Fijo".equals(tipoModeloInventario)) {
+        double cantdemanda = demandaRepository.findByArticulo(inventarioArticulo.getArticulo()).getCantidad();
+        double costoPedido = proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getCostoPedido();
+        double tiempoPedido = proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getTiempoDemoraArticulo();
+        double precioArt = articuloService.getArticuloById(inventarioArticulo.getArticulo().getId()).getPrecioVenta();
 
-            double costoPedido = proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getTiempoDemoraArticulo();
-            double lotefijo = Math.sqrt(2*demandaRepository.findByArticulo(inventarioArticulo.getArticulo()).getCantidad() * proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getCostoPedido() / costoAlmacenamiento);
-            double stock = desviacion * Math.sqrt(proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getTiempoDemoraArticulo());
+        if ("Lote fijo".equals(tipoModeloInventario)) {
+
+            double puntoPedido = tiempoPedido * cantdemanda;
+            double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
+            double stockSeguridad = desviacion*Math.sqrt(tiempoPedido);
+            double cgi = precioArt*cantdemanda + costoAlmacenamiento*lotefijo/2 + costoPedido * cantdemanda/lotefijo;
+            inventarioArticulo.setCGI(cgi);
             inventarioArticulo.setLoteFijo(lotefijo);
-            inventarioArticulo.setPuntoPedido(costoPedido);
-            inventarioArticulo.setStockSeguridad(stock);
+            inventarioArticulo.setPuntoPedido(puntoPedido);
+            inventarioArticulo.setStockSeguridad(stockSeguridad);
 
 
-        } else if ("Intervalo Fijo".equals(tipoModeloInventario)) {
+        } else if ("Intervalo fijo".equals(tipoModeloInventario)) {
 
-            double stock = desviacion * Math.sqrt(proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getTiempoDemoraArticulo());
-            inventarioArticulo.setStockSeguridad(stock);
+            double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
+            double stockSeguridad = desviacion*Math.sqrt(tiempoPedido);
+            double cgi = precioArt*cantdemanda + costoAlmacenamiento*lotefijo/2 + costoPedido * cantdemanda/lotefijo;
+            inventarioArticulo.setCGI(cgi);
+            inventarioArticulo.setStockSeguridad(stockSeguridad);
 
         } else {
             throw new IllegalArgumentException("Tipo de modelo de inventario no reconocido");
@@ -119,5 +137,4 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
 
         inventarioArticuloRepository.save(inventarioArticulo);
     }
-
 }

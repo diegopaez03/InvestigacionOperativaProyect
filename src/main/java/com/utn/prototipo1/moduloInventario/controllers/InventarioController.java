@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class InventarioController  {
 
         @PostMapping("/inventarios")
         public String crearInventario(@ModelAttribute("inventario") Inventario inventario) {
-            inventario.setFechaDesde(new Date()); // Asignar la fecha y hora actual
+            inventario.setFechaDesde(LocalDate.now()); // Asignar la fecha y hora actual
             for (InventarioArticulo inventarioArticulo : inventario.getInventarioArticulos()) {
                 inventarioArticulo.setInventario(inventario);// Establece la relación entre la factura y sus detalles
             }

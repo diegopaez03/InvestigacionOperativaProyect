@@ -19,11 +19,9 @@ import java.util.List;
 public class Inventario extends BaseEntidad {
 
     @Column(name = "fecha_desde")
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate fechaDesde;
 
     @Column(name = "fecha_hasta")
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate fechaHasta;
 
     private int codInventario;
