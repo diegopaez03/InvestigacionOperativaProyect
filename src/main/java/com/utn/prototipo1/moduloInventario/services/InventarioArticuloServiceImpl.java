@@ -3,6 +3,9 @@ package com.utn.prototipo1.moduloInventario.services;
 
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
+import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
+import com.utn.prototipo1.moduloDemanda.repositories.DemandaRepository;
+import com.utn.prototipo1.moduloDemanda.services.DemandaService;
 import com.utn.prototipo1.moduloInventario.entities.Inventario;
 import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
 import com.utn.prototipo1.moduloInventario.repositories.InventarioArticuloRepository;
@@ -12,6 +15,7 @@ import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,7 +28,9 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
     @Autowired
     private ArticuloRepository articuloRepository;
     @Autowired
-    InventarioRepository inventarioRepository;
+    private InventarioRepository inventarioRepository;
+    @Autowired
+    private DemandaRepository demandaRepository;
 
 
     @Override
@@ -56,31 +62,46 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
         return null;
     }
 
-    public void actualizarStock(Articulo articulo, int cantidad) {
+    @Override
+    public void sumarStock(Articulo articulo, int cantidad) {
 
-        Articulo articuloExistente = articuloRepository.findById(articulo.getId()).orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
+            Articulo articuloExistente = articuloRepository.findById(articulo.getId())
+                    .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
 
-        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articuloExistente);
-        if (inventarioArticulo == null) {
+            LocalDate fechaActual = LocalDate.now();
+            Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
+                    .orElseGet(() -> {
+                        Inventario nuevoInventario = new Inventario();
+                        nuevoInventario.setFechaDesde(fechaActual);
+                        nuevoInventario.setFechaHasta(fechaActual.plusDays(30));
+                        inventarioRepository.save(nuevoInventario);
+                        return nuevoInventario;
+                    });
 
-            inventarioArticulo = new InventarioArticulo();
-            inventarioArticulo.setArticulo(articuloExistente);
+            InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articuloExistente);
+            if (inventarioArticulo == null) {
 
-            Inventario inventario = inventarioRepository.findById(1L).orElseThrow(() -> new RuntimeException("Inventario no encontrado"));
-            inventarioArticulo.setInventario(inventario);
-            inventarioArticulo.setStockActual(0);
-        }
-
+                inventarioArticulo = new InventarioArticulo();
+                inventarioArticulo.setArticulo(articuloExistente);
+                Inventario inventario1 = inventarioRepository.findById(1L).
+                        orElseThrow(() -> new RuntimeException("Inventario no encontrado"));
+                inventarioArticulo.setInventario(inventario1);
+                inventarioArticulo.setStockActual(0);
+            }
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
         inventarioArticuloRepository.save(inventarioArticulo);
     }
 
+
+
+
+    @Override
     public void calcularVariables(Long inventarioArticuloId, String tipoModeloInventario, Double costoAlmacenamiento, Double desviacion) {
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.getReferenceById(inventarioArticuloId);
         if ("Lote Fijo".equals(tipoModeloInventario)) {
 
             double costoPedido = proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getTiempoDemoraArticulo();
-            double lotefijo = costoPedido * costoAlmacenamiento;
+            double lotefijo = Math.sqrt(2*demandaRepository.findByArticulo(inventarioArticulo.getArticulo()).getCantidad() * proveedorService.getProveedorArticuloConMenorDemora().costoPedido / costoAlmacenamiento);
             double stock = desviacion * Math.sqrt(proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getTiempoDemoraArticulo());
             inventarioArticulo.setLoteFijo(lotefijo);
             inventarioArticulo.setPuntoPedido(costoPedido);
