@@ -1,11 +1,13 @@
 package com.utn.prototipo1.moduloOrdenCompra.controllers.Rest;
 
 import com.utn.prototipo1.moduloOrdenCompra.entities.Proveedor;
+import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("restProveedor")
@@ -24,6 +26,17 @@ public class RestProveedorController {
     public  Proveedor createProveedor(@RequestBody Proveedor proveedor){
         return  proveedorService.saveProveedor(proveedor);
     }
+
+    @GetMapping("/byArticulo/{idArticulo}")
+    public List<Proveedor> getProveedoresConArticuloById(@PathVariable("idArticulo") Long idArticulo) {
+        return proveedorService.getProveedoresConArticulo(idArticulo);
+    }
+
+    @GetMapping("/{idArticulo}/menorDemora")
+    public ProveedorArticulo getProveedorArticuloConMenorDemoraById(@PathVariable("idArticulo") Long idArticulo) {
+        return proveedorService.getProveedorArticuloConMenorDemora(idArticulo);
+    }
+    
 
     @GetMapping("/{id}")
     public Proveedor getProveedor(@PathVariable("id") Long id){
