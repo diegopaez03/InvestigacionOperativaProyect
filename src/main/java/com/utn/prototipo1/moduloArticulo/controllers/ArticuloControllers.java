@@ -69,6 +69,12 @@ public class ArticuloControllers {
         return "redirect:/articulos";
     }
 
+    @GetMapping("/articulos/calculardemanda")
+    public String mostrarFormularioCalcularDemanda(Model modelo) {
+        // Lógica adicional si es necesaria antes de mostrar el formulario
+        return "formulario"; // Esto debería apuntar a "formulario.html" en templates/
+    }
+
 }
 
 

@@ -7,7 +7,10 @@
 </head>
 <body>
 <div class="container mt-4">
-    <h2>Seleccione el método de predicción:</h2>
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Seleccione el método de predicción:</h2>
+        <a th:href="@{/articulos}" class="btn btn-secondary">Volver a Artículos</a>
+    </div>
 
     <form th:action="@{/calcularPromedioMovil}" method="post" class="my-4">
         <div class="form-group">
@@ -35,7 +38,7 @@
 
     <form th:action="@{/calcularSuavizacionExponencial}" method="post" class="my-4">
         <div class="form-group">
-            <label for="demandaRealSE">Demanda Real (separada por comas):</label>
+            <label for="demandaRealSE">Demanda Real (separada por comas --> Pronostico Anterior,Demanda real):</label>
             <input type="text" id="demandaRealSE" name="demandaReal" class="form-control" required>
         </div>
         <div class="form-group">

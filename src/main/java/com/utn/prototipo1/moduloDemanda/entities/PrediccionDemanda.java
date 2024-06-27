@@ -19,32 +19,34 @@ import java.util.List;
 @Builder
 public class PrediccionDemanda extends BaseEntidad {
 
-    @Temporal(TemporalType.TIMESTAMP)
+    /*@Temporal(TemporalType.TIMESTAMP)
     private Date fechaDesde;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaHasta;
+    private Date fechaHasta;*/
 
     private double demandaPredicha;
 
-    private double demandaReal; // Opcional, para comparación posterior
+    private String demandaReal; // Opcional, para comparación posterior
 
 
-    @ManyToOne() //REVISAARRR
+   /* @ManyToOne() //REVISAARRR
     @JoinColumn(name = "codArticulo")
-    private Articulo articulo;
+    private Articulo articulo;*/
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
     @JoinColumn(name = "Id_prediccion")
     private List<Demanda> Demandas = new ArrayList<>();
 
 
-    @ManyToOne() //REVISAARRR
+  /* @ManyToOne() //REVISAARRR
     @JoinColumn(name = "codParametroPredic")
     private ParametrosPrediccion parametrosPrediccion;
 
 
     @ManyToOne() //REVISAARRR
     @JoinColumn(name = "codPredicDemandaMetodo")
-    private PrediccionDemandaMetodo prediccionDemandaMetodo;
+    private PrediccionDemandaMetodo prediccionDemandaMetodo;*/
+
+
 }

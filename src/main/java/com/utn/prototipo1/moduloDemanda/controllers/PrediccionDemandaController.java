@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class PrediccionDemandaController {
 
     @Autowired
-    private PrediccionDemandaService prediccionDemandaServiceService;
+    private PrediccionDemandaService prediccionDemandaService;
 
     @GetMapping("/formulario")
     public String mostrarFormularioPrediccion() {
@@ -30,9 +30,10 @@ public class PrediccionDemandaController {
                 .mapToDouble(Double::parseDouble)
                 .toArray();
 
-        double prediccion = prediccionDemandaServiceService.calcularPromedioMovil(demandaReal, periodos);
+        double prediccion = prediccionDemandaService.calcularPromedioMovil(demandaReal, periodos);
         model.addAttribute("metodo", "Promedio Móvil");
         model.addAttribute("prediccion", prediccion);
+        prediccionDemandaService.guardarPrediccion(demandaRealStr, prediccion);
         return "resultado";
     }
 
@@ -46,9 +47,10 @@ public class PrediccionDemandaController {
                 .mapToDouble(Double::parseDouble)
                 .toArray();
 
-        double prediccion = prediccionDemandaServiceService.calcularPromedioPonderado(demandaReal, coeficientes);
+        double prediccion = prediccionDemandaService.calcularPromedioPonderado(demandaReal, coeficientes);
         model.addAttribute("metodo", "Promedio Ponderado");
         model.addAttribute("prediccion", prediccion);
+        prediccionDemandaService.guardarPrediccion(demandaRealStr, prediccion);
         return "resultado";
     }
 
@@ -59,9 +61,10 @@ public class PrediccionDemandaController {
                 .mapToDouble(Double::parseDouble)
                 .toArray();
 
-        double prediccion = prediccionDemandaServiceService.calcularSuavizacionExponencial(demandaReal, alfa);
+        double prediccion = prediccionDemandaService.calcularSuavizacionExponencial(demandaReal, alfa);
         model.addAttribute("metodo", "Suavización Exponencial");
         model.addAttribute("prediccion", prediccion);
+        prediccionDemandaService.guardarPrediccion(demandaRealStr, prediccion);
         return "resultado";
     }
 

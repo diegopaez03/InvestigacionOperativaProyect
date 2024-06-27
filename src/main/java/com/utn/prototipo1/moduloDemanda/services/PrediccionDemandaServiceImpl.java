@@ -1,11 +1,19 @@
 package com.utn.prototipo1.moduloDemanda.services;
 
+import com.utn.prototipo1.moduloDemanda.entities.PrediccionDemanda;
+import com.utn.prototipo1.moduloDemanda.repositories.PrediccionDemandaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class PrediccionDemandaServiceImpl implements PrediccionDemandaService{
+
+
+    @Autowired
+    PrediccionDemandaRepository prediccionDemandaRepository;
 
     @Override
     public double calcularPromedioMovil(double[] demandaReal, int periodos) {
@@ -56,4 +64,20 @@ public class PrediccionDemandaServiceImpl implements PrediccionDemandaService{
 
         return prediccion;
     }
+
+    @Override
+    public void guardarPrediccion(String demandaReal, double demandaPredicha) {
+        PrediccionDemanda nuevaPrediccion = new PrediccionDemanda();
+        nuevaPrediccion.setDemandaReal(demandaReal);
+        nuevaPrediccion.setDemandaPredicha(demandaPredicha);
+        prediccionDemandaRepository.save(nuevaPrediccion);
+    }
+
+    @Override
+    public List<PrediccionDemanda> obtenerTodasLasPredicciones() {
+        return prediccionDemandaRepository.findAll();
+    }
+
+
+
 }
