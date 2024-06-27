@@ -8,9 +8,6 @@ import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
 import com.utn.prototipo1.moduloInventario.repositories.InventarioArticuloRepository;
 
 import com.utn.prototipo1.moduloInventario.repositories.InventarioRepository;
-import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
-import com.utn.prototipo1.moduloOrdenCompra.repositories.ProveedorArtículoRepository;
-import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorArticuloService;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
