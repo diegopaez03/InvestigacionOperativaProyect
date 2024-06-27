@@ -16,6 +16,8 @@ import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 import com.utn.prototipo1.moduloDemanda.repositories.DemandaRepository;
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
+import com.utn.prototipo1.moduloVenta.repositories.FacturaRepository;
+import com.utn.prototipo1.moduloVenta.services.FacturaServiceImpl;
 
 @Service
 public class DemandaService extends BaseServicesImpl<Demanda, Long> implements IDemandaService {
@@ -26,39 +28,41 @@ public class DemandaService extends BaseServicesImpl<Demanda, Long> implements I
     @Autowired
     private ArticuloRepository articuloRepository;
 
+    @Autowired
+    private FacturaServiceImpl facturaServiceImpl;
+
     public DemandaService(BaseRepository<Demanda, Long> baseRepository) {
         super(baseRepository);
     }
 
+    public List<Demanda> getDemandasByArticulo(Long idArticulo) {
+        Articulo articulo = articuloRepository.findById(idArticulo)
+        .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + idArticulo));
+        return demandaRepository.findAllByArticulo(articulo);
+    }
+
     public Demanda generarDemanda(CrearDemandaDto crearDemandaDto) {
-    Demanda demanda = new Demanda();
-    try {
-        List<Factura> facturas = demandaRepository.findFacturasByFechaAndArticulo(crearDemandaDto.getFechaDesde(), crearDemandaDto.getFechaHasta(), crearDemandaDto.getIdArticulo());
-        
-        Articulo articulo = articuloRepository.findById(crearDemandaDto.getIdArticulo())
-            .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + crearDemandaDto.getIdArticulo()));
-
-        demanda.setArticulo(articulo);
-        demanda.setFechaDesde(crearDemandaDto.getFechaDesde());
-        demanda.setFechaHasta(crearDemandaDto.getFechaHasta());
-
-        float cantidadArticulos = 0;
-        for (Factura factura : facturas) {
-            for (DetalleFactura detalle : factura.getDetalleFacturas()) {
-                if (detalle.getArticulo().equals(articulo)) {
-                    cantidadArticulos += detalle.getCantidad();
+        Demanda demanda = new Demanda();
+            List<Factura> facturas = facturaServiceImpl.buscarFacturasFechaArticulo(crearDemandaDto);
+            
+            Articulo articulo = articuloRepository.findById(crearDemandaDto.getIdArticulo())
+                .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + crearDemandaDto.getIdArticulo()));
+    
+            demanda.setArticulo(articulo);
+            demanda.setPeriodoYear(crearDemandaDto.getPeriodoYear());
+            demanda.setCantidad(0); // Inicializa la cantidad en 0
+    
+            for (Factura factura : facturas) {
+                for (DetalleFactura detalle : factura.getDetalleFacturas()) {
+                    if (detalle.getArticulo().getId().equals(articulo.getId())) {
+                        demanda.setCantidad(demanda.getCantidad() + detalle.getCantidad());
+                    }
                 }
             }
-        }
-
-        demanda.setCantidad(cantidadArticulos);
-
-    } catch (Exception e) {
-        System.out.println("Error: " + e.getMessage());
-        // Manejo de excepciones adicional si es necesario
+            
+            Demanda demandaGenerada = demandaRepository.save(demanda);
+            return demandaGenerada;
     }
-
-    return demandaRepository.save(demanda);
-    }
+    
 
 }
