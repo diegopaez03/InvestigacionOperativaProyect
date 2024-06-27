@@ -1,6 +1,8 @@
 package com.utn.prototipo1.moduloDemanda.controllers;
 
 
+import com.utn.prototipo1.moduloDemanda.entities.Demanda;
+import com.utn.prototipo1.moduloDemanda.services.DemandaService;
 import com.utn.prototipo1.moduloDemanda.services.PrediccionDemandaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 @Controller
 public class PrediccionDemandaController {
 
     @Autowired
     private PrediccionDemandaService prediccionDemandaService;
+
+    @Autowired
+    DemandaService demandaService;
 
     @GetMapping("/formulario")
     public String mostrarFormularioPrediccion() {
@@ -36,6 +42,8 @@ public class PrediccionDemandaController {
         prediccionDemandaService.guardarPrediccion(demandaRealStr, prediccion);
         return "resultado";
     }
+
+
 
     @PostMapping("/calcularPromedioPonderado")
     public String calcularPromedioPonderado(@RequestParam("demandaReal") String demandaRealStr,

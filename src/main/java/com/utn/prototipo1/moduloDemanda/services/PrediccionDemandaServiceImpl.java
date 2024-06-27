@@ -1,5 +1,6 @@
 package com.utn.prototipo1.moduloDemanda.services;
 
+import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 import com.utn.prototipo1.moduloDemanda.entities.PrediccionDemanda;
 import com.utn.prototipo1.moduloDemanda.repositories.PrediccionDemandaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class PrediccionDemandaServiceImpl implements PrediccionDemandaService{
 
     @Autowired
     PrediccionDemandaRepository prediccionDemandaRepository;
+
+    @Autowired
+    DemandaService demandaService;
 
     @Override
     public double calcularPromedioMovil(double[] demandaReal, int periodos) {

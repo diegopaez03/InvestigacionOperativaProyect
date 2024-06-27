@@ -19,20 +19,15 @@ import java.util.List;
 @Builder
 public class PrediccionDemanda extends BaseEntidad {
 
-    /*@Temporal(TemporalType.TIMESTAMP)
-    private Date fechaDesde;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaHasta;*/
 
     private double demandaPredicha;
 
     private String demandaReal; // Opcional, para comparación posterior
 
 
-   /* @ManyToOne() //REVISAARRR
+   @ManyToOne() //REVISAARRR
     @JoinColumn(name = "codArticulo")
-    private Articulo articulo;*/
+    private Articulo articulo;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
     @JoinColumn(name = "Id_prediccion")
