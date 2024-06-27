@@ -23,11 +23,7 @@ public class Demanda  extends BaseEntidad {
 
     private float cantidad;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaDesde;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaHasta;
+    private int periodoYear;
 
     @ManyToOne() //REVISAARRR
     @JoinColumn(name = "codArticulo")

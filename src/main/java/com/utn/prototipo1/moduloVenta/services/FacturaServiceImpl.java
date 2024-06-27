@@ -1,6 +1,9 @@
 package com.utn.prototipo1.moduloVenta.services;
 
 
+import com.utn.prototipo1.moduloArticulo.entities.Articulo;
+import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
+import com.utn.prototipo1.moduloDemanda.dtos.CrearDemandaDto;
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
 import com.utn.prototipo1.moduloVenta.repositories.DetalleFacturaRepository;
@@ -8,7 +11,10 @@ import com.utn.prototipo1.moduloVenta.repositories.FacturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class FacturaServiceImpl implements FacturaService {
@@ -17,6 +23,8 @@ public class FacturaServiceImpl implements FacturaService {
     private FacturaRepository facturaRepository;
     @Autowired
     private  DetalleFacturaRepository detalleFacturaRepository;
+    @Autowired
+    private ArticuloRepository articuloRepository;
 
     @Override
     public Factura deleteFactura(Long id) {
@@ -51,6 +59,24 @@ public class FacturaServiceImpl implements FacturaService {
 
         factura.setTotal(total); // Establece el total en la factura
         facturaRepository.save(factura); // Guarda la factura actualizada en la base de datos
+    }
+
+    public List<Factura> buscarFacturasFechaArticulo(CrearDemandaDto crearDemandaDto) {
+
+        List<Factura> facturas = facturaRepository.findFacturasByYear(crearDemandaDto.getPeriodoYear());
+
+        Articulo articulo = articuloRepository.findById(crearDemandaDto.getIdArticulo())
+        .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + crearDemandaDto.getIdArticulo()));
+
+        List<Factura> facturasConArticulo = new ArrayList<Factura>();
+        facturas.forEach(factura -> {
+            DetalleFactura detalleFactura = detalleFacturaRepository.findByFacturaAndArticulo(factura, articulo);
+            if (detalleFactura != null) {
+                facturasConArticulo.add(detalleFactura.getFactura());
+            }
+        });
+
+        return facturasConArticulo;
     }
 
 }

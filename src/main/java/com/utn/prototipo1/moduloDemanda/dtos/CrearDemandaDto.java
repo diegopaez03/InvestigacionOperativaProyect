@@ -13,10 +13,7 @@ import lombok.*;
 public class CrearDemandaDto {
 
     @NonNull
-    private Date fechaDesde;
-
-    @NonNull
-    private Date fechaHasta;
+    private int periodoYear;
 
     @NonNull
     private Long idArticulo;

@@ -1,5 +1,6 @@
 package com.utn.prototipo1.moduloVenta.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.utn.prototipo1.Base.entities.BaseEntidad;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import jakarta.persistence.Entity;
@@ -26,6 +27,7 @@ public class DetalleFactura extends BaseEntidad {
     @JoinColumn(name = "codArticulo")
     private Articulo articulo;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "nrofactura")
     private Factura factura;
