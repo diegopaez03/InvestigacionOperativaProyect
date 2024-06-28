@@ -31,6 +31,8 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
     @Autowired
     private InventarioRepository inventarioRepository;
     @Autowired
+    private InventarioServices inventarioServices;
+    @Autowired
     private DemandaRepository demandaRepository;
     @Autowired
     private ArticuloService articuloService;
@@ -81,12 +83,13 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
                         return nuevoInventario;
                     });
 
-            InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articuloExistente);
+            InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario);
             if (inventarioArticulo == null) {
 
                 inventarioArticulo = new InventarioArticulo();
                 inventarioArticulo.setArticulo(articuloExistente);
                 inventarioArticulo.setInventario(inventario);
+                inventario.getInventarioArticulos().add(inventarioArticulo);
                 inventarioArticulo.setStockActual(0);
                 inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
                 InventarioArticulo inventarioArticulo1 = inventarioArticuloRepository.save(inventarioArticulo);
