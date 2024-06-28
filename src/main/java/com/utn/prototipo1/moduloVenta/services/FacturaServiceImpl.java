@@ -4,6 +4,7 @@ package com.utn.prototipo1.moduloVenta.services;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
 import com.utn.prototipo1.moduloDemanda.dtos.CrearDemandaDto;
+import com.utn.prototipo1.moduloInventario.services.InventarioArticuloService;
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
 import com.utn.prototipo1.moduloVenta.repositories.DetalleFacturaRepository;
@@ -25,6 +26,8 @@ public class FacturaServiceImpl implements FacturaService {
     private  DetalleFacturaRepository detalleFacturaRepository;
     @Autowired
     private ArticuloRepository articuloRepository;
+    @Autowired
+    private InventarioArticuloService inventarioArticuloService;
 
     @Override
     public Factura deleteFactura(Long id) {
@@ -46,6 +49,10 @@ public class FacturaServiceImpl implements FacturaService {
     public void crearFactura(Factura factura) {
         facturaRepository.save(factura);
     }
+    @Override
+    public void actualizarStockPorDetalleFactura(DetalleFactura detalleFactura) {
+        inventarioArticuloService.restarStock(detalleFactura.getArticulo(), detalleFactura.getCantidad());
+    }
 
     @Override
     public void actualizarTotalFactura(Long facturaId) {
@@ -58,7 +65,7 @@ public class FacturaServiceImpl implements FacturaService {
         }
 
         factura.setTotal(total); // Establece el total en la factura
-        facturaRepository.save(factura); // Guarda la factura actualizada en la base de datos
+        facturaRepository.save(factura);
     }
 
     public List<Factura> buscarFacturasFechaArticulo(CrearDemandaDto crearDemandaDto) {

@@ -3,6 +3,7 @@ package com.utn.prototipo1.moduloVenta.controllers;
 
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
+import com.utn.prototipo1.moduloInventario.services.InventarioArticuloService;
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
 import com.utn.prototipo1.moduloVenta.services.DetalleFacturaService;
@@ -22,12 +23,11 @@ public class FacturaController {
     private FacturaService facturaService;
 
     @Autowired
-    private  ArticuloService articuloService;
+    private ArticuloService articuloService;
 
     @Autowired
     private DetalleFacturaService detalleFacturaService;
 
-    //Listar las facturas que se crean
     @GetMapping("/maestrofactura")
     public String mostrarTodasLasFacturas(Model model) {
         model.addAttribute("facturas", facturaService.obtenerTodasLasFacturas());
@@ -43,7 +43,6 @@ public class FacturaController {
         return "crear-factura";
     }
 
-
     @PostMapping("/facturas")
     public String crearFactura(@ModelAttribute("factura") Factura factura) {
         factura.setFechaFactura(new Date()); // Asignar la fecha y hora actual
@@ -54,16 +53,11 @@ public class FacturaController {
         return "redirect:/maestrofactura";
     }
 
-
-    //borrar la factura
     @GetMapping("/maestrofactura/{id}")
-    public String eliminarFactura(@PathVariable("id") Long id){
+    public String eliminarFactura(@PathVariable("id") Long id) {
         facturaService.deleteFactura(id);
         return "redirect:/maestrofactura";
     }
-
-
-    //DETALLE FACTURA ------------------------------
 
     @GetMapping("/facturas/{facturaId}/detalles/nuevo")
     public String mostrarFormularioCrearDetalle(@PathVariable("facturaId") Long facturaId, Model model) {
@@ -88,9 +82,10 @@ public class FacturaController {
         detalleFactura.calcularLinea(); // Llama al método que calcula el valor de la línea
         detalleFacturaService.save(detalleFactura);
         facturaService.actualizarTotalFactura(facturaId);
-        return "redirect:/maestrofactura" ;
-    }
+        facturaService.actualizarStockPorDetalleFactura(detalleFactura);
 
+        return "redirect:/maestrofactura";
+    }
 
     @GetMapping("/facturas/{facturaId}/detalles")
     public String verDetallesFactura(@PathVariable("facturaId") Long facturaId, Model model) {
@@ -99,5 +94,3 @@ public class FacturaController {
         return "MaestroDetalleFactura";
     }
 }
-
-

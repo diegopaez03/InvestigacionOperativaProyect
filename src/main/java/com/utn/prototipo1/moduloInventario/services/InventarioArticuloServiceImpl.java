@@ -13,6 +13,8 @@ import com.utn.prototipo1.moduloInventario.repositories.InventarioArticuloReposi
 
 import com.utn.prototipo1.moduloInventario.repositories.InventarioRepository;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
+import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
+import com.utn.prototipo1.moduloVenta.entities.Factura;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +71,13 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
     }
 
     @Override
+    public void actualizarStockPorFactura(Factura factura) {
+        for (DetalleFactura detalle : factura.getDetalleFacturas()) {
+            restarStock(detalle.getArticulo(), detalle.getCantidad());
+        }
+    }
+
+    @Override
     public void sumarStock(Articulo articulo, float cantidad) {
 
             Articulo articuloExistente = articuloRepository.findById(articulo.getId())
@@ -107,14 +116,13 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
             }
     }
     @Override
-    public void restarStock(Articulo articulo, int cantidad){
+    public void restarStock(Articulo articulo, int cantidad) {
         Articulo articuloExistente = articuloRepository.findById(articulo.getId())
                 .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
 
         LocalDate fechaActual = LocalDate.now();
         Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
                 .orElseThrow(() -> new RuntimeException("Inventario no encontrado con esta fecha"));
-
 
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario);
         if (inventarioArticulo == null) {
@@ -125,6 +133,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
             throw new IllegalArgumentException("Stock insuficiente. Stock actual: "
                     + inventarioArticulo.getStockActual() + ", Cantidad requerida: " + cantidad);
         }
+
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() - cantidad);
         inventarioArticuloRepository.save(inventarioArticulo);
     }
