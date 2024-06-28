@@ -80,6 +80,7 @@ public class InventarioController {
         return "crear-inventario-articulo";
     }
 
+
     @PostMapping("/inventarios/{inventarioId}/inventarioArticulos")
     public String crearinventarioArticulo(@PathVariable("inventarioId") Long InventarioId,
                                           @ModelAttribute("inventarioArticulo") InventarioArticulo inventarioArticulo,
@@ -122,6 +123,20 @@ public class InventarioController {
 
         // Redirecciona a la URL con los parámetros adecuados
         return "redirect:/inventarios/" + inventarioId + "/inventarioArticulos/valoresCalculados/" + inventarioArticuloId;
+    @PostMapping("/calcularVariables")
+    public String calcularVariables(@RequestParam("inventarioArticuloId") Long inventarioArticuloId,
+                                    @RequestParam("costoAlmacenamiento") Double costoAlmacenamiento,
+                                    @RequestParam("desviacion") Double desviacion,
+                                    RedirectAttributes redirectAttributes) {
+        inventarioArticuloService.calcularVariables(inventarioArticuloId, costoAlmacenamiento, desviacion);
+
+        // Obtener el inventarioArticulo para obtener su inventarioId
+        InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId);
+
+        // Agregar inventarioId como parámetro de plantilla para la redirección
+        redirectAttributes.addAttribute("inventarioId", inventarioArticulo.getInventario().getId());
+        redirectAttributes.addAttribute("inventarioArticuloId", inventarioArticuloId); // Asegurarse de agregar inventarioArticuloId aquí
+        return "redirect:/inventarios/{inventarioId}/inventarioArticulos/valoresCalculados";
     }
 
     @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/valoresCalculados/{inventarioArticuloId}")
@@ -129,6 +144,10 @@ public class InventarioController {
                                         @PathVariable Long inventarioArticuloId,
                                         Model model) {
         // Lógica para mostrar los valores calculados del inventarioArticulo
+    @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/valoresCalculados")
+    public String mostrarValoresCalculados(@PathVariable("inventarioId") Long inventarioId,
+                                           @RequestParam("inventarioArticuloId") Long inventarioArticuloId,
+                                           Model model) {
         InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId);
         model.addAttribute("inventarioArticulo", inventarioArticulo);
         return "VistaValoresCalculados";

@@ -7,7 +7,9 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="mt-1">Valores Calculados</h1>
+    <h1>Valores Calculados de Inventario</h1>
+    <p>Inventario Artículo ID: <span th:text="${inventarioArticulo.id}"></span></p>
+    <!-- Asegúrate de que el enlace pase correctamente los parámetros -->
     <div class="row mt-3">
         <div class="col-md-6 text-md-end">
             <a th:href="@{/inventarios/{inventarioId}/inventarioArticulos(inventarioId=${inventarioId})}" th:text="'Volver al Inventario'">Volver al Inventario</a>
