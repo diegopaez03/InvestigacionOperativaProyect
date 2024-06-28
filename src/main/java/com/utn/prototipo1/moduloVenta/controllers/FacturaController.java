@@ -100,6 +100,7 @@ public class FacturaController {
         detalleFactura.calcularLinea(); // Llama al método que calcula el valor de la línea
         detalleFacturaService.save(detalleFactura);
         facturaService.actualizarTotalFactura(facturaId);
+        facturaService.actualizarStockPorDetalleFactura(detalleFactura);
 
         // Generar la demanda asociada al detalle de factura creado
         CrearDemandaDto crearDemandaDto = new CrearDemandaDto();
