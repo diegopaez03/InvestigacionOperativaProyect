@@ -209,72 +209,7 @@ public class Prototipo1Application {
 			facturaRepository.save(factura11);
 
 
-			//Estado orden de compra
-			EstadoOrdenDeCompra estadoOrdenDeCompra1 = EstadoOrdenDeCompra.builder()
-					.nombreEOC("Pendiente")
-					.fechaBaja(null)
-					.build();
-			EstadoOrdenDeCompra estadoOrdenDeCompra2 = EstadoOrdenDeCompra.builder()
-					.nombreEOC("Confirmado")
-					.fechaBaja(null)
-					.build();
-			EstadoOrdenDeCompra estadoOrdenDeCompra3 = EstadoOrdenDeCompra.builder()
-					.nombreEOC("Entregado")
-					.fechaBaja(null)
-					.build();
-			EstadoOrdenDeCompra estadoOrdenDeCompra4 = EstadoOrdenDeCompra.builder()
-					.nombreEOC("Cancelado")
-					.fechaBaja(null)
-					.build();
-			
-			estadoOrdenDeCompraRepository.save(estadoOrdenDeCompra1);
-			estadoOrdenDeCompraRepository.save(estadoOrdenDeCompra2);
-			estadoOrdenDeCompraRepository.save(estadoOrdenDeCompra3);
-			estadoOrdenDeCompraRepository.save(estadoOrdenDeCompra4);
 
-
-			//ProveedorArticulo
-			//Ropa
-			List<ProveedorArticulo> articulosRopa = Arrays.asList(
-				ProveedorArticulo.builder().tiempoDemoraArticulo(5).costoPedido((float) (Math.random() * 900 + 100)).articulo(articulo2).build(),
-				ProveedorArticulo.builder().tiempoDemoraArticulo(5).costoPedido((float) (Math.random() * 900 + 100)).articulo(articulo5).build(),
-				ProveedorArticulo.builder().tiempoDemoraArticulo(7).costoPedido((float) (Math.random() * 900 + 100)).articulo(articulo8).build()
-			);
-			//Electrodomesticos
-			List<ProveedorArticulo> articulosElectrodomesticos = Arrays.asList(
-				ProveedorArticulo.builder().tiempoDemoraArticulo(5).costoPedido((float) (Math.random() * 900 + 100)).articulo(articulo1).build(),
-				ProveedorArticulo.builder().tiempoDemoraArticulo(3).costoPedido((float) (Math.random() * 900 + 100)).articulo(articulo4).build(),
-				ProveedorArticulo.builder().tiempoDemoraArticulo(4).costoPedido((float) (Math.random() * 900 + 100)).articulo(articulo7).build(),
-				ProveedorArticulo.builder().tiempoDemoraArticulo(8).costoPedido((float) (Math.random() * 900 + 100)).articulo(articulo10).build()
-			);
-			//Electrodomesticos
-			List<ProveedorArticulo> articulosHerramientas = Arrays.asList(
-				ProveedorArticulo.builder().tiempoDemoraArticulo(5).costoPedido((float) (Math.random() * 900 + 100)).articulo(articulo3).build(),
-				ProveedorArticulo.builder().tiempoDemoraArticulo(3).costoPedido((float) (Math.random() * 900 + 100)).articulo(articulo6).build(),
-				ProveedorArticulo.builder().tiempoDemoraArticulo(4).costoPedido((float) (Math.random() * 900 + 100)).articulo(articulo9).build()
-			);
-
-
-			//Proveedor
-			Proveedor proveedor1 = Proveedor.builder()
-					.nombreProveedor("Proveedor de Ropa")
-					.fechaBajaProveedor(null)
-					.proveedorArticulo(articulosRopa)
-					.build();
-			Proveedor proveedor2 = Proveedor.builder()
-					.nombreProveedor("Proveedor de Electrodomesticos")
-					.fechaBajaProveedor(null)
-					.proveedorArticulo(articulosElectrodomesticos)
-					.build();
-			Proveedor proveedor3 = Proveedor.builder()
-					.nombreProveedor("Proveedor de Herramientas")
-					.fechaBajaProveedor(null)
-					.proveedorArticulo(articulosHerramientas)
-					.build();
-
-			proveedorRepository.save(proveedor1);
-			proveedorRepository.save(proveedor2);
-			proveedorRepository.save(proveedor3);
 
 		};
 	}*/

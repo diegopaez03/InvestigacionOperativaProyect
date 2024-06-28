@@ -102,10 +102,10 @@ public class FacturaController {
         facturaService.actualizarTotalFactura(facturaId);
 
         // Generar la demanda asociada al detalle de factura creado
-        CrearDemandaDto crearDemandaDto = new CrearDemandaDto();
-        crearDemandaDto.setIdArticulo(articuloId);
-        crearDemandaDto.setPeriodoYear(factura.getFechaFactura().getYear());// Puedes ajustar cómo obtienes el año según tu modelo
-        demandaService.generarDemanda(crearDemandaDto);
+        // CrearDemandaDto crearDemandaDto = new CrearDemandaDto();
+        // crearDemandaDto.setIdArticulo(articuloId);
+        // crearDemandaDto.setPeriodoYear(Integer.parseInt(factura.getFechaFactura().toString().substring(0, 4)));// Puedes ajustar cómo obtienes el año según tu modelo
+        // demandaService.generarDemanda(crearDemandaDto);
         return "redirect:/maestrofactura";
     }
 
