@@ -150,7 +150,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         String tipoModeloInventarioNombre = articulo.getArticuloCategoria().getTipoModeloInventario().getNombre();
 
         if ("Lote fijo".equals(tipoModeloInventarioNombre)) {
-            double puntoPedido = tiempoPedido * (cantdemanda/300.0);
+            double puntoPedido = tiempoPedido * (cantdemanda / 300.0);
             double lotefijo = Math.sqrt(2.0 * cantdemanda * (costoPedido / costoAlmacenamiento));
             double stockSeguridad = 1.64 * desviacion * Math.sqrt(tiempoPedido);
             double cgi = precioArt * cantdemanda + costoAlmacenamiento * lotefijo / 2 + costoPedido * cantdemanda / lotefijo;
@@ -175,3 +175,4 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         inventarioArticuloRepository.save(inventarioArticulo);
     }
 }
+
