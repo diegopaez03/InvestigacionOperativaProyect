@@ -7,6 +7,7 @@ import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
 import com.utn.prototipo1.moduloInventario.repositories.InventarioArticuloRepository;
 import com.utn.prototipo1.moduloInventario.repositories.InventarioRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,9 @@ public class InventarioServicesImpl implements InventarioServices{
     private  InventarioArticuloRepository inventarioArticuloRepository;
 
     @Override
+    @Transactional
     public Inventario deleteById(Long id) {
+        inventarioArticuloRepository.deleteByInventarioId(id);
         inventarioRepository.deleteById(id);
         return null;
     }
