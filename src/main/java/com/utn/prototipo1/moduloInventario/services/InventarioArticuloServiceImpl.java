@@ -124,6 +124,12 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
         inventarioArticuloRepository.save(inventarioArticulo);
     }
 
+    public List<InventarioArticulo> getInventariosByArticulo(Long idArticulo) {
+        Articulo articulo = articuloRepository.findById(idArticulo)
+        .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + idArticulo));
+        return inventarioArticuloRepository.findAllByArticulo(articulo);
+    }
+
     @Override
     public void calcularVariables(Long inventarioArticuloId, Double costoAlmacenamiento, Double desviacion) {
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.getReferenceById(inventarioArticuloId);
