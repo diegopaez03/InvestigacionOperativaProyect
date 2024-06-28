@@ -18,4 +18,8 @@ public interface PrediccionDemandaService {
 
     double calcularSuavizacionExponencial(double[] demandaReal, double alfa);
 
+    double calcularErrorPrediccion(double[] demandaReal, double[] predicciones);
+
+    double calcularErrorAbsolutoPrediccion(double[] demandaReal, double[] predicciones);
+
 }

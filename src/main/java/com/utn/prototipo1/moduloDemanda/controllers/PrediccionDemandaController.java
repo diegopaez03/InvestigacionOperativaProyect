@@ -34,7 +34,7 @@ public class PrediccionDemandaController {
         return "formulario";
     }
 
-    @PostMapping("/calcularPromedioMovil")
+    /*@PostMapping("/calcularPromedioMovil")
     public String calcularPromedioMovil(@RequestParam("demandaReal") String demandaRealStr,
                                         @RequestParam("periodos") int periodos, Model model) {
         double[] demandaReal = Arrays.stream(demandaRealStr.split(","))
@@ -79,6 +79,82 @@ public class PrediccionDemandaController {
         model.addAttribute("prediccion", prediccion);
         prediccionDemandaService.guardarPrediccion(demandaRealStr, prediccion);
         return "resultado";
+    }*/
+
+
+    @PostMapping("/calcularPromedioMovil")
+    public String calcularPromedioMovil(@RequestParam("demandaReal") String demandaRealStr,
+                                        @RequestParam("periodos") int periodos,
+                                        Model model) {
+        double[] demandaReal = Arrays.stream(demandaRealStr.split(","))
+                .mapToDouble(Double::parseDouble)
+                .toArray();
+
+        double prediccion = prediccionDemandaService.calcularPromedioMovil(demandaReal, periodos);
+
+        double[] predicciones = new double[demandaReal.length];
+        Arrays.fill(predicciones, prediccion);
+
+        double error = prediccionDemandaService.calcularErrorPrediccion(demandaReal, predicciones);
+        double errorAbsoluto = prediccionDemandaService.calcularErrorAbsolutoPrediccion(demandaReal, predicciones);
+
+        model.addAttribute("metodo", "Promedio Móvil");
+        model.addAttribute("prediccion", prediccion);
+        model.addAttribute("error", error);
+        model.addAttribute("errorAbsoluto", errorAbsoluto);
+
+        return "resultado"; // Devolver a la página de resultados
+    }
+
+    @PostMapping("/calcularPromedioPonderado")
+    public String calcularPromedioPonderado(@RequestParam("demandaReal") String demandaRealStr,
+                                            @RequestParam("coeficientes") String coeficientesStr,
+                                            Model model) {
+        double[] demandaReal = Arrays.stream(demandaRealStr.split(","))
+                .mapToDouble(Double::parseDouble)
+                .toArray();
+        double[] coeficientes = Arrays.stream(coeficientesStr.split(","))
+                .mapToDouble(Double::parseDouble)
+                .toArray();
+
+        double prediccion = prediccionDemandaService.calcularPromedioPonderado(demandaReal, coeficientes);
+
+        double[] predicciones = new double[demandaReal.length];
+        Arrays.fill(predicciones, prediccion);
+
+        double error = prediccionDemandaService.calcularErrorPrediccion(demandaReal, predicciones);
+        double errorAbsoluto = prediccionDemandaService.calcularErrorAbsolutoPrediccion(demandaReal, predicciones);
+
+        model.addAttribute("metodo", "Promedio Ponderado");
+        model.addAttribute("prediccion", prediccion);
+        model.addAttribute("error", error);
+        model.addAttribute("errorAbsoluto", errorAbsoluto);
+
+        return "resultado"; // Devolver a la página de resultados
+    }
+
+    @PostMapping("/calcularSuavizacionExponencial")
+    public String calcularSuavizacionExponencial(@RequestParam("demandaReal") String demandaRealStr,
+                                                 @RequestParam("alfa") double alfa,
+                                                 Model model) {
+        double[] demandaReal = Arrays.stream(demandaRealStr.split(","))
+                .mapToDouble(Double::parseDouble)
+                .toArray();
+
+        double prediccion = prediccionDemandaService.calcularSuavizacionExponencial(demandaReal, alfa);
+
+        double[] predicciones = new double[demandaReal.length];
+        Arrays.fill(predicciones, prediccion);
+
+        double error = prediccionDemandaService.calcularErrorPrediccion(demandaReal, predicciones);
+        double errorAbsoluto = prediccionDemandaService.calcularErrorAbsolutoPrediccion(demandaReal, predicciones);
+
+        model.addAttribute("metodo", "Suavización Exponencial");
+        model.addAttribute("prediccion", prediccion);
+        model.addAttribute("error", error);
+        model.addAttribute("errorAbsoluto", errorAbsoluto);
+
+        return "resultado"; // Devolver a la página de resultados
     }
 
 

@@ -85,5 +85,26 @@ public class PrediccionDemandaServiceImpl implements PrediccionDemandaService{
     }
 
 
+    @Override
+    public double calcularErrorPrediccion(double[] demandaReal, double[] predicciones) {
+        double error = 0.0;
+        int length = Math.min(demandaReal.length, predicciones.length);
+        for (int i = 0; i < length; i++) {
+            error += demandaReal[i] - predicciones[i];
+        }
+        return error;
+    }
+
+    @Override
+    public double calcularErrorAbsolutoPrediccion(double[] demandaReal, double[] predicciones) {
+        double errorAbsoluto = 0.0;
+        int length = Math.min(demandaReal.length, predicciones.length);
+        for (int i = 0; i < length; i++) {
+            errorAbsoluto += Math.abs(demandaReal[i] - predicciones[i]);
+        }
+        return errorAbsoluto;
+    }
+
+
 
 }

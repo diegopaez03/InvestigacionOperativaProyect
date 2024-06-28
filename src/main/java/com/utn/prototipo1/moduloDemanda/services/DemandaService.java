@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.utn.prototipo1.moduloVenta.services.DetalleFacturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class DemandaService extends BaseServicesImpl<Demanda, Long> implements I
     @Autowired
     private FacturaServiceImpl facturaServiceImpl;
 
+
     public DemandaService(BaseRepository<Demanda, Long> baseRepository) {
         super(baseRepository);
     }
@@ -41,7 +43,7 @@ public class DemandaService extends BaseServicesImpl<Demanda, Long> implements I
         return demandaRepository.findAllByArticulo(articulo);
     }
 
-    public Demanda generarDemanda(CrearDemandaDto crearDemandaDto) {
+   /*public Demanda generarDemanda(CrearDemandaDto crearDemandaDto) {
         Demanda demanda = new Demanda();
             List<Factura> facturas = facturaServiceImpl.buscarFacturasFechaArticulo(crearDemandaDto);
             
@@ -62,7 +64,46 @@ public class DemandaService extends BaseServicesImpl<Demanda, Long> implements I
             
             Demanda demandaGenerada = demandaRepository.save(demanda);
             return demandaGenerada;
+    }*/
+
+    public Demanda generarDemanda(CrearDemandaDto crearDemandaDto) {
+        // Obtener la lista de facturas que corresponden al artículo y período especificados
+        List<Factura> facturas = facturaServiceImpl.buscarFacturasFechaArticulo(crearDemandaDto);
+
+        // Obtener el artículo por su ID
+        Articulo articulo = articuloRepository.findById(crearDemandaDto.getIdArticulo())
+                .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + crearDemandaDto.getIdArticulo()));
+
+        // Inicializar la cantidad total como un float
+        float cantidadTotal = 0;
+
+        // Iterar sobre todas las facturas y sus detalles
+        for (Factura factura : facturas) {
+            for (DetalleFactura detalle : factura.getDetalleFacturas()) {
+                // Verificar si el detalle pertenece al artículo deseado
+                if (detalle.getArticulo().getId().equals(articulo.getId())) {
+                    cantidadTotal += detalle.getCantidad(); // Sumar la cantidad del detalle
+                }
+            }
+        }
+
+        // Crear una nueva instancia de Demanda y establecer los valores
+        Demanda demanda = new Demanda();
+        demanda.setArticulo(articulo);
+        demanda.setPeriodoYear(crearDemandaDto.getPeriodoYear());
+        demanda.setCantidad(cantidadTotal);
+
+        // Guardar la demanda en la base de datos
+        Demanda demandaGenerada = demandaRepository.save(demanda);
+        return demandaGenerada;
     }
-    
+
+
+
+
+
+
+
+
 
 }
