@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Actualizar Estado de Orden de Compra</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        padding-top: 20px;
+    }
+    .container {
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+    label {
+        font-weight: bold;
+    }
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+    button[type="submit"],
+    button[type="button"] {
+        padding: 10px 30px;
+        border: none;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button[type="submit"] {
+        background-color: #28a745;
+    }
+    button[type="submit"]:hover {
+        background-color: #218838;
+    }
+    button[type="button"] {
+        background-color: #dc3545;
+    }
+    button[type="button"]:hover {
+        background-color: #c82333;
+    }
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="text-center">Actualizar Estado de Orden de Compra</h1>
+          <form id="formularioActualizarEOC" th:action="@{/ordenDeCompra/actualizarEOC/{id}(id=${ordenDeCompra.id})}" method="post">
+            <input type="hidden" name="_method" value="PUT">
+            <div class="form-group">
+              <label>ID de Orden de Compra: </label>
+              <input type="text" name="idOrdenDeCompra" th:value="${ordenDeCompra.id}" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+              <label>Proveedor: </label>
+              <input type="text" name="nombreProveedor" th:value="${ordenDeCompra.proveedor.nombreProveedor}" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+              <label>Estado Actual: </label>
+              <input type="text" name="estadoActual" th:value="${ordenDeCompra.estadoOrdenDeCompra.nombreEOC}" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+              <label>Nuevo Estado: </label>
+              <select id="idEOC" name="idEOC" class="form-control">
+                <option th:each="estado : ${estadosOrdenDeCompra}" th:value="${estado.id}" th:text="${estado.nombreEOC}">Selecciona un estado</option>
+              </select>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-danger" onclick="window.history.back()">Cancelar</button>
+              <button type="submit" class="btn btn-success">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

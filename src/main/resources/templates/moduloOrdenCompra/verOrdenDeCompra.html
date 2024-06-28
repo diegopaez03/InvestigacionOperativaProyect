@@ -15,7 +15,6 @@
                 <p class="card-text">
                     <strong>Proveedor:</strong> <span th:text="${ordenDeCompra.proveedor.nombreProveedor}"></span><br>
                     <strong>Estado:</strong> <span th:text="${ordenDeCompra.estadoOrdenDeCompra.nombreEOC}"></span><br>
-                    <strong>Tamaño del Lote:</strong> <span th:text="${ordenDeCompra.tamanoLote}"></span><br>
                 </p>
             </div>
         </div>
@@ -45,7 +44,10 @@
                 </tr>
             </tbody>
         </table>
-        <a href="#" th:href="@{/ordenDeCompra/list}" class="btn btn-primary mt-3">Volver al Listado</a>
+        <div style="display: flex; justify-content: space-between;">
+            <a href="#" th:href="@{/ordenDeCompra/list}" class="btn btn-primary mt-3">Volver al Listado</a>
+            <a th:href="@{/ordenDeCompra/{id}/actualizarEstado(id=${ordenDeCompra.id})}" class="btn btn-success mt-3">Actualizar Estado</a>
+        </div>
     </div>
 
     <!-- jQuery -->

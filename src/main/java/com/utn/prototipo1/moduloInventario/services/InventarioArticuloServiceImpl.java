@@ -94,7 +94,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
                 inventarioArticulo.setStockActual(0);
                 inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
                 InventarioArticulo inventarioArticulo1 = inventarioArticuloRepository.save(inventarioArticulo);
-                calcularVariables(inventarioArticulo1.getId(),1.0,1.0);
+                // calcularVariables(inventarioArticulo1.getId(),1.0,1.0);
 
             }else {
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);

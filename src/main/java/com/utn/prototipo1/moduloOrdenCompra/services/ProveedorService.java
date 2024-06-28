@@ -85,4 +85,14 @@ public class ProveedorService implements IProveedorService{
         return proveedorRepository.findProveedorByProveedorArticulo(proveedorArticulo);
     }
 
+    public List<Articulo> getArticulosOfProveedor(Proveedor proveedor) {
+        List<ProveedorArticulo> proveedoresArticulo = proveedor.getProveedorArticulo();
+
+        List<Articulo> articulos = new ArrayList<>();
+        proveedoresArticulo.forEach(proveedorArticulo -> {
+            articulos.add(proveedorArticulo.getArticulo());
+        });
+
+        return articulos;
+    }
 }

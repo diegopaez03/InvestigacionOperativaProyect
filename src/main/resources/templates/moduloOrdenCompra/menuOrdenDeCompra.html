@@ -32,6 +32,7 @@
                     <td th:text="${orden.estadoOrdenDeCompra.nombreEOC}"></td>
                     <td>
                         <a th:href="@{/ordenDeCompra/{id}(id=${orden.id})}" class="btn btn-primary">Ver Orden de Compra</a>
+                        <a th:href="@{/ordenDeCompra/{id}/actualizarEstado(id=${orden.id})}" class="btn btn-primary">Actualizar Estado</a>
                     </td>
                 </tr>
             </tbody>

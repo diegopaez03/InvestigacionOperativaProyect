@@ -22,7 +22,6 @@ public class Proveedor extends BaseEntidad {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaBajaProveedor;
 
-    @NonNull
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "idProveedor")
     private List<ProveedorArticulo> proveedorArticulo;
