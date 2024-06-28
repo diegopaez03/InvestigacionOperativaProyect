@@ -35,7 +35,7 @@ public class Prototipo1Application {
 		System.out.println("Estoy funcionando");
 	}
 
-	@Bean
+	/*@Bean
 	CommandLineRunner init(
 		ArticuloRepository articuloRepository, 
 		TipoModeloInventarioRepository tipoModeloInventarioRepository, 
@@ -277,7 +277,7 @@ public class Prototipo1Application {
 			proveedorRepository.save(proveedor3);
 
 		};
-	}
+	}*/
 
 
 
