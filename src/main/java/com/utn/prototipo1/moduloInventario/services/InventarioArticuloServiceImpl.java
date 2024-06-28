@@ -2,6 +2,7 @@ package com.utn.prototipo1.moduloInventario.services;
 
 
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
+import com.utn.prototipo1.moduloArticulo.entities.TipoModeloInventario;
 import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloDemanda.repositories.DemandaRepository;
@@ -87,9 +88,14 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
                 inventarioArticulo.setArticulo(articuloExistente);
                 inventarioArticulo.setInventario(inventario);
                 inventarioArticulo.setStockActual(0);
-            }
+                inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
+                InventarioArticulo inventarioArticulo1 = inventarioArticuloRepository.save(inventarioArticulo);
+                calcularVariables(inventarioArticulo1.getId(),1.0,1.0);
+
+            }else {
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
         inventarioArticuloRepository.save(inventarioArticulo);
+            }
     }
     @Override
     public void restarStock(Articulo articulo, int cantidad){
@@ -115,14 +121,18 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
     }
 
     @Override
-    public void calcularVariables(Long inventarioArticuloId, String tipoModeloInventario, Double costoAlmacenamiento, Double desviacion) {
+    public void calcularVariables(Long inventarioArticuloId, Double costoAlmacenamiento, Double desviacion) {
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.getReferenceById(inventarioArticuloId);
+        Articulo articulo = inventarioArticulo.getArticulo();
+        TipoModeloInventario tipoModeloInventario = articulo.getArticuloCategoria().getTipoModeloInventario();
+        String tipoModeloInventarioNombre = tipoModeloInventario.getNombre();
+
         double cantdemanda = demandaRepository.findByArticulo(inventarioArticulo.getArticulo()).getCantidad();
         double costoPedido = proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getCostoPedido();
         double tiempoPedido = proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getTiempoDemoraArticulo();
         double precioArt = articuloService.getArticuloById(inventarioArticulo.getArticulo().getId()).getPrecioVenta();
 
-        if ("Lote fijo".equals(tipoModeloInventario)) {
+        if ("Lote fijo".equals(tipoModeloInventarioNombre)) {
 
             double puntoPedido = tiempoPedido * cantdemanda;
             double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
@@ -133,8 +143,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
             inventarioArticulo.setPuntoPedido(puntoPedido);
             inventarioArticulo.setStockSeguridad(stockSeguridad);
 
-
-        } else if ("Intervalo fijo".equals(tipoModeloInventario)) {
+        } else if ("Intervalo fijo".equals(tipoModeloInventarioNombre)) {
 
             double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
             double stockSeguridad =1.64 * desviacion*Math.sqrt(tiempoPedido);
