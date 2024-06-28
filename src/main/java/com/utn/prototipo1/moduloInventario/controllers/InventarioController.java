@@ -93,22 +93,24 @@ public class InventarioController {
                                     @RequestParam("desviacion") Double desviacion,
                                     RedirectAttributes redirectAttributes) {
         inventarioArticuloService.calcularVariables(inventarioArticuloId, costoAlmacenamiento, desviacion);
+
         // Obtener el inventarioArticulo para obtener su inventarioId
-        InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId); // Asumiendo que tienes un método para obtener el InventarioArticulo por su ID
+        InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId);
 
         // Agregar inventarioId como parámetro de plantilla para la redirección
         redirectAttributes.addAttribute("inventarioId", inventarioArticulo.getInventario().getId());
+        redirectAttributes.addAttribute("inventarioArticuloId", inventarioArticuloId); // Asegurarse de agregar inventarioArticuloId aquí
         return "redirect:/inventarios/{inventarioId}/inventarioArticulos/valoresCalculados";
     }
     @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/valoresCalculados")
     public String mostrarValoresCalculados(@PathVariable("inventarioId") Long inventarioId,
-                                           @RequestParam(name = "inventarioArticuloId") Long inventarioArticuloId,
+                                           @RequestParam("inventarioArticuloId") Long inventarioArticuloId,
                                            Model model) {
         InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId);
 
         if (inventarioArticulo != null) {
             model.addAttribute("inventarioArticulo", inventarioArticulo);
-            model.addAttribute("inventarioId", inventarioId); // Si es necesario, agregar inventarioId al modelo
+            model.addAttribute("inventarioId", inventarioId);
             return "VistaValoresCalculados";
         } else {
             return "redirect:/maestroinventario";
