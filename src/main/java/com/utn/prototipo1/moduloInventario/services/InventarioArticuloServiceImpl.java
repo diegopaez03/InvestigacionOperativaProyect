@@ -2,6 +2,7 @@ package com.utn.prototipo1.moduloInventario.services;
 
 
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
+import com.utn.prototipo1.moduloArticulo.entities.TipoModeloInventario;
 import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloDemanda.repositories.DemandaRepository;
@@ -29,6 +30,8 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
     private ArticuloRepository articuloRepository;
     @Autowired
     private InventarioRepository inventarioRepository;
+    @Autowired
+    private InventarioServices inventarioServices;
     @Autowired
     private DemandaRepository demandaRepository;
     @Autowired
@@ -80,53 +83,73 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
                         return nuevoInventario;
                     });
 
-            InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articuloExistente);
+            InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario);
             if (inventarioArticulo == null) {
 
                 inventarioArticulo = new InventarioArticulo();
                 inventarioArticulo.setArticulo(articuloExistente);
-                Inventario inventario1 = inventarioRepository.findById(1L).
-                        orElseThrow(() -> new RuntimeException("Inventario no encontrado"));
-                inventarioArticulo.setInventario(inventario1);
+                inventarioArticulo.setInventario(inventario);
+                inventario.getInventarioArticulos().add(inventarioArticulo);
                 inventarioArticulo.setStockActual(0);
-            }
+                inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
+                InventarioArticulo inventarioArticulo1 = inventarioArticuloRepository.save(inventarioArticulo);
+                calcularVariables(inventarioArticulo1.getId(),1.0,1.0);
+
+            }else {
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
+        inventarioArticuloRepository.save(inventarioArticulo);
+            }
+    }
+    @Override
+    public void restarStock(Articulo articulo, int cantidad){
+        Articulo articuloExistente = articuloRepository.findById(articulo.getId())
+                .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
+
+        LocalDate fechaActual = LocalDate.now();
+        Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
+                .orElseThrow(() -> new RuntimeException("Inventario no encontrado con esta fecha"));
+
+
+        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articuloExistente);
+        if (inventarioArticulo == null) {
+            throw new RuntimeException("InventarioArticulo no encontrado para el artículo especificado");
+        }
+
+        if (inventarioArticulo.getStockActual() < cantidad) {
+            throw new IllegalArgumentException("Stock insuficiente. Stock actual: "
+                    + inventarioArticulo.getStockActual() + ", Cantidad requerida: " + cantidad);
+        }
+        inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() - cantidad);
         inventarioArticuloRepository.save(inventarioArticulo);
     }
 
-    public void restarStock(Articulo articulo, int cantidad){
-
-    }
-
-
-
-
-
-
     @Override
-    public void calcularVariables(Long inventarioArticuloId, String tipoModeloInventario, Double costoAlmacenamiento, Double desviacion) {
+    public void calcularVariables(Long inventarioArticuloId, Double costoAlmacenamiento, Double desviacion) {
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.getReferenceById(inventarioArticuloId);
+        Articulo articulo = inventarioArticulo.getArticulo();
+        TipoModeloInventario tipoModeloInventario = articulo.getArticuloCategoria().getTipoModeloInventario();
+        String tipoModeloInventarioNombre = tipoModeloInventario.getNombre();
+
         double cantdemanda = demandaRepository.findByArticulo(inventarioArticulo.getArticulo()).getCantidad();
         double costoPedido = proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getCostoPedido();
         double tiempoPedido = proveedorService.getProveedorArticuloConMenorDemora(inventarioArticulo.getArticulo().getId()).getTiempoDemoraArticulo();
         double precioArt = articuloService.getArticuloById(inventarioArticulo.getArticulo().getId()).getPrecioVenta();
 
-        if ("Lote fijo".equals(tipoModeloInventario)) {
+        if ("Lote fijo".equals(tipoModeloInventarioNombre)) {
 
             double puntoPedido = tiempoPedido * cantdemanda;
             double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
-            double stockSeguridad = desviacion*Math.sqrt(tiempoPedido);
+            double stockSeguridad =1.64 * desviacion*Math.sqrt(tiempoPedido);
             double cgi = precioArt*cantdemanda + costoAlmacenamiento*lotefijo/2 + costoPedido * cantdemanda/lotefijo;
             inventarioArticulo.setCGI(cgi);
             inventarioArticulo.setLoteFijo(lotefijo);
             inventarioArticulo.setPuntoPedido(puntoPedido);
             inventarioArticulo.setStockSeguridad(stockSeguridad);
 
-
-        } else if ("Intervalo fijo".equals(tipoModeloInventario)) {
+        } else if ("Intervalo fijo".equals(tipoModeloInventarioNombre)) {
 
             double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
-            double stockSeguridad = desviacion*Math.sqrt(tiempoPedido);
+            double stockSeguridad =1.64 * desviacion*Math.sqrt(tiempoPedido);
             double cgi = precioArt*cantdemanda + costoAlmacenamiento*lotefijo/2 + costoPedido * cantdemanda/lotefijo;
             inventarioArticulo.setCGI(cgi);
             inventarioArticulo.setStockSeguridad(stockSeguridad);

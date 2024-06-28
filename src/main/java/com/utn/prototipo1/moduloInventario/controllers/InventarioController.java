@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -101,5 +102,31 @@ public class InventarioController  {
             model.addAttribute("inventarioArticulo", inventarioArticulos);
             return "MaestroInventarioArticulo";
         }
+        @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/calcularVariablesForm/{id}")
+        public String showCalcularVariablesForm(@PathVariable("id") Long id, Model model) {
+           model.addAttribute("inventarioArticuloId", id);
+        return "calcularVariableForm";
+        }
 
+    @PostMapping("/calcularVariables")
+    public String calcularVariables(@RequestParam Long inventarioArticuloId,
+                                    @RequestParam Double costoAlmacenamiento,
+                                    @RequestParam Double desviacion,
+                                    RedirectAttributes redirectAttributes) {
+        inventarioArticuloService.calcularVariables(inventarioArticuloId, costoAlmacenamiento, desviacion);
+        InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId);
+        Long inventarioId = inventarioArticulo.getInventario().getId();
+        redirectAttributes.addAttribute("inventarioId", inventarioId);
+        redirectAttributes.addAttribute("inventarioArticuloId", inventarioArticuloId);
+        return "redirect:/inventarios/" + inventarioId + "/inventarioArticulos/valoresCalculados/" + inventarioArticuloId;
     }
+
+    @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/valoresCalculados/{inventarioArticuloId}")
+    public String showValoresCalculados(@PathVariable Long inventarioId,
+                                        @PathVariable Long inventarioArticuloId,
+                                        Model model) {
+        InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId);
+        model.addAttribute("inventarioArticulo", inventarioArticulo);
+        return "VistaValoresCalculados";
+    }
+}

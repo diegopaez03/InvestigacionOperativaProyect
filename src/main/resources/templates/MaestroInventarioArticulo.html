@@ -18,19 +18,19 @@
         <thead>
         <tr>
             <th scope="col">Numero de Inventario</th>
-            <th scope="col">Numero de InventarioArticulosa</th>
             <th scope="col">Articulo</th>
-            <!--<th scope="col">Acciones</th>-->
+            <th scope="col">Tipo Modelo</th>
+            <th scope="col">Acciones</th>
        </tr>
        </thead>
        <tbody>
-       <tr th:each="inventarioArticulos : ${inventarioArticulo}">
+       <tr th:each="inventarioArticulo: ${inventarioArticulo}">
            <td th:text="${inventarioArticulo.inventario.id}"></td>
-           <td th:text="${inventarioArticulo.id}"></td>
            <td th:text="${inventarioArticulo.articulo.nombreArticulo}"></td>
-           <!--<td>
-              <a th:href="@{/facturas/{facturaId}/detalles/eliminar/{detalleId}(facturaId=${facturaId}, detalleId=${detalles.id})}" class="btn btn-danger">Eliminar</a>
-          </td>-->
+           <td th:text="${inventarioArticulo.stockActual}"></td>
+           <td>
+               <a th:href="@{/inventarios/{inventarioId}/inventarioArticulos/calcularVariablesForm/{id}(id=${inventarioArticulo.id})}" class="btn btn-warning">Calcular Variables</a>
+          </td>
        </tr>
        </tbody>
    </table>
