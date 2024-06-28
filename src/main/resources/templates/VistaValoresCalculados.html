@@ -7,18 +7,33 @@
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <h1>Resultado de Cálculo de Variables</h1>
-            <hr>
-            <h3>Punto de Pedido: <span th:text="${inventarioArticulo.puntoPedido}"></span></h3>
-            <h3>Lote Fijo: <span th:text="${inventarioArticulo.loteFijo}"></span></h3>
-            <h3>Stock de Seguridad: <span th:text="${inventarioArticulo.stockSeguridad}"></span></h3>
-            <hr>
-            <!-- Corregimos el enlace para volver al listado de artículos -->
-            <a th:href="@{'/inventarios/' + ${inventarioArticulo.inventario.id} + '/inventarioArticulos'}" class="btn btn-primary">Volver al Listado de Artículos</a>
+    <h1 class="mt-1">Valores Calculados</h1>
+    <div class="row mt-3">
+        <div class="col-md-6 text-md-end">
+            <a th:href="@{/inventarios/{inventarioId}/inventarioArticulos(inventarioId=${inventarioId})}" th:text="'Volver al Inventario'">Volver al Inventario</a>
         </div>
     </div>
+    <br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Artículo</th>
+            <th scope="col">Punto de Pedido</th>
+            <th scope="col">Lote Óptimo</th>
+            <th scope="col">Stock de Seguridad</th>
+            <th scope="col">CGI</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${inventarioArticulo.articulo.nombreArticulo}"></td>
+            <td th:text="${inventarioArticulo.puntoPedido}"></td>
+            <td th:text="${inventarioArticulo.loteFijo}"></td>
+            <td th:text="${inventarioArticulo.stockSeguridad}"></td>
+            <td th:text="${inventarioArticulo.CGI}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

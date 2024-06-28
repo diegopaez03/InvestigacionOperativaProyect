@@ -27,7 +27,7 @@ public class Prototipo1Application {
 		System.out.println("Estoy funcionando");
 	}
 
-	/*@Bean
+	@Bean
 	CommandLineRunner init(ArticuloRepository articuloRepository, TipoModeloInventarioRepository tipoModeloInventarioRepository,
 						   ArticuloCategoriaRepository articuloCategoriaRepository, FacturaRepository facturaRepository) {
 		return args -> {
@@ -187,7 +187,7 @@ public class Prototipo1Application {
 
 
 		};
-	}*/
+	}
 
 
 
