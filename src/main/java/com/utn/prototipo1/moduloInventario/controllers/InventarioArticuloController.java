@@ -4,11 +4,13 @@ import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloInventario.services.InventarioArticuloService;
 import com.utn.prototipo1.moduloInventario.services.InventarioServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @CrossOrigin(origins = "*")
-@RequestMapping(path = "inventarioarticulo")
+@RequestMapping(path = "inventarioArticulo")
 
 public class InventarioArticuloController {
     @Autowired
@@ -21,15 +23,6 @@ public class InventarioArticuloController {
     private InventarioArticuloService inventarioArticuloService;
 
 
-    @GetMapping("/{id}/calcular-y-actualizar")
-    public String calcularYActualizar(
-            @RequestParam Long inventarioArticuloId,
-            @RequestParam String tipoModeloInventario,
-            @RequestParam Double parametro1,
-            @RequestParam Double parametro2) {
 
-        inventarioArticuloService.calcularVariables(inventarioArticuloId, tipoModeloInventario, parametro1, parametro2);
-
-        return "MaestroInventarioArticulo";
-    }
 }
+

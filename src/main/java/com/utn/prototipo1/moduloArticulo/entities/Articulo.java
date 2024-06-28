@@ -13,7 +13,6 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-@Data
 @Builder
 public class Articulo extends BaseEntidad {
 
