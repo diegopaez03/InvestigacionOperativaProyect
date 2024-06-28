@@ -6,12 +6,37 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
           crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .result-title {
+            color: #343a40;
+            margin-bottom: 30px;
+        }
+        .result-text {
+            font-size: 1.2em;
+            color: #495057;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <h2>Resultados de Predicción de Demanda</h2>
-    <p>Método utilizado: <span th:text="${metodo}"></span></p>
-    <p>Predicción: <span th:text="${prediccion}"></span></p>
+    <h2 class="result-title">Resultados de Predicción de Demanda</h2>
+    <p class="result-text">Método utilizado: <span class="highlight" th:text="${metodo}"></span></p>
+    <p class="result-text">Predicción: <span class="highlight" th:text="${prediccion}"></span></p>
 </div>
 </body>
 </html>
+

@@ -1,6 +1,8 @@
 package com.utn.prototipo1.moduloDemanda.controllers;
 
 
+import com.utn.prototipo1.moduloArticulo.entities.Articulo;
+import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 import com.utn.prototipo1.moduloDemanda.services.DemandaService;
 import com.utn.prototipo1.moduloDemanda.services.PrediccionDemandaService;
@@ -23,6 +25,9 @@ public class PrediccionDemandaController {
 
     @Autowired
     DemandaService demandaService;
+
+    @Autowired
+    ArticuloService articuloService;
 
     @GetMapping("/formulario")
     public String mostrarFormularioPrediccion() {
