@@ -14,4 +14,6 @@ public interface DemandaRepository extends BaseRepository<Demanda, Long> {
     Demanda findByArticulo(Articulo articulo);
 
     List<Demanda> findAllByArticulo(Articulo articulo);
+
+    List<Demanda> findAllByPeriodoYear(int periodoYear);
 }

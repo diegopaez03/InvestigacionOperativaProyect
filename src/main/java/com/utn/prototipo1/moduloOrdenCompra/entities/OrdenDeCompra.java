@@ -16,8 +16,6 @@ import java.util.List;
 @Builder
 public class OrdenDeCompra extends BaseEntidad {
 
-    private int tamanoLote;
-
     @Column(name = "fechaOrdenDeCompra")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaOrdenDeCompra;

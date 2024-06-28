@@ -1,6 +1,6 @@
 package com.utn.prototipo1.moduloDemanda.services;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -17,7 +17,6 @@ import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 import com.utn.prototipo1.moduloDemanda.repositories.DemandaRepository;
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
-import com.utn.prototipo1.moduloVenta.repositories.FacturaRepository;
 import com.utn.prototipo1.moduloVenta.services.FacturaServiceImpl;
 
 @Service
@@ -41,6 +40,10 @@ public class DemandaService extends BaseServicesImpl<Demanda, Long> implements I
         Articulo articulo = articuloRepository.findById(idArticulo)
         .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + idArticulo));
         return demandaRepository.findAllByArticulo(articulo);
+    }
+
+    public List<Demanda> getDemandasByYear(int periodoYear) {
+        return demandaRepository.findAllByPeriodoYear(periodoYear);
     }
 
    /*public Demanda generarDemanda(CrearDemandaDto crearDemandaDto) {

@@ -20,9 +20,6 @@ public class OrdenDeCompraDTO {
     @NonNull
     private long idEOC;
 
-    @NonNull
-    private int tamanoLote;
-
     private List<DetalleOrdenCompraDTO> detalles;
 
     @NoArgsConstructor

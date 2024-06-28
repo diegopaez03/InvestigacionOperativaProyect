@@ -1,6 +1,10 @@
 package com.utn.prototipo1.moduloOrdenCompra.controllers;
 
+import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
+import com.utn.prototipo1.moduloInventario.entities.Inventario;
+import com.utn.prototipo1.moduloInventario.services.InventarioArticuloService;
+import com.utn.prototipo1.moduloInventario.services.InventarioServices;
 import com.utn.prototipo1.moduloOrdenCompra.dto.OrdenDeCompraDTO;
 import com.utn.prototipo1.moduloOrdenCompra.entities.DetalleOrdenCompra;
 import com.utn.prototipo1.moduloOrdenCompra.entities.EstadoOrdenDeCompra;
@@ -40,6 +44,12 @@ public class OrdenDeCompraController {
     @Autowired
     private ArticuloService articuloService;
 
+    @Autowired
+    private InventarioServices inventarioServices;
+
+    @Autowired
+    private InventarioArticuloService inventarioArticuloService;
+
     //Métodos de front
     @GetMapping("/{id}")
     public String verOrdenDeCompra(@PathVariable("id") Long id, Model model) throws Exception {
@@ -64,10 +74,13 @@ public class OrdenDeCompraController {
 
     @GetMapping("/generar")
     public String formularioGenerarOC(Model model){
+        Inventario inventario = inventarioServices.obtenerUltimoInventario();
+
         model.addAttribute("ordenDeCompra", new OrdenDeCompraDTO());
         model.addAttribute("proveedores", proveedorService.getProveedor());
         model.addAttribute("estadoOrdenCompra", estadoOrdenCompraService.getEstadoOrdenCompra());
-        model.addAttribute("articulos", articuloService.getAllArticulos());
+        //Cambiar por inventario articulo
+        model.addAttribute("articulos", inventario.getInventarioArticulos());
         return "moduloOrdenCompra/generarOrdenDeCompra";
     }
 
@@ -90,7 +103,6 @@ public class OrdenDeCompraController {
             OrdenDeCompra ordenDeCompra = new OrdenDeCompra();
             ordenDeCompra.setEstadoOrdenDeCompra(estadoOrdenDeCompra);
             ordenDeCompra.setProveedor(proveedor);
-            ordenDeCompra.setTamanoLote(ordenDeCompraDTO.getTamanoLote());
 
             List<DetalleOrdenCompra> detalleOrdenCompras = new ArrayList<>();
             ordenDeCompraDTO.getDetalles().forEach(detalle -> {
@@ -107,6 +119,11 @@ public class OrdenDeCompraController {
             ordenDeCompra.setDetalleOrdenCompra(detalleOrdenCompras);
 
             ordenDeCompraService.save(ordenDeCompra);
+
+            ordenDeCompra.getDetalleOrdenCompra().forEach(detalle -> {
+                inventarioArticuloService.sumarStock(detalle.getArticulo(), detalle.getCantidad());
+            });
+
             return new ModelAndView("redirect:/ordenDeCompra/list"); 
         } catch (Exception e) {
             throw new RuntimeException(e);

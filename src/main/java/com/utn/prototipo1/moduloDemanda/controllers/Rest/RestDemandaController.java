@@ -48,4 +48,9 @@ public class RestDemandaController {
         return demandaService.getDemandasByArticulo(idArticulo);
     }
     
+    @GetMapping("year/{periodoYear}")
+    public List<Demanda> getDemandasByYear(@PathVariable("periodoYear") int periodoYear) {
+        return demandaService.getDemandasByYear(periodoYear);
+    }
+    
 }

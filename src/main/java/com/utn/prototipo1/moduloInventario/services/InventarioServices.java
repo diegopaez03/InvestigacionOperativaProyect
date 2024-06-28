@@ -12,4 +12,6 @@ public interface InventarioServices  {
     void crearInventario(Inventario inventario);
     public Inventario deleteById(Long id);
     Inventario obtenerInventarioPorId(Long id);
+
+    public Inventario obtenerUltimoInventario();
 }

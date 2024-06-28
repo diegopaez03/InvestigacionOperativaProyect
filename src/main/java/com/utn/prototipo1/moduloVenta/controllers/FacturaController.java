@@ -24,7 +24,7 @@ public class FacturaController {
     private FacturaService facturaService;
 
     @Autowired
-    private  ArticuloService articuloService;
+    private ArticuloService articuloService;
 
     @Autowired
     private DetalleFacturaService detalleFacturaService;
@@ -32,7 +32,9 @@ public class FacturaController {
     @Autowired
     DemandaService demandaService;
 
-    //Listar las facturas que se crean
+    @Autowired
+    DemandaService demandaService;
+
     @GetMapping("/maestrofactura")
     public String mostrarTodasLasFacturas(Model model) {
         model.addAttribute("facturas", facturaService.obtenerTodasLasFacturas());
@@ -48,7 +50,6 @@ public class FacturaController {
         return "crear-factura";
     }
 
-
     @PostMapping("/facturas")
     public String crearFactura(@ModelAttribute("factura") Factura factura) {
         factura.setFechaFactura(new Date()); // Asignar la fecha y hora actual
@@ -59,16 +60,11 @@ public class FacturaController {
         return "redirect:/maestrofactura";
     }
 
-
-    //borrar la factura
     @GetMapping("/maestrofactura/{id}")
-    public String eliminarFactura(@PathVariable("id") Long id){
+    public String eliminarFactura(@PathVariable("id") Long id) {
         facturaService.deleteFactura(id);
         return "redirect:/maestrofactura";
     }
-
-
-    //DETALLE FACTURA ------------------------------
 
     @GetMapping("/facturas/{facturaId}/detalles/nuevo")
     public String mostrarFormularioCrearDetalle(@PathVariable("facturaId") Long facturaId, Model model) {
@@ -116,16 +112,10 @@ public class FacturaController {
         return "redirect:/maestrofactura";
     }
 
-
     @GetMapping("/facturas/{facturaId}/detalles")
     public String verDetallesFactura(@PathVariable("facturaId") Long facturaId, Model model) {
         List<DetalleFactura> detallesFactura = detalleFacturaService.obtenerDetallesPorFactura(facturaId);
         model.addAttribute("detallesFactura", detallesFactura);
         return "MaestroDetalleFactura";
     }
-
-
-
 }
-
-

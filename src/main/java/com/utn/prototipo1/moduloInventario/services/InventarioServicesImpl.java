@@ -40,4 +40,12 @@ public class InventarioServicesImpl implements InventarioServices{
         inventarioRepository.save(inventario);
     }
 
+    public Inventario obtenerUltimoInventario() {
+        List<Inventario> inventarios = inventarioRepository.findAllByOrderByFechaHastaDesc();
+        if (!inventarios.isEmpty()) {
+            return inventarios.get(0);
+        } else {
+            return null;
+        }
+    }
 }
