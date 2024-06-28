@@ -21,6 +21,7 @@
             <th scope="col">Articulo</th>
             <th scope="col">Stock Actual</th>
             <th scope="col">Acciones</th>
+            <th scope="col">CGI</th>
        </tr>
        </thead>
        <tbody>
@@ -31,6 +32,7 @@
            <td>
                <a th:href="@{/inventarios/{inventarioId}/inventarioArticulos/calcularVariablesForm/{id}(id=${inventarioArticulo.id})}" class="btn btn-warning">Calcular Variables</a>
           </td>
+           <td th:text="${inventarioArticulo.CGI}"></td>
        </tr>
        </tbody>
    </table>

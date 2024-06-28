@@ -91,11 +91,15 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
                 inventarioArticulo.setArticulo(articuloExistente);
                 inventarioArticulo.setInventario(inventario);
                 inventario.getInventarioArticulos().add(inventarioArticulo);
+                inventarioArticulo.setCGI(0);
+                inventarioArticulo.setStockSeguridad(0);
+                inventarioArticulo.setPuntoPedido(0);
+                inventarioArticulo.setLoteFijo(0);
                 inventarioArticulo.setStockActual(0);
                 inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
                 inventarioRepository.save(inventario);
                 InventarioArticulo inventarioArticulo1 = inventarioArticuloRepository.save(inventarioArticulo);
-                calcularVariables(inventarioArticulo1.getId(),1.0,1.0);
+                calcularVariables(inventarioArticulo1.getId(),0.0,0.0);
 
             }else {
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
@@ -156,7 +160,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
 
         } else if ("Intervalo fijo".equals(tipoModeloInventarioNombre)) {
 
-            double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
+            double lotefijo = Math.sqrt(2.0 * cantdemanda * (costoPedido/costoAlmacenamiento));
             double stockSeguridad =1.64 * desviacion*Math.sqrt(tiempoPedido);
             double cgi = precioArt*cantdemanda + costoAlmacenamiento*lotefijo/2 + costoPedido * cantdemanda/lotefijo;
             inventarioArticulo.setCGI(cgi);
