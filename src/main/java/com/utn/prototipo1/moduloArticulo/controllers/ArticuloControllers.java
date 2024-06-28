@@ -3,12 +3,15 @@ package com.utn.prototipo1.moduloArticulo.controllers;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloCategoriaService;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
+import com.utn.prototipo1.moduloDemanda.entities.Demanda;
+import com.utn.prototipo1.moduloDemanda.services.DemandaService;
 import com.utn.prototipo1.moduloOrdenCompra.entities.EstadoOrdenDeCompra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,6 +23,9 @@ public class ArticuloControllers {
 
     @Autowired
     private ArticuloCategoriaService articuloCategoriaService;
+
+    @Autowired
+    private DemandaService demandaService;
 
 
     @GetMapping("/articulos")
@@ -67,6 +73,21 @@ public class ArticuloControllers {
 
         articuloService.saveArticulo(articulo1);
         return "redirect:/articulos";
+    }
+
+    @GetMapping("/articulos/calculardemanda/{idArticulo}")
+    public String mostrarFormularioCalcularDemanda(@PathVariable("idArticulo") Long idArticulo, Model modelo) {
+        List<Demanda> demandas = demandaService.getDemandasByArticulo(idArticulo);
+        
+        List<Float> cantidadesDemanda = new ArrayList<Float>();
+
+        demandas.forEach(demanda -> {
+            cantidadesDemanda.add(demanda.getCantidad());
+        });
+
+        modelo.addAttribute("cantidadesDemanda", cantidadesDemanda);
+        // Lógica adicional si es necesaria antes de mostrar el formulario
+        return "formulario"; // Esto debería apuntar a "formulario.html" en templates/
     }
 
 }

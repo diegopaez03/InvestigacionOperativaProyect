@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface ProveedorRepository extends BaseRepository<Proveedor,Long> {
 
     public Proveedor findProveedorByProveedorArticulo(ProveedorArticulo proveedorArticulo);
+    
 }

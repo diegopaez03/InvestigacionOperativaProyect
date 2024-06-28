@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+
 @Controller
 @RequestMapping("ordenDeCompra")
 @CrossOrigin(origins = "*")
@@ -72,6 +74,13 @@ public class OrdenDeCompraController {
         }
     }
 
+    @GetMapping("/articulos/{proveedorId}")
+    @ResponseBody
+    public List<Articulo> getArticulosPorProveedor(@PathVariable Long proveedorId) {
+        Proveedor proveedor = proveedorService.getProveedorById(proveedorId);
+        return proveedorService.getArticulosOfProveedor(proveedor);
+    }
+
     @GetMapping("/generar")
     public String formularioGenerarOC(Model model){
         Inventario inventario = inventarioServices.obtenerUltimoInventario();
@@ -79,8 +88,10 @@ public class OrdenDeCompraController {
         model.addAttribute("ordenDeCompra", new OrdenDeCompraDTO());
         model.addAttribute("proveedores", proveedorService.getProveedor());
         model.addAttribute("estadoOrdenCompra", estadoOrdenCompraService.getEstadoOrdenCompra());
-        //Cambiar por inventario articulo
-        model.addAttribute("articulos", inventario.getInventarioArticulos());
+        
+        model.addAttribute("articulos", articuloService.getAllArticulos());
+        model.addAttribute("inventario", inventario);
+
         return "moduloOrdenCompra/generarOrdenDeCompra";
     }
 
@@ -90,6 +101,17 @@ public class OrdenDeCompraController {
 
         return "moduloOrdenCompra/menuOrdenDeCompra";
     }
+
+    @GetMapping("/{idOrdenDeCompra}/actualizarEstado")
+    public String actualizarEstadoOrdenDeCompra(@PathVariable("idOrdenDeCompra") Long idOrdenDeCompra, Model model) throws Exception {
+        OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(idOrdenDeCompra);
+        List<EstadoOrdenDeCompra> estadosOrdenDeCompra = estadoOrdenCompraService.getEstadoOrdenCompra();
+
+        model.addAttribute("ordenDeCompra", ordenDeCompra);
+        model.addAttribute("estadosOrdenDeCompra", estadosOrdenDeCompra);
+        return "moduloOrdenCompra/actualizarEstadoOC";
+    }
+    
     
 
     //Métodos de funcionamiento
@@ -98,7 +120,8 @@ public class OrdenDeCompraController {
         try {
             Proveedor proveedor = this.proveedorService.getProveedorById(ordenDeCompraDTO.getIdProveedor());
 
-            EstadoOrdenDeCompra estadoOrdenDeCompra = this.estadoOrdenCompraService.getEstadoOrdenDeCompraById(ordenDeCompraDTO.getIdEOC());
+            Long idEstadoOC = Long.parseLong("1");
+            EstadoOrdenDeCompra estadoOrdenDeCompra = this.estadoOrdenCompraService.getEstadoOrdenDeCompraById(idEstadoOC);
 
             OrdenDeCompra ordenDeCompra = new OrdenDeCompra();
             ordenDeCompra.setEstadoOrdenDeCompra(estadoOrdenDeCompra);
@@ -128,6 +151,16 @@ public class OrdenDeCompraController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    @PostMapping("/actualizarEOC/{id}")
+        public ModelAndView actualizarEstadoOrdenDeCompra(@PathVariable("id") Long id, @RequestParam("idEOC") Long idEOC) throws Exception {
+            OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);
+            EstadoOrdenDeCompra estadoOrdenDeCompra = estadoOrdenCompraService.getEstadoOrdenDeCompraById(idEOC);
+
+            ordenDeCompra.setEstadoOrdenDeCompra(estadoOrdenDeCompra);
+            ordenDeCompraService.save(ordenDeCompra);
+        return new ModelAndView("redirect:/ordenDeCompra/" + id);
     }
 
 }

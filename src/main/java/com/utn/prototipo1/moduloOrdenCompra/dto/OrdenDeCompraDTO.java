@@ -17,9 +17,6 @@ public class OrdenDeCompraDTO {
     @NonNull
     private long idProveedor;
 
-    @NonNull
-    private long idEOC;
-
     private List<DetalleOrdenCompraDTO> detalles;
 
     @NoArgsConstructor

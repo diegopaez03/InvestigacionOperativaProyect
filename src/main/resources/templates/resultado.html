@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Resultados de Predicción de Demanda</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container">
+<div class="container mt-4">
     <h2>Resultados de Predicción de Demanda</h2>
-    <p>Método utilizado: <span th:text="${metodo}"></span></p>
-    <p>Predicción: <span th:text="${prediccion}"></span></p>
+    <div class="my-4">
+        <p><strong>Método utilizado:</strong> <span th:text="${metodo}"></span></p>
+        <p><strong>Predicción:</strong> <span th:text="${prediccion}"></span></p>
+        <p><strong>Error:</strong> <span th:text="${error}"></span></p>
+        <p><strong>Error Absoluto:</strong> <span th:text="${errorAbsoluto}"></span></p>
+    </div>
 </div>
 </body>
 </html>
+
+

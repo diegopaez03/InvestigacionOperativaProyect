@@ -1,5 +1,6 @@
 package com.utn.prototipo1.moduloOrdenCompra.controllers.Rest;
 
+import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloOrdenCompra.entities.Proveedor;
 import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
@@ -7,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -26,6 +30,15 @@ public class RestProveedorController {
     public  Proveedor createProveedor(@RequestBody Proveedor proveedor){
         return  proveedorService.saveProveedor(proveedor);
     }
+
+    @GetMapping("/{idProveedor}/articulos")
+    public List<Articulo> getArticulosDeProveedor(@PathVariable("idProveedor") Long idProveedor) {
+        Proveedor proveedor = proveedorService.getProveedorById(idProveedor);
+
+        return proveedorService.getArticulosOfProveedor(proveedor);
+        
+    }
+    
 
     @GetMapping("/byArticulo/{idArticulo}")
     public List<Proveedor> getProveedoresConArticuloById(@PathVariable("idArticulo") Long idArticulo) {
