@@ -32,9 +32,6 @@ public class FacturaController {
     @Autowired
     DemandaService demandaService;
 
-    @Autowired
-    DemandaService demandaService;
-
     @GetMapping("/maestrofactura")
     public String mostrarTodasLasFacturas(Model model) {
         model.addAttribute("facturas", facturaService.obtenerTodasLasFacturas());
