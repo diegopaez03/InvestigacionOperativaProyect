@@ -66,7 +66,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
     }
 
     @Override
-    public void sumarStock(Articulo articulo, int cantidad) {
+    public void sumarStock(Articulo articulo, float cantidad) {
 
             Articulo articuloExistente = articuloRepository.findById(articulo.getId())
                     .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));

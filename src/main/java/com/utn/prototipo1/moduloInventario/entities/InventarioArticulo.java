@@ -1,5 +1,6 @@
 package com.utn.prototipo1.moduloInventario.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.utn.prototipo1.Base.entities.BaseEntidad;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.entities.ArticuloCategoria;
@@ -58,6 +59,7 @@ public class InventarioArticulo extends BaseEntidad {
         }
     }
     */
+    @JsonIgnore
     @NonNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "codInventario")
