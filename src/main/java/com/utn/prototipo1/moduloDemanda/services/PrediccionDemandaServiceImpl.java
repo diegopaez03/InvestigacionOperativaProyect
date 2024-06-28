@@ -1,11 +1,24 @@
 package com.utn.prototipo1.moduloDemanda.services;
 
+import com.utn.prototipo1.moduloArticulo.entities.Articulo;
+import com.utn.prototipo1.moduloDemanda.entities.Demanda;
+import com.utn.prototipo1.moduloDemanda.entities.PrediccionDemanda;
+import com.utn.prototipo1.moduloDemanda.repositories.PrediccionDemandaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class PrediccionDemandaServiceImpl implements PrediccionDemandaService{
+
+
+    @Autowired
+    PrediccionDemandaRepository prediccionDemandaRepository;
+
+    @Autowired
+    DemandaService demandaService;
 
     @Override
     public double calcularPromedioMovil(double[] demandaReal, int periodos) {
@@ -56,4 +69,42 @@ public class PrediccionDemandaServiceImpl implements PrediccionDemandaService{
 
         return prediccion;
     }
+
+    @Override
+    public void guardarPrediccion(String demandaReal, double demandaPredicha) {
+        PrediccionDemanda nuevaPrediccion = new PrediccionDemanda();
+        nuevaPrediccion.setDemandaReal(demandaReal);
+        nuevaPrediccion.setDemandaPredicha(demandaPredicha);
+        prediccionDemandaRepository.save(nuevaPrediccion);
+    }
+
+
+    @Override
+    public List<PrediccionDemanda> obtenerTodasLasPredicciones() {
+        return prediccionDemandaRepository.findAll();
+    }
+
+
+    @Override
+    public double calcularErrorPrediccion(double[] demandaReal, double[] predicciones) {
+        double error = 0.0;
+        int length = Math.min(demandaReal.length, predicciones.length);
+        for (int i = 0; i < length; i++) {
+            error += demandaReal[i] - predicciones[i];
+        }
+        return error;
+    }
+
+    @Override
+    public double calcularErrorAbsolutoPrediccion(double[] demandaReal, double[] predicciones) {
+        double errorAbsoluto = 0.0;
+        int length = Math.min(demandaReal.length, predicciones.length);
+        for (int i = 0; i < length; i++) {
+            errorAbsoluto += Math.abs(demandaReal[i] - predicciones[i]);
+        }
+        return errorAbsoluto;
+    }
+
+
+
 }

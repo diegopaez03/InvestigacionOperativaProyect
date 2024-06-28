@@ -13,6 +13,8 @@ import com.utn.prototipo1.moduloInventario.repositories.InventarioArticuloReposi
 
 import com.utn.prototipo1.moduloInventario.repositories.InventarioRepository;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
+import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
+import com.utn.prototipo1.moduloVenta.entities.Factura;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +71,13 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
     }
 
     @Override
+    public void actualizarStockPorFactura(Factura factura) {
+        for (DetalleFactura detalle : factura.getDetalleFacturas()) {
+            restarStock(detalle.getArticulo(), detalle.getCantidad());
+        }
+    }
+
+    @Override
     public void sumarStock(Articulo articulo, float cantidad) {
 
             Articulo articuloExistente = articuloRepository.findById(articulo.getId())
@@ -91,8 +100,13 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
                 inventarioArticulo.setArticulo(articuloExistente);
                 inventarioArticulo.setInventario(inventario);
                 inventario.getInventarioArticulos().add(inventarioArticulo);
+                inventarioArticulo.setCGI(0);
+                inventarioArticulo.setStockSeguridad(0);
+                inventarioArticulo.setPuntoPedido(0);
+                inventarioArticulo.setLoteFijo(0);
                 inventarioArticulo.setStockActual(0);
                 inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
+                inventarioRepository.save(inventario);
                 InventarioArticulo inventarioArticulo1 = inventarioArticuloRepository.save(inventarioArticulo);
                 // calcularVariables(inventarioArticulo1.getId(),1.0,1.0);
 
@@ -102,7 +116,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
             }
     }
     @Override
-    public void restarStock(Articulo articulo, int cantidad){
+    public void restarStock(Articulo articulo, int cantidad) {
         Articulo articuloExistente = articuloRepository.findById(articulo.getId())
                 .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
 
@@ -110,8 +124,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
         Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
                 .orElseThrow(() -> new RuntimeException("Inventario no encontrado con esta fecha"));
 
-
-        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articuloExistente);
+        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario);
         if (inventarioArticulo == null) {
             throw new RuntimeException("InventarioArticulo no encontrado para el artículo especificado");
         }
@@ -120,6 +133,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
             throw new IllegalArgumentException("Stock insuficiente. Stock actual: "
                     + inventarioArticulo.getStockActual() + ", Cantidad requerida: " + cantidad);
         }
+
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() - cantidad);
         inventarioArticuloRepository.save(inventarioArticulo);
     }
@@ -145,7 +159,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
         if ("Lote fijo".equals(tipoModeloInventarioNombre)) {
 
             double puntoPedido = tiempoPedido * cantdemanda;
-            double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
+            double lotefijo = Math.sqrt(2.0* cantdemanda *(costoPedido/costoAlmacenamiento));
             double stockSeguridad =1.64 * desviacion*Math.sqrt(tiempoPedido);
             double cgi = precioArt*cantdemanda + costoAlmacenamiento*lotefijo/2 + costoPedido * cantdemanda/lotefijo;
             inventarioArticulo.setCGI(cgi);
@@ -155,7 +169,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
 
         } else if ("Intervalo fijo".equals(tipoModeloInventarioNombre)) {
 
-            double lotefijo = Math.sqrt(2*cantdemanda*(costoPedido/costoAlmacenamiento));
+            double lotefijo = Math.sqrt(2.0 * cantdemanda * (costoPedido/costoAlmacenamiento));
             double stockSeguridad =1.64 * desviacion*Math.sqrt(tiempoPedido);
             double cgi = precioArt*cantdemanda + costoAlmacenamiento*lotefijo/2 + costoPedido * cantdemanda/lotefijo;
             inventarioArticulo.setCGI(cgi);

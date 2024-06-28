@@ -96,6 +96,7 @@
                    class="btn btn-info btn-sm mr-2">Editar</a>
                 <a th:href="@{/articulos/{id}(id=${articulo.id})}"
                    class="btn btn-danger btn-sm">Borrar</a>
+                <a th:href="@{/articulos/calculardemanda/{id}(id=${articulo.id})}" class="btn btn-primary btn-sm">Calcular Demanda</a> <!-- Nuevo botón -->
             </td>
         </tr>
         </tbody>
