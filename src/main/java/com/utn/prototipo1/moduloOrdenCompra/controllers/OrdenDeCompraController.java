@@ -79,8 +79,10 @@ public class OrdenDeCompraController {
         model.addAttribute("ordenDeCompra", new OrdenDeCompraDTO());
         model.addAttribute("proveedores", proveedorService.getProveedor());
         model.addAttribute("estadoOrdenCompra", estadoOrdenCompraService.getEstadoOrdenCompra());
-        //Cambiar por inventario articulo
-        model.addAttribute("articulos", inventario.getInventarioArticulos());
+        
+        model.addAttribute("articulos", articuloService.getAllArticulos());
+        model.addAttribute("inventario", inventario);
+
         return "moduloOrdenCompra/generarOrdenDeCompra";
     }
 

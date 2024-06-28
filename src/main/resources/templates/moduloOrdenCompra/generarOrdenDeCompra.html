@@ -11,7 +11,7 @@
     <div class="container mt-5">
         <h2>Generar una Orden de Compra</h2>
         <form id="mainForm" th:action="@{/ordenDeCompra/generar}" th:object="${ordenDeCompra}" method="post">
-            <div style="display: flex; justify-content: initial;">
+            <div style="display: flex;">
                 <div class="mb-3" style="width: 33%; margin-right: .5%;">
                     <label for="idProveedor" class="form-label">Proveedor</label>
                     <select th:field="*{idProveedor}" class="form-control">
@@ -37,12 +37,11 @@
                     </div>
                     <div class="mb-3" style="width: 60%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
                         <label for="idArticulo" class="form-label">Artículo</label>
-                        <select id="idArticulo" class="form-control" onchange="actualizarPrecio()">
+                        <select id="idArticulo" class="form-control" onchange="actualizarCantidadYPrecio()">
                             <option value="">--Seleccione un artículo--</option>
-                            <option th:each="articulo : ${articulos}" th:value="${articulo.articulo.id}"
-                                    th:data-precio="${'$ ' + articulo.articulo.precioCompra}"
-                                    th:data-cantidad="${articulo.articulo.loteFijo}"
-                                    th:text="${articulo.articulo.nombreArticulo}">Artículo</option>
+                            <option th:each="articulo : ${articulos}" th:value="${articulo.id}"
+                                    th:data-precio="${'$ ' + articulo.precioCompra}"
+                                    th:text="${articulo.nombreArticulo}">Artículo</option>
                         </select>
                     </div>
                     <div class="mb-3" style="width: 15%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
@@ -92,11 +91,41 @@
         <script>
             let detalleCounter = 1;
 
-            function actualizarPrecio() {
+            function actualizarCantidadYPrecio() {
                 const selectArticulo = document.getElementById('idArticulo');
                 const selectedOption = selectArticulo.options[selectArticulo.selectedIndex];
+                const articuloId = selectedOption.value;
+
+                // Aquí llamamos a una función para obtener la cantidad basada en el artículo seleccionado
+                obtenerCantidadPorArticulo(articuloId)
+                    .then(cantidad => {
+                        document.getElementById('cantidad').value = cantidad;
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener la cantidad:', error);
+                        document.getElementById('cantidad').value = 1; // Valor por defecto si hay un error
+                    });
+
                 const precio = selectedOption.getAttribute('data-precio');
                 document.getElementById('precio').value = precio;
+            }
+
+            function obtenerCantidadPorArticulo(articuloId) {
+                return new Promise((resolve, reject) => {
+                    const inventarios = /*[[${inventario}]]*/ [];
+                    let cantidad = 1;
+
+                    for (const inventario of inventarios) {
+                        for (const inventarioArticulo of inventario.inventarioArticulos) {
+                            if (inventarioArticulo.articulo.id == articuloId) {
+                                cantidad = inventarioArticulo.loteFijo;
+                                break;
+                            }
+                        }
+                    }
+
+                    resolve(cantidad);
+                });
             }
 
             function agregarDetalle() {
