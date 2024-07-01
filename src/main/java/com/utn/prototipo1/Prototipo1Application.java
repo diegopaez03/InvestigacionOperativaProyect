@@ -34,22 +34,6 @@ public class Prototipo1Application {
 		SpringApplication.run(Prototipo1Application.class, args);
 		System.out.println("Estoy funcionando");
 	}
-    /*@Bean
-	CommandLineRunner init(ArticuloRepository articuloRepository, TipoModeloInventarioRepository tipoModeloInventarioRepository,
-						   ArticuloCategoriaRepository articuloCategoriaRepository, FacturaRepository facturaRepository) {
-        return args -> {
-
-            Date fechaFactura8 = new GregorianCalendar(2020, Calendar.DECEMBER, 16).getTime();
-            Date fechaFactura6 = new GregorianCalendar(2018, Calendar.FEBRUARY, 3).getTime();
-
-            Factura factura8 = Factura.builder().fechaFactura(fechaFactura8).build();
-            Factura factura6 = Factura.builder().fechaFactura(fechaFactura6).build();
-
-            facturaRepository.save(factura6);
-            facturaRepository.save(factura8);
-
-        };
-    }*/
 
 	/*@Bean
 	CommandLineRunner init(
@@ -229,8 +213,6 @@ public class Prototipo1Application {
 
 		};
 	}*/
-
-
 
 
 }

@@ -9,10 +9,15 @@ import java.util.List;
 public interface FacturaService {
 
     List<Factura> obtenerTodasLasFacturas();
+
     void crearFactura(Factura factura);
+
     public Factura deleteFactura(Long id);
+
     Factura obtenerFacturaPorId(Long id);
+
     void actualizarTotalFactura(Long facturaId);
+
     public void actualizarStockPorDetalleFactura(DetalleFactura detalleFactura);
 
     public List<Factura> buscarFacturasFechaArticulo(CrearDemandaDto crearDemandaDto);
