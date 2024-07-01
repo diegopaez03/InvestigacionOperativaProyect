@@ -6,164 +6,164 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Generar una Orden de Compra</h2>
-        <form id="mainForm" th:action="@{/ordenDeCompra/generar}" th:object="${ordenDeCompra}" method="post">
-            <div style="display: flex;">
-                <div class="mb-3" style="width: 33%; margin-right: .5%;">
-                    <label for="idProveedor" class="form-label">Proveedor</label>
-                    <select id="idProveedor" th:field="*{idProveedor}" class="form-control" onchange="actualizarArticulos()">
-                        <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}" th:text="${proveedor.nombreProveedor}">Proveedor</option>
+<div class="container mt-5">
+    <h2>Generar una Orden de Compra</h2>
+    <form id="mainForm" th:action="@{/ordenDeCompra/generar}" th:object="${ordenDeCompra}" method="post">
+        <div style="display: flex;">
+            <div class="mb-3" style="width: 33%; margin-right: .5%;">
+                <label for="idProveedor" class="form-label">Proveedor</label>
+                <select id="idProveedor" th:field="*{idProveedor}" class="form-control" onchange="actualizarArticulos()">
+                    <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}" th:text="${proveedor.nombreProveedor}">Proveedor</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <h4>Agregar Artículos</h4>
+            <div class="mt-4" style="display: flex; align-items: flex-end;">
+                <div class="mb-3" style="width: 10%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
+                    <label for="cantidad" class="form-label">Cantidad</label>
+                    <input type="number" class="form-control" id="cantidad" value="1">
+                </div>
+                <div class="mb-3" style="width: 60%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
+                    <label for="idArticulo" class="form-label">Artículo</label>
+                    <select id="idArticulo" class="form-control" onchange="actualizarCantidadYPrecio()">
+                        <option value="">--Seleccione un artículo--</option>
+                        <!-- Las opciones de artículos se actualizarán dinámicamente -->
                     </select>
                 </div>
-            </div>
-
-            <div class="mt-2">
-                <h4>Agregar Artículos</h4>
-                <div class="mt-4" style="display: flex; align-items: flex-end;">
-                    <div class="mb-3" style="width: 10%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
-                        <label for="cantidad" class="form-label">Cantidad</label>
-                        <input type="number" class="form-control" id="cantidad" value="1">
-                    </div>
-                    <div class="mb-3" style="width: 60%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
-                        <label for="idArticulo" class="form-label">Artículo</label>
-                        <select id="idArticulo" class="form-control" onchange="actualizarCantidadYPrecio()">
-                            <option value="">--Seleccione un artículo--</option>
-                            <!-- Las opciones de artículos se actualizarán dinámicamente -->
-                        </select>
-                    </div>
-                    <div class="mb-3" style="width: 15%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
-                        <label for="precio" class="form-label">Precio</label>
-                        <input type="text" class="form-control" id="precio" readonly>
-                    </div>
-                    <div class="mb-3" style="width: 15%; margin-left: auto; margin-right: auto;">
-                        <button type="button" style="width: 100%;" class="btn btn-secondary" onclick="agregarDetalle()">
-                            Añadir Artículo
-                        </button>
-                    </div>
+                <div class="mb-3" style="width: 15%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
+                    <label for="precio" class="form-label">Precio</label>
+                    <input type="text" class="form-control" id="precio" readonly>
+                </div>
+                <div class="mb-3" style="width: 15%; margin-left: auto; margin-right: auto;">
+                    <button type="button" style="width: 100%;" class="btn btn-secondary" onclick="agregarDetalle()">
+                        Añadir Artículo
+                    </button>
                 </div>
             </div>
+        </div>
 
-            <div class="container" style="margin-top: 5; margin-bottom: auto;">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <table id="detallesOrdenDeCompra" class="table table-striped ">
-                            <caption>
-                                Detalle de la orden de compra
-                            </caption>
-                            <thead class="table-light">
-                                <tr>
-                                    <th class="centered">#</th>
-                                    <th class="centered">Cantidad</th>
-                                    <th class="centered">Artículo</th>
-                                    <th class="centered">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableBody_detalles"></tbody>
-                        </table>
-                    </div>
+        <div class="container" style="margin-top: 5; margin-bottom: auto;">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <table id="detallesOrdenDeCompra" class="table table-striped ">
+                        <caption>
+                            Detalle de la orden de compra
+                        </caption>
+                        <thead class="table-light">
+                        <tr>
+                            <th class="centered">#</th>
+                            <th class="centered">Cantidad</th>
+                            <th class="centered">Artículo</th>
+                            <th class="centered">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tableBody_detalles"></tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
-            <div style="display: flex; justify-content: end;">
-                <a href="#" th:href="@{/ordenDeCompra/list}" class="btn btn-danger" >Cancelar</a>
-                <button type="submit" class="btn btn-primary" style="margin-left: .5%;">
-                    Generar Orden de Compra
-                </button>
-            </div>
-        </form>
+        <div style="display: flex; justify-content: end;">
+            <a href="#" th:href="@{/ordenDeCompra/list}" class="btn btn-danger" >Cancelar</a>
+            <button type="submit" class="btn btn-primary" style="margin-left: .5%;">
+                Generar Orden de Compra
+            </button>
+        </div>
+    </form>
 
-        <!-- jQuery -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-            function actualizarArticulos() {
-                const proveedorId = document.getElementById('idProveedor').value;
-                if (!proveedorId) return;
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function actualizarArticulos() {
+            const proveedorId = document.getElementById('idProveedor').value;
+            if (!proveedorId) return;
 
-                $.ajax({
-                    url: `/restProveedor/${proveedorId}/articulos`,
-                    method: 'GET',
-                    success: function(articulos) {
-                        const selectArticulo = document.getElementById('idArticulo');
-                        selectArticulo.innerHTML = '<option value="">--Seleccione un artículo--</option>';
+            $.ajax({
+                url: `/restProveedor/${proveedorId}/articulos`,
+                method: 'GET',
+                success: function(articulos) {
+                    const selectArticulo = document.getElementById('idArticulo');
+                    selectArticulo.innerHTML = '<option value="">--Seleccione un artículo--</option>';
 
-                        articulos.forEach(articulo => {
-                            const option = document.createElement('option');
-                            option.value = articulo.id;
-                            option.textContent = articulo.nombreArticulo;
-                            option.setAttribute('data-precio', `$ ${articulo.precioCompra}`);
-                            selectArticulo.appendChild(option);
-                        });
-                    },
-                    error: function(error) {
-                        console.error('Error al obtener los artículos:', error);
-                    }
-                });
-            }
-
-            function actualizarCantidadYPrecio() {
-                const selectArticulo = document.getElementById('idArticulo');
-                const selectedOption = selectArticulo.options[selectArticulo.selectedIndex];
-                const precio = selectedOption.getAttribute('data-precio');
-                document.getElementById('precio').value = precio;
-            }
-
-            function agregarDetalle() {
-                const cantidad = parseFloat(document.getElementById('cantidad').value);
-                const idArticulo = document.getElementById('idArticulo').value;
-                const nombreArticulo = document.getElementById('idArticulo').selectedOptions[0].text;
-
-                if (cantidad && idArticulo) {
-                    const tableBody = document.getElementById('tableBody_detalles');
-                    let found = false;
-                    for (let i = 0; i < tableBody.rows.length; i++) {
-                        if (tableBody.rows[i].cells[2].textContent === nombreArticulo) {
-                            const currentCantidad = parseFloat(tableBody.rows[i].cells[1].textContent);
-                            tableBody.rows[i].cells[1].textContent = currentCantidad + cantidad;
-                            tableBody.rows[i].querySelector(`input[name="detalles[${i}].cantidad"]`).value = currentCantidad + cantidad;
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found) {
-                        const newRow = tableBody.insertRow();
-                        newRow.innerHTML = `
-                            <td>${tableBody.rows.length}</td>
-                            <td>${cantidad}</td>
-                            <td>${nombreArticulo}</td>
-                            <td><button type="button" class="btn btn-danger" onclick="eliminarDetalle(this)">Eliminar</button></td>
-                            <input type="hidden" name="detalles[${tableBody.rows.length - 1}].cantidad" value="${cantidad}" />
-                            <input type="hidden" name="detalles[${tableBody.rows.length - 1}].idArticulo" value="${idArticulo}" />
-                        `;
-                    }
+                    articulos.forEach(articulo => {
+                        const option = document.createElement('option');
+                        option.value = articulo.id;
+                        option.textContent = articulo.nombreArticulo;
+                        option.setAttribute('data-precio', `$ ${articulo.precioCompra}`);
+                        selectArticulo.appendChild(option);
+                    });
+                },
+                error: function(error) {
+                    console.error('Error al obtener los artículos:', error);
                 }
-            }
-
-            function eliminarDetalle(button) {
-                const row = button.parentNode.parentNode;
-                row.parentNode.removeChild(row);
-            }
-
-            document.getElementById('mainForm').addEventListener('submit', function(event) {
-                event.preventDefault();  // Prevent form from submitting the default way
-
-                const detallesTableBody = document.getElementById('tableBody_detalles');
-                if (detallesTableBody.rows.length === 0) {
-                    alert('Por favor, agregue al menos un artículo antes de generar la orden de compra.');
-                    return;
-                }
-
-                const form = event.target;
-                const detallesInputs = detallesTableBody.querySelectorAll('input[type="hidden"]');
-                detallesInputs.forEach(input => {
-                    const clone = input.cloneNode(true);
-                    form.appendChild(clone);
-                });
-
-                form.submit();
             });
-        </script>
-    </div>
+        }
+
+        function actualizarCantidadYPrecio() {
+            const selectArticulo = document.getElementById('idArticulo');
+            const selectedOption = selectArticulo.options[selectArticulo.selectedIndex];
+            const precio = selectedOption.getAttribute('data-precio');
+            document.getElementById('precio').value = precio;
+        }
+
+        function agregarDetalle() {
+            const cantidad = parseFloat(document.getElementById('cantidad').value);
+            const idArticulo = document.getElementById('idArticulo').value;
+            const nombreArticulo = document.getElementById('idArticulo').selectedOptions[0].text;
+
+            if (cantidad && idArticulo) {
+                const tableBody = document.getElementById('tableBody_detalles');
+                let found = false;
+                for (let i = 0; i < tableBody.rows.length; i++) {
+                    if (tableBody.rows[i].cells[2].textContent === nombreArticulo) {
+                        const currentCantidad = parseFloat(tableBody.rows[i].cells[1].textContent);
+                        tableBody.rows[i].cells[1].textContent = currentCantidad + cantidad;
+                        tableBody.rows[i].querySelector(`input[name="detalles[${i}].cantidad"]`).value = currentCantidad + cantidad;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    const newRow = tableBody.insertRow();
+                    newRow.innerHTML = `
+                        <td>${tableBody.rows.length}</td>
+                        <td>${cantidad}</td>
+                        <td>${nombreArticulo}</td>
+                        <td><button type="button" class="btn btn-danger" onclick="eliminarDetalle(this)">Eliminar</button></td>
+                        <input type="hidden" name="detalles[${tableBody.rows.length - 1}].cantidad" value="${cantidad}" />
+                        <input type="hidden" name="detalles[${tableBody.rows.length - 1}].idArticulo" value="${idArticulo}" />
+                    `;
+                }
+            }
+        }
+
+        function eliminarDetalle(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        document.getElementById('mainForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent form from submitting the default way
+
+            const detallesTableBody = document.getElementById('tableBody_detalles');
+            if (detallesTableBody.rows.length === 0) {
+                alert('Por favor, agregue al menos un artículo antes de generar la orden de compra.');
+                return;
+            }
+
+            const form = event.target;
+            const detallesInputs = detallesTableBody.querySelectorAll('input[type="hidden"]');
+            detallesInputs.forEach(input => {
+                const clone = input.cloneNode(true);
+                form.appendChild(clone);
+            });
+
+            form.submit();
+        });
+    </script>
+</div>
 </body>
 </html>
