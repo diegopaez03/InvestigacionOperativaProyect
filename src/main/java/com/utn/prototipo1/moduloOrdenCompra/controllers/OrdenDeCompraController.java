@@ -14,6 +14,7 @@ import com.utn.prototipo1.moduloOrdenCompra.services.DetalleOrdenCompraService;
 import com.utn.prototipo1.moduloOrdenCompra.services.EstadoOrdenCompraService;
 import com.utn.prototipo1.moduloOrdenCompra.services.OrdenDeCompraService;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -115,6 +116,7 @@ public class OrdenDeCompraController {
     
 
     //Métodos de funcionamiento
+    @Transactional
     @PostMapping("/generar")
     public ModelAndView generarOrdenDeCompra(@ModelAttribute("ordenDeCompra") OrdenDeCompraDTO ordenDeCompraDTO) {
         try {
@@ -143,9 +145,9 @@ public class OrdenDeCompraController {
 
             ordenDeCompraService.save(ordenDeCompra);
 
-            ordenDeCompra.getDetalleOrdenCompra().forEach(detalle -> {
+          /*  ordenDeCompra.getDetalleOrdenCompra().forEach(detalle -> {
                 inventarioArticuloService.sumarStock(detalle.getArticulo(), detalle.getCantidad());
-            });
+            });*/
 
             return new ModelAndView("redirect:/ordenDeCompra/list"); 
         } catch (Exception e) {
