@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class InventarioArticuloServiceImpl implements InventarioArticuloService {
@@ -67,31 +68,37 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
     }
 
     @Override
-    public void sumarStock(Articulo articulo, float cantidad) {
-        Articulo articuloExistente = articuloRepository.findById(articulo.getId())
+    public void sumarStock(Long articuloId, float cantidad) {
+        Articulo articuloExistente = articuloRepository.findById(articuloId)
                 .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
 
         LocalDate fechaActual = LocalDate.now();
-        Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
+        Optional<Inventario> inventarioOpt = inventarioRepository.findByFechaActual(fechaActual);
+
+        Inventario inventario;
+        if (inventarioOpt.isPresent()) {
+            inventario = inventarioOpt.get();
+        } else {
+            inventario = new Inventario();
+            inventario.setFechaDesde(fechaActual);
+            inventario.setFechaHasta(fechaActual.plusDays(30));
+            inventarioRepository.save(inventario);
+        }
+
+        InventarioArticulo inventarioArticulo = Optional.ofNullable(inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario))
                 .orElseGet(() -> {
-                    Inventario nuevoInventario = new Inventario();
-                    nuevoInventario.setFechaDesde(fechaActual);
-                    nuevoInventario.setFechaHasta(fechaActual.plusDays(30));
-                    inventarioRepository.save(nuevoInventario);
-                    return nuevoInventario;
+                    InventarioArticulo nuevoInventarioArticulo = new InventarioArticulo();
+                    nuevoInventarioArticulo.setArticulo(articuloExistente);
+                    nuevoInventarioArticulo.setInventario(inventario);
+                    nuevoInventarioArticulo.setStockActual(0);
+                    inventario.getInventarioArticulos().add(nuevoInventarioArticulo);
+                    return nuevoInventarioArticulo;
                 });
 
-        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario);
-        if (inventarioArticulo == null) {
-            inventarioArticulo = new InventarioArticulo();
-            inventarioArticulo.setArticulo(articuloExistente);
-            inventarioArticulo.setInventario(inventario);
-            inventario.getInventarioArticulos().add(inventarioArticulo);
-            inventarioArticulo.setStockActual(0);
-        }
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
         inventarioArticuloRepository.save(inventarioArticulo);
     }
+
 
     @Override
     public void restarStock(Articulo articulo, int cantidad) {
@@ -99,8 +106,14 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
                 .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
 
         LocalDate fechaActual = LocalDate.now();
-        Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
-                .orElseThrow(() -> new RuntimeException("Inventario no encontrado con esta fecha"));
+        Optional<Inventario> inventarioOpt = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual);
+
+        Inventario inventario;
+        if (inventarioOpt.isPresent()) {
+            inventario = inventarioOpt.get();
+        } else {
+            throw new RuntimeException("No se encontró un inventario válido para la fecha actual");
+        }
 
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario);
         if (inventarioArticulo == null) {
@@ -115,6 +128,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() - cantidad);
         inventarioArticuloRepository.save(inventarioArticulo);
     }
+
 
     public List<InventarioArticulo> getInventariosByArticulo(Long idArticulo) {
         Articulo articulo = articuloRepository.findById(idArticulo)

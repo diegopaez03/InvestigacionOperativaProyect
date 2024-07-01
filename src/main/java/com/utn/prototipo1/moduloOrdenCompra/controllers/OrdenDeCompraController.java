@@ -137,6 +137,10 @@ public class OrdenDeCompraController {
                 try {
                     detalleOrdenCompra = detalleOrdenCompraService.save(detalleOC);
                     detalleOrdenCompras.add(detalleOrdenCompra);
+
+                    // Actualizar el inventario con el ID del Articulo
+                    inventarioArticuloService.sumarStock(detalle.getIdArticulo(), detalle.getCantidad());
+
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -145,16 +149,14 @@ public class OrdenDeCompraController {
 
             ordenDeCompraService.save(ordenDeCompra);
 
-          /*  ordenDeCompra.getDetalleOrdenCompra().forEach(detalle -> {
-                inventarioArticuloService.sumarStock(detalle.getArticulo(), detalle.getCantidad());
-            });*/
-
-            return new ModelAndView("redirect:/ordenDeCompra/list"); 
+            return new ModelAndView("redirect:/ordenDeCompra/list");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    
+
+
+
     @PostMapping("/actualizarEOC/{id}")
         public ModelAndView actualizarEstadoOrdenDeCompra(@PathVariable("id") Long id, @RequestParam("idEOC") Long idEOC) throws Exception {
             OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);

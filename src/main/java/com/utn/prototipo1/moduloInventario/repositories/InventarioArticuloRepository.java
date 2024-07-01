@@ -5,6 +5,8 @@ import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloInventario.entities.Inventario;
 import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,5 +20,7 @@ public interface InventarioArticuloRepository extends BaseRepository<InventarioA
 
     //Creado por diego
     List<InventarioArticulo> findAllByArticulo(Articulo articulo);
-    InventarioArticulo findByArticuloAndInventario(Articulo articulo, Inventario inventario);
+    @Query("SELECT ia FROM InventarioArticulo ia WHERE ia.articulo = :articulo AND ia.inventario = :inventario")
+    InventarioArticulo findByArticuloAndInventario(@Param("articulo") Articulo articulo, @Param("inventario") Inventario inventario);
+
 }
