@@ -89,7 +89,7 @@ public class FacturaController {
         return "redirect:/maestrofactura" ;
     }*/
 
-    @PostMapping("/facturas/{facturaId}/detalles")
+    /*@PostMapping("/facturas/{facturaId}/detalles")
     public String crearDetalleFactura(@PathVariable("facturaId") Long facturaId,
                                       @ModelAttribute("detalleFactura") DetalleFactura detalleFactura,
                                       @RequestParam("articulo.id") Long articuloId) {
@@ -104,7 +104,43 @@ public class FacturaController {
         // Generar la demanda asociada al detalle de factura creado
         CrearDemandaDto crearDemandaDto = new CrearDemandaDto();
         crearDemandaDto.setIdArticulo(articuloId);
-        crearDemandaDto.setPeriodoYear(factura.getFechaFactura().getYear());// Puedes ajustar cómo obtienes el año según tu modelo
+        crearDemandaDto.setPeriodoYear(Integer.parseInt(factura.getFechaFactura().toString().substring(0,4)));// Puedes ajustar cómo obtienes el año según tu modelo
+        demandaService.generarDemanda(crearDemandaDto);
+        return "redirect:/maestrofactura";
+    }*/
+
+    @PostMapping("/facturas/{facturaId}/detalles")
+    public String crearDetalleFactura(@PathVariable("facturaId") Long facturaId,
+                                      @ModelAttribute("detalleFactura") DetalleFactura detalleFactura,
+                                      @RequestParam("articulo.id") Long articuloId) {
+        Factura factura = facturaService.obtenerFacturaPorId(facturaId);
+        Articulo articulo = articuloService.getArticuloById(articuloId);
+
+        // Buscar si ya existe un detalle con el mismo artículo en la factura
+        DetalleFactura detalleExistente = factura.getDetalleFacturas().stream()
+                .filter(d -> d.getArticulo().getId().equals(articuloId))
+                .findFirst()
+                .orElse(null);
+
+        if (detalleExistente != null) {
+            // Si ya existe, sumar la cantidad
+            detalleExistente.setCantidad(detalleExistente.getCantidad() + detalleFactura.getCantidad());
+            detalleExistente.calcularLinea(); // Recalcular el valor de la línea
+            detalleFacturaService.save(detalleExistente);
+        } else {
+            // Si no existe, crear un nuevo detalle
+            detalleFactura.setFactura(factura);
+            detalleFactura.setArticulo(articulo);
+            detalleFactura.calcularLinea(); // Llama al método que calcula el valor de la línea
+            detalleFacturaService.save(detalleFactura);
+        }
+
+        facturaService.actualizarTotalFactura(facturaId);
+
+        // Generar la demanda asociada al detalle de factura creado
+        CrearDemandaDto crearDemandaDto = new CrearDemandaDto();
+        crearDemandaDto.setIdArticulo(articuloId);
+        crearDemandaDto.setPeriodoYear(Integer.parseInt(factura.getFechaFactura().toString().substring(0,4)));// Puedes ajustar cómo obtienes el año según tu modelo
         demandaService.generarDemanda(crearDemandaDto);
         return "redirect:/maestrofactura";
     }
