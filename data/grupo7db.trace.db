@@ -627,3 +627,11 @@ insert into demanda (cod_articulo,cantidad,periodo_year,id) values (?,?,?,defaul
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROM DEMANDA ARTICULO [*]ARTICULO"
 Syntax error in SQL statement "SELECT * FROM DEMANDA ARTICULO [*]ARTICULO"; SQL statement:
 SELECT * FROM DEMANDA ARTICULO ARTICULO [42000-224]
+2024-06-28 16:00:27.585609-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'' (DEMANDA: ""ID_PREDICCION"" BIGINT)"
+Data conversion error converting "'' (DEMANDA: ""ID_PREDICCION"" BIGINT)"; SQL statement:
+INSERT INTO "PUBLIC"."DEMANDA"("CANTIDAD","PERIODO_YEAR","COD_ARTICULO","ID","ID_PREDICCION")VALUES(?,?,?,?,?) [22018-224]
+2024-06-28 16:00:27.591610-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'' (DEMANDA: ""ID_PREDICCION"" BIGINT)"
+Data conversion error converting "'' (DEMANDA: ""ID_PREDICCION"" BIGINT)"; SQL statement:
+INSERT INTO "PUBLIC"."DEMANDA"("CANTIDAD","PERIODO_YEAR","COD_ARTICULO","ID","ID_PREDICCION")VALUES(?,?,?,?,?) [22018-224]

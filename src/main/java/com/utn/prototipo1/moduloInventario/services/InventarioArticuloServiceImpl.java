@@ -1,20 +1,13 @@
 package com.utn.prototipo1.moduloInventario.services;
 
-
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
-import com.utn.prototipo1.moduloArticulo.entities.ArticuloCategoria;
-import com.utn.prototipo1.moduloArticulo.entities.TipoModeloInventario;
 import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
-import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 import com.utn.prototipo1.moduloDemanda.repositories.DemandaRepository;
-import com.utn.prototipo1.moduloDemanda.services.DemandaService;
 import com.utn.prototipo1.moduloInventario.entities.Inventario;
 import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
 import com.utn.prototipo1.moduloInventario.repositories.InventarioArticuloRepository;
-
 import com.utn.prototipo1.moduloInventario.repositories.InventarioRepository;
-import com.utn.prototipo1.moduloOrdenCompra.entities.Proveedor;
 import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
@@ -27,7 +20,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class InventarioArticuloServiceImpl  implements InventarioArticuloService{
+public class InventarioArticuloServiceImpl implements InventarioArticuloService {
 
     @Autowired
     private InventarioArticuloRepository inventarioArticuloRepository;
@@ -38,12 +31,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
     @Autowired
     private InventarioRepository inventarioRepository;
     @Autowired
-    private InventarioServices inventarioServices;
-    @Autowired
     private DemandaRepository demandaRepository;
-    @Autowired
-    private ArticuloService articuloService;
-
 
     @Override
     public List<InventarioArticulo> findAll() {
@@ -58,19 +46,16 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
     @Override
     public InventarioArticulo save(InventarioArticulo inventarioArticulo) {
         return inventarioArticuloRepository.save(inventarioArticulo);
-
     }
 
     @Override
-        public List<InventarioArticulo> obtenerArticuloPorInventario(Long InventarioId) {
-        return inventarioArticuloRepository.findByInventarioId(InventarioId);
+    public List<InventarioArticulo> obtenerArticuloPorInventario(Long inventarioId) {
+        return inventarioArticuloRepository.findByInventarioId(inventarioId);
     }
 
-
-
     @Override
-    public InventarioArticulo deleteById(Long InventarioId) {
-        inventarioArticuloRepository.deleteById(InventarioId);
+    public InventarioArticulo deleteById(Long inventarioId) {
+        inventarioArticuloRepository.deleteById(inventarioId);
         return null;
     }
 
@@ -83,38 +68,31 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
 
     @Override
     public void sumarStock(Articulo articulo, float cantidad) {
-
         Articulo articuloExistente = articuloRepository.findById(articulo.getId())
                 .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
 
-            LocalDate fechaActual = LocalDate.now();
-            Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
-                    .orElseGet(() -> {
-                        Inventario nuevoInventario = new Inventario();
-                        nuevoInventario.setFechaDesde(fechaActual);
-                        nuevoInventario.setFechaHasta(fechaActual.plusDays(30));
-                        inventarioRepository.save(nuevoInventario);
-                        return nuevoInventario;
-                    });
+        LocalDate fechaActual = LocalDate.now();
+        Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
+                .orElseGet(() -> {
+                    Inventario nuevoInventario = new Inventario();
+                    nuevoInventario.setFechaDesde(fechaActual);
+                    nuevoInventario.setFechaHasta(fechaActual.plusDays(30));
+                    inventarioRepository.save(nuevoInventario);
+                    return nuevoInventario;
+                });
 
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario);
         if (inventarioArticulo == null) {
-
             inventarioArticulo = new InventarioArticulo();
             inventarioArticulo.setArticulo(articuloExistente);
             inventarioArticulo.setInventario(inventario);
-            inventario.getInventarioArticulos().add(inventarioArticulo); // Asegúrate de agregar el inventarioArticulo al inventario
+            inventario.getInventarioArticulos().add(inventarioArticulo);
             inventarioArticulo.setStockActual(0);
-            inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
-            inventarioRepository.save(inventario); // Guarda el inventario con la relación actualizada
-            InventarioArticulo inventarioArticulo1 = inventarioArticuloRepository.save(inventarioArticulo);
-            calcularVariables(inventarioArticulo1.getId(),0.0,0.0);
-
-        } else {
-            inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
-            inventarioArticuloRepository.save(inventarioArticulo);
         }
+        inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
+        inventarioArticuloRepository.save(inventarioArticulo);
     }
+
     @Override
     public void restarStock(Articulo articulo, int cantidad) {
         Articulo articuloExistente = articuloRepository.findById(articulo.getId())
@@ -140,13 +118,15 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
 
     public List<InventarioArticulo> getInventariosByArticulo(Long idArticulo) {
         Articulo articulo = articuloRepository.findById(idArticulo)
-        .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + idArticulo));
+                .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + idArticulo));
         return inventarioArticuloRepository.findAllByArticulo(articulo);
     }
 
     @Override
     public void calcularVariables(Long inventarioArticuloId, Double costoAlmacenamiento, Double desviacion) {
-        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.getReferenceById(inventarioArticuloId);
+        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findById(inventarioArticuloId)
+                .orElseThrow(() -> new RuntimeException("InventarioArticulo no encontrado"));
+
         Articulo articulo = inventarioArticulo.getArticulo();
         if (articulo == null) {
             throw new RuntimeException("Artículo asociado no encontrado en InventarioArticulo");
@@ -167,23 +147,14 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
         double tiempoPedido = proveedorArticulo.getTiempoDemoraArticulo();
         double precioArt = articulo.getPrecioVenta();
 
-        ArticuloCategoria articuloCategoria = articulo.getArticuloCategoria();
-        if (articuloCategoria == null || articuloCategoria.getTipoModeloInventario() == null) {
-            throw new RuntimeException("Categoría de artículo o Tipo de modelo de inventario no encontrados");
-        }
-
-        String tipoModeloInventarioNombre = articuloCategoria.getTipoModeloInventario().getNombre();
+        String tipoModeloInventarioNombre = articulo.getArticuloCategoria().getTipoModeloInventario().getNombre();
 
         if ("Lote fijo".equals(tipoModeloInventarioNombre)) {
-            double puntoPedido = tiempoPedido * cantdemanda;
+            double puntoPedido = tiempoPedido * (cantdemanda/300.0);
             double lotefijo = Math.sqrt(2.0 * cantdemanda * (costoPedido / costoAlmacenamiento));
             double stockSeguridad = 1.64 * desviacion * Math.sqrt(tiempoPedido);
             double cgi = precioArt * cantdemanda + costoAlmacenamiento * lotefijo / 2 + costoPedido * cantdemanda / lotefijo;
 
-            double puntoPedido = tiempoPedido * cantdemanda;
-            double lotefijo = Math.sqrt(2.0* cantdemanda *(costoPedido/costoAlmacenamiento));
-            double stockSeguridad =1.64 * desviacion*Math.sqrt(tiempoPedido);
-            double cgi = precioArt*cantdemanda + costoAlmacenamiento*lotefijo/2 + costoPedido * cantdemanda/lotefijo;
             inventarioArticulo.setCGI(cgi);
             inventarioArticulo.setLoteFijo(lotefijo);
             inventarioArticulo.setPuntoPedido(puntoPedido);
@@ -193,7 +164,7 @@ public class InventarioArticuloServiceImpl  implements InventarioArticuloService
             double lotefijo = Math.sqrt(2.0 * cantdemanda * (costoPedido / costoAlmacenamiento));
             double stockSeguridad = 1.64 * desviacion * Math.sqrt(tiempoPedido);
             double cgi = precioArt * cantdemanda + costoAlmacenamiento * lotefijo / 2 + costoPedido * cantdemanda / lotefijo;
-
+            inventarioArticulo.setLoteFijo(lotefijo);
             inventarioArticulo.setCGI(cgi);
             inventarioArticulo.setStockSeguridad(stockSeguridad);
 

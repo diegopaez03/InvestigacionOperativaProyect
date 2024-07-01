@@ -46,7 +46,7 @@ public class DemandaService extends BaseServicesImpl<Demanda, Long> implements I
         return demandaRepository.findAllByPeriodoYear(periodoYear);
     }
 
-   /*public Demanda generarDemanda(CrearDemandaDto crearDemandaDto) {
+   public Demanda generarDemanda(CrearDemandaDto crearDemandaDto) {
         Demanda demanda = new Demanda();
             List<Factura> facturas = facturaServiceImpl.buscarFacturasFechaArticulo(crearDemandaDto);
             
@@ -67,9 +67,9 @@ public class DemandaService extends BaseServicesImpl<Demanda, Long> implements I
             
             Demanda demandaGenerada = demandaRepository.save(demanda);
             return demandaGenerada;
-    }*/
+    }
 
-    public Demanda generarDemanda(CrearDemandaDto crearDemandaDto) {
+    /*public Demanda generarDemanda(CrearDemandaDto crearDemandaDto) {
         // Obtener la lista de facturas que corresponden al artículo y período especificados
         List<Factura> facturas = facturaServiceImpl.buscarFacturasFechaArticulo(crearDemandaDto);
 
@@ -99,7 +99,7 @@ public class DemandaService extends BaseServicesImpl<Demanda, Long> implements I
         // Guardar la demanda en la base de datos
         Demanda demandaGenerada = demandaRepository.save(demanda);
         return demandaGenerada;
-    }
+    }*/
 
 
 

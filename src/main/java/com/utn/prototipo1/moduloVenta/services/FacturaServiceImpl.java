@@ -26,6 +26,7 @@ public class FacturaServiceImpl implements FacturaService {
     private  DetalleFacturaRepository detalleFacturaRepository;
     @Autowired
     private ArticuloRepository articuloRepository;
+
     @Autowired
     private InventarioArticuloService inventarioArticuloService;
 
@@ -49,6 +50,7 @@ public class FacturaServiceImpl implements FacturaService {
     public void crearFactura(Factura factura) {
         facturaRepository.save(factura);
     }
+
     @Override
     public void actualizarStockPorDetalleFactura(DetalleFactura detalleFactura) {
         inventarioArticuloService.restarStock(detalleFactura.getArticulo(), detalleFactura.getCantidad());

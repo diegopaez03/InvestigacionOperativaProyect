@@ -102,6 +102,7 @@ public class PrediccionDemandaController {
         model.addAttribute("prediccion", prediccion);
         model.addAttribute("error", error);
         model.addAttribute("errorAbsoluto", errorAbsoluto);
+        prediccionDemandaService.guardarPrediccion(demandaRealStr, prediccion);
 
         return "resultado"; // Devolver a la página de resultados
     }
@@ -129,6 +130,7 @@ public class PrediccionDemandaController {
         model.addAttribute("prediccion", prediccion);
         model.addAttribute("error", error);
         model.addAttribute("errorAbsoluto", errorAbsoluto);
+        prediccionDemandaService.guardarPrediccion(demandaRealStr, prediccion);
 
         return "resultado"; // Devolver a la página de resultados
     }
@@ -153,6 +155,7 @@ public class PrediccionDemandaController {
         model.addAttribute("prediccion", prediccion);
         model.addAttribute("error", error);
         model.addAttribute("errorAbsoluto", errorAbsoluto);
+        prediccionDemandaService.guardarPrediccion(demandaRealStr, prediccion);
 
         return "resultado"; // Devolver a la página de resultados
     }
