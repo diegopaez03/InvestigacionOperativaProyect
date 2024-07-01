@@ -59,7 +59,6 @@ public class InventarioController {
         return "redirect:/maestroinventario";
     }
 
-
     @PostMapping("/inventarios/{inventarioId}/inventarioArticulos")
     public String crearinventarioArticulo(@PathVariable("inventarioId") Long inventarioId,
                                           @ModelAttribute("inventarioArticulo") InventarioArticulo inventarioArticulo,
@@ -87,21 +86,23 @@ public class InventarioController {
         return "calcularVariableForm";
     }
 
-    @PostMapping("/calcularVariables")
+    @GetMapping("/calcularvariables")
+    public String mostrarCalculoVariablesForm(@RequestParam("inventarioArticuloId") Long inventarioArticuloId, Model model) {
+        InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId);
+        model.addAttribute("inventarioArticulo", inventarioArticulo);
+        return "inventario/calcularVariables";
+    }
+
+    @PostMapping("/calcularvariables")
     public String calcularVariables(@RequestParam("inventarioArticuloId") Long inventarioArticuloId,
                                     @RequestParam("costoAlmacenamiento") Double costoAlmacenamiento,
                                     @RequestParam("desviacion") Double desviacion,
                                     RedirectAttributes redirectAttributes) {
         inventarioArticuloService.calcularVariables(inventarioArticuloId, costoAlmacenamiento, desviacion);
-
-        // Obtener el inventarioArticulo para obtener su inventarioId
-        InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId);
-
-        // Agregar inventarioId como parámetro de plantilla para la redirección
-        redirectAttributes.addAttribute("inventarioId", inventarioArticulo.getInventario().getId());
-        redirectAttributes.addAttribute("inventarioArticuloId", inventarioArticuloId); // Asegurarse de agregar inventarioArticuloId aquí
-        return "redirect:/inventarios/{inventarioId}/inventarioArticulos/valoresCalculados";
+        redirectAttributes.addFlashAttribute("success", "Variables calculadas con éxito.");
+        return "redirect:/inventarios/" + inventarioArticuloService.findById(inventarioArticuloId).getInventario().getId() + "/inventarioArticulos/valoresCalculados?inventarioArticuloId=" + inventarioArticuloId;
     }
+
     @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/valoresCalculados")
     public String mostrarValoresCalculados(@PathVariable("inventarioId") Long inventarioId,
                                            @RequestParam("inventarioArticuloId") Long inventarioArticuloId,
