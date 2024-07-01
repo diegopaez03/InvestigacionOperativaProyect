@@ -18,5 +18,5 @@ public interface InventarioArticuloRepository extends BaseRepository<InventarioA
 
     //Creado por diego
     List<InventarioArticulo> findAllByArticulo(Articulo articulo);
-    InventarioArticulo findByArticuloAndInventario(Articulo articulo, Inventario inventario);
+    List<InventarioArticulo> findByArticuloAndInventario(Articulo articulo, Inventario inventario);
 }

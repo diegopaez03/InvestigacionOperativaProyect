@@ -12,6 +12,7 @@ import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,8 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
     private InventarioRepository inventarioRepository;
     @Autowired
     private DemandaRepository demandaRepository;
+    @Autowired
+    private InventarioServices inventarioServices;
 
     @Override
     public List<InventarioArticulo> findAll() {
@@ -66,31 +69,49 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         }
     }
 
-    @Override
-    public void sumarStock(Articulo articulo, float cantidad) {
-        Articulo articuloExistente = articuloRepository.findById(articulo.getId())
-                .orElseThrow(() -> new RuntimeException("Artículo no encontrado"));
-
+    public Inventario crearInventario(){
+        Inventario nuevoInventario = new Inventario();
         LocalDate fechaActual = LocalDate.now();
-        Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
-                .orElseGet(() -> {
-                    Inventario nuevoInventario = new Inventario();
-                    nuevoInventario.setFechaDesde(fechaActual);
-                    nuevoInventario.setFechaHasta(fechaActual.plusDays(30));
-                    inventarioRepository.save(nuevoInventario);
-                    return nuevoInventario;
-                });
+        nuevoInventario.setFechaDesde(fechaActual);
+        nuevoInventario.setFechaHasta(fechaActual.plusDays(30));
+        inventarioRepository.save(nuevoInventario);
+        return nuevoInventario;
+    }
 
-        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario);
-        if (inventarioArticulo == null) {
-            inventarioArticulo = new InventarioArticulo();
-            inventarioArticulo.setArticulo(articuloExistente);
-            inventarioArticulo.setInventario(inventario);
-            inventario.getInventarioArticulos().add(inventarioArticulo);
-            inventarioArticulo.setStockActual(0);
+    @Override
+    @Transactional
+    public void sumarStock(Articulo articulo, double cantidad) {
+        // Obtener el inventario actual
+        Inventario inventario = inventarioServices.obtenerUltimoInventario();
+
+        // Verificar si el inventario para hoy existe, si no, crearlo
+        if (inventario == null) {
+            inventario = crearInventario();
         }
-        inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() + cantidad);
-        inventarioArticuloRepository.save(inventarioArticulo);
+
+        // Obtener el InventarioArticulo específico para el artículo y el inventario actual
+        List<InventarioArticulo> inventarioArticulos = inventarioArticuloRepository.findByArticuloAndInventario(articulo, inventario);
+
+        // Verificar que se haya encontrado algún InventarioArticulo
+        if (inventarioArticulos.isEmpty()) {
+            // Si no se encontró, crear un nuevo InventarioArticulo y asociarlo al inventario actual
+            InventarioArticulo nuevoInventarioArticulo = new InventarioArticulo();
+            nuevoInventarioArticulo.setArticulo(articulo);
+            nuevoInventarioArticulo.setInventario(inventario);
+            nuevoInventarioArticulo.setStockActual(cantidad); // Aquí podrías inicializar el stock según tu lógica
+
+            // Guardar el nuevo InventarioArticulo
+            inventarioArticuloRepository.save(nuevoInventarioArticulo);
+
+            // Opcional: podrías lanzar una excepción o manejar de otra manera si lo deseas
+        } else {
+            // Iterar sobre los InventarioArticulo encontrados y sumar la cantidad al stock actual
+            for (InventarioArticulo inventarioArticulo : inventarioArticulos) {
+                double nuevoStock = inventarioArticulo.getStockActual() + cantidad;
+                inventarioArticulo.setStockActual(nuevoStock);
+                inventarioArticuloRepository.save(inventarioArticulo);
+            }
+        }
     }
 
     @Override
@@ -102,18 +123,18 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         Inventario inventario = inventarioRepository.findByFechaDesdeLessThanEqualAndFechaHastaGreaterThanEqual(fechaActual, fechaActual)
                 .orElseThrow(() -> new RuntimeException("Inventario no encontrado con esta fecha"));
 
-        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario);
-        if (inventarioArticulo == null) {
+        List<InventarioArticulo> inventarioArticulos = inventarioArticuloRepository.findByArticuloAndInventario(articuloExistente, inventario);
+        if (inventarioArticulos == null) {
             throw new RuntimeException("InventarioArticulo no encontrado para el artículo especificado");
         }
-
+        for (InventarioArticulo inventarioArticulo : inventarioArticulos) {
         if (inventarioArticulo.getStockActual() < cantidad) {
             throw new IllegalArgumentException("Stock insuficiente. Stock actual: "
                     + inventarioArticulo.getStockActual() + ", Cantidad requerida: " + cantidad);
         }
 
         inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() - cantidad);
-        inventarioArticuloRepository.save(inventarioArticulo);
+        inventarioArticuloRepository.save(inventarioArticulo);}
     }
 
     public List<InventarioArticulo> getInventariosByArticulo(Long idArticulo) {
@@ -175,4 +196,3 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         inventarioArticuloRepository.save(inventarioArticulo);
     }
 }
-
