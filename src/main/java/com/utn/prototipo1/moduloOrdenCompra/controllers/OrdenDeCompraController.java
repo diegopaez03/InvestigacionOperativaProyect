@@ -14,7 +14,6 @@ import com.utn.prototipo1.moduloOrdenCompra.services.DetalleOrdenCompraService;
 import com.utn.prototipo1.moduloOrdenCompra.services.EstadoOrdenCompraService;
 import com.utn.prototipo1.moduloOrdenCompra.services.OrdenDeCompraService;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,16 +56,16 @@ public class OrdenDeCompraController {
     @GetMapping("/{id}")
     public String verOrdenDeCompra(@PathVariable("id") Long id, Model model) throws Exception {
         OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);
-        
+
         if (ordenDeCompra!= null) {
-            
+
             float total = 0;
             if (ordenDeCompra.getDetalleOrdenCompra()!= null) {
                 for (DetalleOrdenCompra detalle : ordenDeCompra.getDetalleOrdenCompra()) {
                     total += detalle.getTotalDetalleOrdenCompra();
                 }
             }
-            
+
             model.addAttribute("totalOrden", total);
             model.addAttribute("ordenDeCompra", ordenDeCompra);
             return "moduloOrdenCompra/verOrdenDeCompra";
@@ -89,7 +88,7 @@ public class OrdenDeCompraController {
         model.addAttribute("ordenDeCompra", new OrdenDeCompraDTO());
         model.addAttribute("proveedores", proveedorService.getProveedor());
         model.addAttribute("estadoOrdenCompra", estadoOrdenCompraService.getEstadoOrdenCompra());
-        
+
         model.addAttribute("articulos", articuloService.getAllArticulos());
         model.addAttribute("inventario", inventario);
 
@@ -112,11 +111,10 @@ public class OrdenDeCompraController {
         model.addAttribute("estadosOrdenDeCompra", estadosOrdenDeCompra);
         return "moduloOrdenCompra/actualizarEstadoOC";
     }
-    
-    
+
+
 
     //Métodos de funcionamiento
-    @Transactional
     @PostMapping("/generar")
     public ModelAndView generarOrdenDeCompra(@ModelAttribute("ordenDeCompra") OrdenDeCompraDTO ordenDeCompraDTO) {
         try {
@@ -137,10 +135,6 @@ public class OrdenDeCompraController {
                 try {
                     detalleOrdenCompra = detalleOrdenCompraService.save(detalleOC);
                     detalleOrdenCompras.add(detalleOrdenCompra);
-
-                    // Actualizar el inventario con el ID del Articulo
-                    inventarioArticuloService.sumarStock(detalle.getIdArticulo(), detalle.getCantidad());
-
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -149,21 +143,23 @@ public class OrdenDeCompraController {
 
             ordenDeCompraService.save(ordenDeCompra);
 
+            ordenDeCompra.getDetalleOrdenCompra().forEach(detalle -> {
+                inventarioArticuloService.sumarStock(detalle.getArticulo(), detalle.getCantidad());
+            });
+
             return new ModelAndView("redirect:/ordenDeCompra/list");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-
-
     @PostMapping("/actualizarEOC/{id}")
-        public ModelAndView actualizarEstadoOrdenDeCompra(@PathVariable("id") Long id, @RequestParam("idEOC") Long idEOC) throws Exception {
-            OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);
-            EstadoOrdenDeCompra estadoOrdenDeCompra = estadoOrdenCompraService.getEstadoOrdenDeCompraById(idEOC);
+    public ModelAndView actualizarEstadoOrdenDeCompra(@PathVariable("id") Long id, @RequestParam("idEOC") Long idEOC) throws Exception {
+        OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);
+        EstadoOrdenDeCompra estadoOrdenDeCompra = estadoOrdenCompraService.getEstadoOrdenDeCompraById(idEOC);
 
-            ordenDeCompra.setEstadoOrdenDeCompra(estadoOrdenDeCompra);
-            ordenDeCompraService.save(ordenDeCompra);
+        ordenDeCompra.setEstadoOrdenDeCompra(estadoOrdenDeCompra);
+        ordenDeCompraService.save(ordenDeCompra);
         return new ModelAndView("redirect:/ordenDeCompra/" + id);
     }
 
