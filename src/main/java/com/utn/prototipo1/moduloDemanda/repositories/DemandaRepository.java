@@ -5,6 +5,7 @@ import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,7 @@ public interface DemandaRepository extends BaseRepository<Demanda, Long> {
     List<Demanda> findAllByArticulo(Articulo articulo);
 
     List<Demanda> findAllByPeriodoYear(int periodoYear);
+
+    Optional<Demanda> findByArticuloAndPeriodoYear(Articulo articulo, int periodoYear);
+
 }

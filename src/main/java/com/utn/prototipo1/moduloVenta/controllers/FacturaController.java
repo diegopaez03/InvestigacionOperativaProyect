@@ -4,15 +4,20 @@ package com.utn.prototipo1.moduloVenta.controllers;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloDemanda.dtos.CrearDemandaDto;
+import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 import com.utn.prototipo1.moduloDemanda.services.DemandaService;
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
 import com.utn.prototipo1.moduloVenta.services.DetalleFacturaService;
 import com.utn.prototipo1.moduloVenta.services.FacturaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -75,41 +80,8 @@ public class FacturaController {
         return "crear-detalle-factura";
     }
 
-    /*@PostMapping("/facturas/{facturaId}/detalles")
-    public String crearDetalleFactura(@PathVariable("facturaId") Long facturaId,
-                                      @ModelAttribute("detalleFactura") DetalleFactura detalleFactura,
-                                      @RequestParam("articulo.id") Long articuloId) {
-        Factura factura = facturaService.obtenerFacturaPorId(facturaId);
-        Articulo articulo = articuloService.getArticuloById(articuloId);
-        detalleFactura.setFactura(factura);
-        detalleFactura.setArticulo(articulo);
-        detalleFactura.calcularLinea(); // Llama al método que calcula el valor de la línea
-        detalleFacturaService.save(detalleFactura);
-        facturaService.actualizarTotalFactura(facturaId);
-        return "redirect:/maestrofactura" ;
-    }*/
 
     /*@PostMapping("/facturas/{facturaId}/detalles")
-    public String crearDetalleFactura(@PathVariable("facturaId") Long facturaId,
-                                      @ModelAttribute("detalleFactura") DetalleFactura detalleFactura,
-                                      @RequestParam("articulo.id") Long articuloId) {
-        Factura factura = facturaService.obtenerFacturaPorId(facturaId);
-        Articulo articulo = articuloService.getArticuloById(articuloId);
-        detalleFactura.setFactura(factura);
-        detalleFactura.setArticulo(articulo);
-        detalleFactura.calcularLinea(); // Llama al método que calcula el valor de la línea
-        detalleFacturaService.save(detalleFactura);
-        facturaService.actualizarTotalFactura(facturaId);
-
-        // Generar la demanda asociada al detalle de factura creado
-        // CrearDemandaDto crearDemandaDto = new CrearDemandaDto();
-        // crearDemandaDto.setIdArticulo(articuloId);
-        // crearDemandaDto.setPeriodoYear(Integer.parseInt(factura.getFechaFactura().toString().substring(0, 4)));// Puedes ajustar cómo obtienes el año según tu modelo
-        // demandaService.generarDemanda(crearDemandaDto);
-        return "redirect:/maestrofactura";
-    }*/
-
-    @PostMapping("/facturas/{facturaId}/detalles")
     public String crearDetalleFactura(@PathVariable("facturaId") Long facturaId,
                                       @ModelAttribute("detalleFactura") DetalleFactura detalleFactura,
                                       @RequestParam("articulo.id") Long articuloId) {
@@ -143,7 +115,63 @@ public class FacturaController {
         crearDemandaDto.setPeriodoYear(Integer.parseInt(factura.getFechaFactura().toString().substring(0,4)));// Puedes ajustar cómo obtienes el año según tu modelo
         demandaService.generarDemanda(crearDemandaDto);
         return "redirect:/maestrofactura";
+    }*/
+
+    @PostMapping("/facturas/{facturaId}/detalles")
+    public String crearDetalleFactura(@PathVariable("facturaId") Long facturaId,
+                                      @ModelAttribute("detalleFactura") DetalleFactura detalleFactura,
+                                      @RequestParam("articulo.id") Long articuloId) {
+        Factura factura = facturaService.obtenerFacturaPorId(facturaId);
+        Articulo articulo = articuloService.getArticuloById(articuloId);
+
+        // Buscar si ya existe un detalle con el mismo artículo en la factura
+        DetalleFactura detalleExistente = factura.getDetalleFacturas().stream()
+                .filter(d -> d.getArticulo().getId().equals(articuloId))
+                .findFirst()
+                .orElse(null);
+
+        if (detalleExistente != null) {
+            // Si ya existe, sumar la cantidad
+            detalleExistente.setCantidad(detalleExistente.getCantidad() + detalleFactura.getCantidad());
+            detalleExistente.calcularLinea(); // Recalcular el valor de la línea
+            detalleFacturaService.save(detalleExistente);
+        } else {
+            // Si no existe, crear un nuevo detalle
+            detalleFactura.setFactura(factura);
+            detalleFactura.setArticulo(articulo);
+            detalleFactura.calcularLinea(); // Llama al método que calcula el valor de la línea
+            detalleFacturaService.save(detalleFactura);
+
+        }
+
+        facturaService.actualizarTotalFactura(facturaId);
+        facturaService.crearFactura(factura);
+
+
+
+        // Generar la demanda asociada al detalle de factura creado
+        CrearDemandaDto crearDemandaDto = new CrearDemandaDto();
+        crearDemandaDto.setIdArticulo(articuloId);
+        crearDemandaDto.setPeriodoYear(Integer.parseInt(factura.getFechaFactura().toString().substring(0, 4))); // Puedes ajustar cómo obtienes el año según tu modelo
+
+        // Configurar la URL del endpoint de demanda
+        String demandaEndpoint = "http://localhost:8080/restDemanda"; // Ajusta la URL según tu configuración
+
+        // Configurar RestTemplate
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Configurar el cuerpo de la solicitud (CrearDemandaDto como JSON)
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<CrearDemandaDto> request = new HttpEntity<>(crearDemandaDto, headers);
+
+        // Realizar la solicitud POST al endpoint de demanda
+        Demanda demandaCreada = restTemplate.postForObject(demandaEndpoint, request, Demanda.class);
+
+        // Continuar con tu lógica actual después de crear la demanda
+        return "redirect:/maestrofactura";
     }
+
 
 
     @GetMapping("/facturas/{facturaId}/detalles")

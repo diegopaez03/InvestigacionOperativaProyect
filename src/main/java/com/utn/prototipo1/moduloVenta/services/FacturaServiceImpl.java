@@ -26,9 +26,10 @@ public class FacturaServiceImpl implements FacturaService {
     private  DetalleFacturaRepository detalleFacturaRepository;
     @Autowired
     private ArticuloRepository articuloRepository;
-
     @Autowired
     private InventarioArticuloService inventarioArticuloService;
+    @Autowired
+    DetalleFacturaService detalleFacturaService;
 
     @Override
     public Factura deleteFactura(Long id) {
@@ -70,23 +71,28 @@ public class FacturaServiceImpl implements FacturaService {
         facturaRepository.save(factura);
     }
 
-    public List<Factura> buscarFacturasFechaArticulo(CrearDemandaDto crearDemandaDto) {
 
+    public List<Factura> buscarFacturasFechaArticulo(CrearDemandaDto crearDemandaDto) {
         List<Factura> facturas = facturaRepository.findFacturasByYear(crearDemandaDto.getPeriodoYear());
 
         Articulo articulo = articuloRepository.findById(crearDemandaDto.getIdArticulo())
-        .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + crearDemandaDto.getIdArticulo()));
+                .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + crearDemandaDto.getIdArticulo()));
 
-        List<Factura> facturasConArticulo = new ArrayList<Factura>();
+        List<Factura> facturasConArticulo = new ArrayList<>();
         facturas.forEach(factura -> {
-            DetalleFactura detalleFactura = detalleFacturaRepository.findByFacturaAndArticulo(factura, articulo);
-            if (detalleFactura != null) {
-                facturasConArticulo.add(detalleFactura.getFactura());
+            // Obtener todos los detalles de la factura
+            List<DetalleFactura> detallesFactura =  detalleFacturaService.obtenerDetallesPorFactura(factura.getId());
+            // Filtrar los detalles que corresponden al artículo
+            boolean contieneArticulo = detallesFactura.stream()
+                    .anyMatch(detalle -> detalle.getArticulo().getId().equals(articulo.getId()));
+            if (contieneArticulo) {
+                facturasConArticulo.add(factura);
             }
         });
 
         return facturasConArticulo;
     }
+
 
 }
 
