@@ -5,6 +5,7 @@ import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloInventario.entities.Inventario;
 import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface InventarioArticuloRepository extends BaseRepository<InventarioA
     @Transactional
     void deleteByInventarioId(Long inventarioId);
 
+    @Query("SELECT ia FROM InventarioArticulo ia WHERE ia.stockActual <= ia.stockSeguridad")
+    List<InventarioArticulo> findAllByStockActualLessThanOrEqualToStockSeguridad();
     //Creado por diego
     List<InventarioArticulo> findAllByArticulo(Articulo articulo);
     List<InventarioArticulo> findByArticuloAndInventario(Articulo articulo, Inventario inventario);

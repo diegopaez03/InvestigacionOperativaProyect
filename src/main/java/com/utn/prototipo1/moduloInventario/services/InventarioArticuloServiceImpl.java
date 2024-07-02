@@ -78,7 +78,10 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         inventarioRepository.save(nuevoInventario);
         return nuevoInventario;
     }
-
+    @Override
+    public List<InventarioArticulo> obtenerInventarioArticulosConStockBajo() {
+        return inventarioArticuloRepository.findAllByStockActualLessThanOrEqualToStockSeguridad();
+    }
     @Override
     @Transactional
     public void sumarStock(Articulo articulo, double cantidad) {

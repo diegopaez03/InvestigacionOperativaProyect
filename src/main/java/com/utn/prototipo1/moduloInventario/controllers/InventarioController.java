@@ -92,5 +92,11 @@ public class InventarioController {
             return "redirect:/maestroinventario";
         }
     }
+    @GetMapping("/inventarios/stockBajo")
+    public String mostrarInventarioArticulosConStockBajo(Model model) {
+        List<InventarioArticulo> inventarioArticulosConStockBajo = inventarioArticuloService.obtenerInventarioArticulosConStockBajo();
+        model.addAttribute("inventarioArticulos", inventarioArticulosConStockBajo);
+        return "InventarioArticuloMenorStock";
+    }
 
 }
