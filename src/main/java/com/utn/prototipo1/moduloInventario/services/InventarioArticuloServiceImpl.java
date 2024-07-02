@@ -144,7 +144,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         }
     }
 
-
+    @Override
     public List<InventarioArticulo> getInventariosByArticulo(Long idArticulo) {
         Articulo articulo = articuloRepository.findById(idArticulo)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró el artículo con ID: " + idArticulo));
@@ -163,9 +163,12 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             throw new RuntimeException("Artículo asociado no encontrado en InventarioArticulo");
         }
 
-        Demanda demanda = demandaRepository.findByArticulo(articulo);
-        if (demanda == null) {
-            throw new RuntimeException("Demanda no encontrada para el artículo");
+        int anoAnterior = inventarioArticulo.getInventario().getFechaDesde().getYear()-1;
+
+        // Obtén la demanda del artículo específico para el año actual
+        Demanda demandaEspecifica = demandaRepository.findByArticuloAndPeriodoYear(articulo, anoAnterior);
+        if (demandaEspecifica == null) {
+            throw new RuntimeException("Demanda no encontrada para el artículo en el año actual");
         }
 
         ProveedorArticulo proveedorArticulo = proveedorService.getProveedorArticuloConMenorDemora(articulo.getId());  //buscar que sea del mismo articulo
@@ -173,7 +176,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             throw new RuntimeException("Proveedor no encontrado para el artículo");
         }
 
-        double cantdemanda = demanda.getCantidad();
+        double cantdemanda = demandaEspecifica.getCantidad();
         double costoPedido = proveedorArticulo.getCostoPedido();
         int tiempoPedido = proveedorArticulo.getTiempoDemoraArticulo();
         double precioArt = articulo.getPrecioVenta();
