@@ -6,6 +6,7 @@ import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 import com.utn.prototipo1.moduloDemanda.repositories.DemandaRepository;
 import com.utn.prototipo1.moduloInventario.entities.Inventario;
 import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
+import com.utn.prototipo1.moduloInventario.exceptions.StockInsuficienteException;
 import com.utn.prototipo1.moduloInventario.repositories.InventarioArticuloRepository;
 import com.utn.prototipo1.moduloInventario.repositories.InventarioRepository;
 import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
@@ -58,12 +59,6 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
     }
 
     @Override
-    public InventarioArticulo deleteById(Long inventarioId) {
-        inventarioArticuloRepository.deleteById(inventarioId);
-        return null;
-    }
-
-    @Override
     public void actualizarStockPorFactura(Factura factura) {
         for (DetalleFactura detalle : factura.getDetalleFacturas()) {
             restarStock(detalle.getArticulo(), detalle.getCantidad());
@@ -82,6 +77,11 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
     public List<InventarioArticulo> obtenerInventarioArticulosConStockBajo() {
         return inventarioArticuloRepository.findAllByStockActualLessThanOrEqualToStockSeguridad();
     }
+    @Override
+    public List<InventarioArticulo> obtenerInventarioArticulosDebajoPuntoPedido() {
+        return inventarioArticuloRepository.findAllByStockActualLessThanOrEqualToPuntoPedido();
+    }
+
     @Override
     @Transactional
     public void sumarStock(Articulo articulo, double cantidad) {
@@ -134,14 +134,16 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             throw new RuntimeException("InventarioArticulo no encontrado para el artículo especificado");
         }
         for (InventarioArticulo inventarioArticulo : inventarioArticulos) {
-        if (inventarioArticulo.getStockActual() < cantidad) {
-            throw new IllegalArgumentException("Stock insuficiente. Stock actual: "
-                    + inventarioArticulo.getStockActual() + ", Cantidad requerida: " + cantidad);
-        }
+            if (inventarioArticulo.getStockActual() < cantidad) {
+                throw new StockInsuficienteException("Stock insuficiente. Stock actual: "
+                        + inventarioArticulo.getStockActual() + ", Cantidad requerida: " + cantidad);
+            }
 
-        inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() - cantidad);
-        inventarioArticuloRepository.save(inventarioArticulo);}
+            inventarioArticulo.setStockActual(inventarioArticulo.getStockActual() - cantidad);
+            inventarioArticuloRepository.save(inventarioArticulo);
+        }
     }
+
 
     public List<InventarioArticulo> getInventariosByArticulo(Long idArticulo) {
         Articulo articulo = articuloRepository.findById(idArticulo)

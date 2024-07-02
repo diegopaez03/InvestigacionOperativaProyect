@@ -16,7 +16,7 @@ public interface InventarioArticuloService{
     InventarioArticulo save(InventarioArticulo inventarioArticulo);
     List<InventarioArticulo> obtenerArticuloPorInventario(Long InventarioId);
     public List<InventarioArticulo> obtenerInventarioArticulosConStockBajo();
-    public InventarioArticulo deleteById(Long InventarioId);
+    public List<InventarioArticulo> obtenerInventarioArticulosDebajoPuntoPedido();
     public void sumarStock(Articulo articulo, double cantidad);
     public void calcularVariables(Long inventarioArticuloId);
     public void restarStock(Articulo articulo, int cantidad);

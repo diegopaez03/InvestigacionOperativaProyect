@@ -19,6 +19,9 @@ public interface InventarioArticuloRepository extends BaseRepository<InventarioA
 
     @Query("SELECT ia FROM InventarioArticulo ia WHERE ia.stockActual <= ia.stockSeguridad")
     List<InventarioArticulo> findAllByStockActualLessThanOrEqualToStockSeguridad();
+    @Query("SELECT ia FROM InventarioArticulo ia WHERE ia.stockActual <= ia.puntoPedido")
+    List<InventarioArticulo> findAllByStockActualLessThanOrEqualToPuntoPedido();
+
     //Creado por diego
     List<InventarioArticulo> findAllByArticulo(Articulo articulo);
     List<InventarioArticulo> findByArticuloAndInventario(Articulo articulo, Inventario inventario);

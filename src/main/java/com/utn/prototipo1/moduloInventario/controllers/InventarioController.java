@@ -98,5 +98,11 @@ public class InventarioController {
         model.addAttribute("inventarioArticulos", inventarioArticulosConStockBajo);
         return "InventarioArticuloMenorStock";
     }
+    @GetMapping("/inventarios/debajoPuntoPedido")
+    public String mostrarInventarioArticulosDebajoPuntoPedido(Model model) {
+        List<InventarioArticulo> inventarioArticulosDebajoPuntoPedido = inventarioArticuloService.obtenerInventarioArticulosDebajoPuntoPedido();
+        model.addAttribute("inventarioArticulos", inventarioArticulosDebajoPuntoPedido);
+        return "InventarioArticuloDebajoPuntoPedido";
+    }
 
 }
