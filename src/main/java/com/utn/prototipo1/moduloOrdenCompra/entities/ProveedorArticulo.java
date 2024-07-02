@@ -18,7 +18,7 @@ public class ProveedorArticulo extends BaseEntidad {
     private int tiempoDemoraArticulo;
 
     @Column
-    private float costoPedido;
+    private double costoPedido;
 
     @NonNull
     @ManyToOne()

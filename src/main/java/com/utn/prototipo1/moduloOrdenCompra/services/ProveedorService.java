@@ -2,6 +2,7 @@ package com.utn.prototipo1.moduloOrdenCompra.services;
 
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
+import com.utn.prototipo1.moduloOrdenCompra.dto.RegistrarProveedorDTO;
 import com.utn.prototipo1.moduloOrdenCompra.entities.Proveedor;
 import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
 import com.utn.prototipo1.moduloOrdenCompra.repositories.ProveedorArticuloRepository;
@@ -26,6 +27,9 @@ public class ProveedorService implements IProveedorService{
     private ProveedorArticuloRepository proveedorArticuloRepository;
 
     @Autowired
+    private ProveedorArticuloService proveedorArticuloService;
+
+    @Autowired
     private ArticuloRepository articuloRepository;
 
     @Override
@@ -47,6 +51,42 @@ public class ProveedorService implements IProveedorService{
     public void deleteProveedor(Proveedor proveedor) {
         proveedorRepository.delete(proveedor);
     }
+
+    public Proveedor registrarProveedor(RegistrarProveedorDTO registrarProveedorDTO) throws Exception {
+        try {
+            Proveedor proveedorRepetido = proveedorRepository.findProveedorByNombreProveedor(registrarProveedorDTO.getNombreProveedor());
+            if (proveedorRepetido != null) {
+                throw new Exception("El nombre del proveedor ya existe");
+            }
+    
+            Proveedor proveedor = new Proveedor();
+
+            proveedor.setNombreProveedor(registrarProveedorDTO.getNombreProveedor());
+            
+            List<ProveedorArticulo> proveedoresArticulos = new ArrayList<>();
+            registrarProveedorDTO.getProveedorArticulos().forEach( detalle -> {
+                if (detalle.getIdArticulo() != null) {
+                    try {
+                    ProveedorArticulo proveedorArticulo = proveedorArticuloService.generarProveedorArticulo(detalle.getIdArticulo(), detalle.getCostoPedido(), detalle.getTiempoDemoraArticulo());
+    
+                        proveedorArticuloService.save(proveedorArticulo);
+                        proveedoresArticulos.add(proveedorArticulo);                    
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+
+            proveedor.setProveedorArticulo(proveedoresArticulos);
+    
+            // Retornar el proveedor guardado
+            return proveedorRepository.save(proveedor);
+            
+        } catch (Exception e) {
+            throw new Exception("Error: " + e.getMessage());
+        }
+    }
+    
 
     @Override
     public List<Proveedor> getProveedoresConArticulo(Long idArticulo) {
@@ -94,5 +134,10 @@ public class ProveedorService implements IProveedorService{
         });
 
         return articulos;
+    }
+
+    @Override
+    public Proveedor getProveedorByName(String nombre) {
+        return proveedorRepository.findProveedorByNombreProveedor(nombre);
     }
 }

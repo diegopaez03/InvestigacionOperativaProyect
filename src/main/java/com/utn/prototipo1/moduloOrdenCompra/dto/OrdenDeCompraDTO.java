@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class OrdenDeCompraDTO {
 
     @NonNull
@@ -23,6 +26,7 @@ public class OrdenDeCompraDTO {
     @AllArgsConstructor
     @Getter
     @Setter
+    @ToString
     public static class DetalleOrdenCompraDTO {
 
         @NonNull
