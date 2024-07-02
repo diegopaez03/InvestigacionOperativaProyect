@@ -64,7 +64,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             restarStock(detalle.getArticulo(), detalle.getCantidad());
         }
     }
-
+    @Override
     public Inventario crearInventario(){
         Inventario nuevoInventario = new Inventario();
         LocalDate fechaActual = LocalDate.now();
@@ -96,9 +96,9 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         // Obtener el InventarioArticulo específico para el artículo y el inventario actual
         List<InventarioArticulo> inventarioArticulos = inventarioArticuloRepository.findByArticuloAndInventario(articulo, inventario);
 
-        // Verificar que se haya encontrado algún InventarioArticulo
-        if (inventarioArticulos.isEmpty()) {
-            // Si no se encontró, crear un nuevo InventarioArticulo y asociarlo al inventario actual
+
+        if (inventarioArticulos.isEmpty()) {  // Si no se encontró, crear un nuevo InventarioArticulo y asociarlo al inventario actual
+
             InventarioArticulo nuevoInventarioArticulo = new InventarioArticulo();
             nuevoInventarioArticulo.setArticulo(articulo);
             nuevoInventarioArticulo.setInventario(inventario);
@@ -109,9 +109,8 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             calcularVariables(nuevoInventarioArticulo.getId());
             inventarioArticuloRepository.save(nuevoInventarioArticulo);
 
-            // Opcional: podrías lanzar una excepción o manejar de otra manera si lo deseas
         } else {
-            // Iterar sobre los InventarioArticulo encontrados y sumar la cantidad al stock actual
+
             for (InventarioArticulo inventarioArticulo : inventarioArticulos) {
                 double nuevoStock = inventarioArticulo.getStockActual() + cantidad;
                 inventarioArticulo.setStockActual(nuevoStock);

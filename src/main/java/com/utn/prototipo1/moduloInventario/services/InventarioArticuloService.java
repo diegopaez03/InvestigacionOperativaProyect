@@ -2,6 +2,7 @@ package com.utn.prototipo1.moduloInventario.services;
 
 import com.utn.prototipo1.Base.services.BaseServices;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
+import com.utn.prototipo1.moduloInventario.entities.Inventario;
 import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
@@ -14,6 +15,7 @@ public interface InventarioArticuloService{
     List<InventarioArticulo> findAll();
     InventarioArticulo findById(Long id);
     InventarioArticulo save(InventarioArticulo inventarioArticulo);
+    public Inventario crearInventario();
     List<InventarioArticulo> obtenerArticuloPorInventario(Long InventarioId);
     public List<InventarioArticulo> obtenerInventarioArticulosConStockBajo();
     public List<InventarioArticulo> obtenerInventarioArticulosDebajoPuntoPedido();
