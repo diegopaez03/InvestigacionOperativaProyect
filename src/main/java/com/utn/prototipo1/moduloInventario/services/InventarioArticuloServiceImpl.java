@@ -158,7 +158,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             throw new RuntimeException("Demanda no encontrada para el artículo");
         }
 
-        ProveedorArticulo proveedorArticulo = proveedorService.getProveedorArticuloConMenorDemora(articulo.getId());
+        ProveedorArticulo proveedorArticulo = proveedorService.getProveedorArticuloConMenorDemora(articulo.getId());  //buscar que sea del mismo articulo
         if (proveedorArticulo == null) {
             throw new RuntimeException("Proveedor no encontrado para el artículo");
         }
