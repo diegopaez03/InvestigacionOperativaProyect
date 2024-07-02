@@ -144,7 +144,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
     }
 
     @Override
-    public void calcularVariables(Long inventarioArticuloId, Double costoAlmacenamiento, Double desviacion) {
+    public void calcularVariables(Long inventarioArticuloId, double costoAlmacenamiento, double desviacion) {
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findById(inventarioArticuloId)
                 .orElseThrow(() -> new RuntimeException("InventarioArticulo no encontrado"));
 
