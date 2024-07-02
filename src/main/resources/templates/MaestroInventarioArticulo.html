@@ -29,12 +29,11 @@
             <td th:text="${inventarioArticulo.articulo.nombreArticulo}"></td>
             <td th:text="${inventarioArticulo.stockActual}"></td>
             <td>
-                <a th:href="@{/inventarios/{inventarioId}/inventarioArticulos/calcularVariablesForm/{id}(inventarioId=${inventarioArticulo.inventario.id}, id=${inventarioArticulo.id})}" class="btn btn-warning">Calcular Variables</a>
+                <a th:href="@{/inventarios/{inventarioId}/inventarioArticulos/VistaValoresCalculados/{id}(inventarioId=${inventarioArticulo.inventario.id}, id=${inventarioArticulo.id})}" class="btn btn-warning">Ver Datos</a>
             </td>
         </tr>
         </tbody>
     </table>
-
 </div>
 </body>
 </html>

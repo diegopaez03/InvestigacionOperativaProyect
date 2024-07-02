@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 @Service
 public class InventarioArticuloServiceImpl implements InventarioArticuloService {
@@ -98,9 +99,11 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             InventarioArticulo nuevoInventarioArticulo = new InventarioArticulo();
             nuevoInventarioArticulo.setArticulo(articulo);
             nuevoInventarioArticulo.setInventario(inventario);
-            nuevoInventarioArticulo.setStockActual(cantidad); // Aquí podrías inicializar el stock según tu lógica
-
+            nuevoInventarioArticulo.setStockActual(cantidad);
+            // Aquí podrías inicializar el stock según tu lógica
             // Guardar el nuevo InventarioArticulo
+            inventarioArticuloRepository.save(nuevoInventarioArticulo);
+            calcularVariables(nuevoInventarioArticulo.getId());
             inventarioArticuloRepository.save(nuevoInventarioArticulo);
 
             // Opcional: podrías lanzar una excepción o manejar de otra manera si lo deseas
@@ -144,7 +147,10 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
     }
 
     @Override
-    public void calcularVariables(Long inventarioArticuloId, double costoAlmacenamiento, double desviacion) {
+    public void calcularVariables(Long inventarioArticuloId) {
+        Random random = new Random();
+        double costoAlmacenamiento = 30 + (200 - 1) * random.nextDouble();
+        double desviacion = 1 + (5 - 1) * random.nextDouble();
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findById(inventarioArticuloId)
                 .orElseThrow(() -> new RuntimeException("InventarioArticulo no encontrado"));
 
@@ -171,6 +177,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         String tipoModeloInventarioNombre = articulo.getArticuloCategoria().getTipoModeloInventario().getNombre();
 
         if ("Lote fijo".equals(tipoModeloInventarioNombre)) {
+
             double puntoPedido = tiempoPedido * (cantdemanda / 300.0);
             double lotefijo = Math.sqrt(2.0 * cantdemanda * (costoPedido / costoAlmacenamiento));
             double stockSeguridad = 1.64 * desviacion * Math.sqrt(tiempoPedido);
@@ -192,7 +199,6 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         } else {
             throw new IllegalArgumentException("Tipo de modelo de inventario no reconocido");
         }
-
         inventarioArticuloRepository.save(inventarioArticulo);
     }
 }

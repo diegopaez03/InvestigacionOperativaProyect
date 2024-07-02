@@ -79,39 +79,14 @@ public class InventarioController {
         return "MaestroInventarioArticulo";
     }
 
-    @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/calcularVariablesForm/{id}")
-    public String showCalcularVariablesForm(@PathVariable("inventarioId") Long inventarioId,
-                                            @PathVariable("id") Long id, Model model) {
-        model.addAttribute("inventarioArticuloId", id);
-        return "calcularVariableForm";
-    }
-
-    @GetMapping("/calcularvariables")
-    public String mostrarCalculoVariablesForm(@RequestParam("inventarioArticuloId") Long inventarioArticuloId, Model model) {
-        InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId);
-        model.addAttribute("inventarioArticulo", inventarioArticulo);
-        return "inventario/calcularVariables";
-    }
-
-    @PostMapping("/calcularvariables")
-    public String calcularVariables(@RequestParam("inventarioArticuloId") Long inventarioArticuloId,
-                                    @RequestParam("costoAlmacenamiento") Double costoAlmacenamiento,
-                                    @RequestParam("desviacion") Double desviacion,
-                                    RedirectAttributes redirectAttributes) {
-        inventarioArticuloService.calcularVariables(inventarioArticuloId, costoAlmacenamiento, desviacion);
-        redirectAttributes.addFlashAttribute("success", "Variables calculadas con éxito.");
-        return "redirect:/inventarios/" + inventarioArticuloService.findById(inventarioArticuloId).getInventario().getId() + "/inventarioArticulos/valoresCalculados?inventarioArticuloId=" + inventarioArticuloId;
-    }
-
-    @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/valoresCalculados")
+    @GetMapping("/inventarios/{inventarioId}/inventarioArticulos/VistaValoresCalculados/{id}")
     public String mostrarValoresCalculados(@PathVariable("inventarioId") Long inventarioId,
-                                           @RequestParam("inventarioArticuloId") Long inventarioArticuloId,
+                                           @PathVariable("id") Long id,
                                            Model model) {
-        InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(inventarioArticuloId);
+        InventarioArticulo inventarioArticulo = inventarioArticuloService.findById(id);
 
         if (inventarioArticulo != null) {
             model.addAttribute("inventarioArticulo", inventarioArticulo);
-            model.addAttribute("inventarioId", inventarioId);
             return "VistaValoresCalculados";
         } else {
             return "redirect:/maestroinventario";

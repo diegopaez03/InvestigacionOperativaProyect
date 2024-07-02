@@ -20,7 +20,6 @@
             <th scope="col">Id Inventario </th>
             <th scope="col">FechaDesde</th>
             <th scope="col">FechaHasta</th>
-           <!-- <th scope="col">Total</th>-->
             <th scope="col">Acciones</th>
         </tr>
         </thead>
@@ -31,7 +30,6 @@
             <td th:text="${inventario.fechaHasta}"></td>
             <td>
                 <a th:href="@{inventarios/{inventarioId}/inventarioArticulos(inventarioId=${inventario.id})}" class="btn btn-warning">Ver InventarioArticulo</a>
-                <a th:href="@{/maestroinventario/{id}(id=${inventario.id})}" class="btn btn-danger">Eliminar</a>
             </td>
         </tr>
 
