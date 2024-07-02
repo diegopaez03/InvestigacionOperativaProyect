@@ -20,6 +20,7 @@ public class PrediccionDemandaServiceImpl implements PrediccionDemandaService{
     @Autowired
     DemandaService demandaService;
 
+
     @Override
     public double calcularPromedioMovil(double[] demandaReal, int periodos) {
         if (demandaReal == null || demandaReal.length == 0 || periodos <= 0 || periodos > demandaReal.length) {
@@ -77,6 +78,7 @@ public class PrediccionDemandaServiceImpl implements PrediccionDemandaService{
         nuevaPrediccion.setDemandaPredicha(demandaPredicha);
         prediccionDemandaRepository.save(nuevaPrediccion);
     }
+
 
 
     @Override

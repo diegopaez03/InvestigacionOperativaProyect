@@ -24,4 +24,5 @@ public class OrdenDeCompraService extends BaseServicesImpl<OrdenDeCompra, Long> 
     public List<OrdenDeCompra> getOrdenesDeCompra() {
         return ordenDeCompraRepository.findAll();
     }
+
 }

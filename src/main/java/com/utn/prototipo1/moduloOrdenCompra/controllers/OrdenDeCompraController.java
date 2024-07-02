@@ -154,12 +154,12 @@ public class OrdenDeCompraController {
     }
 
     @PostMapping("/actualizarEOC/{id}")
-    public ModelAndView actualizarEstadoOrdenDeCompra(@PathVariable("id") Long id, @RequestParam("idEOC") Long idEOC) throws Exception {
-        OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);
-        EstadoOrdenDeCompra estadoOrdenDeCompra = estadoOrdenCompraService.getEstadoOrdenDeCompraById(idEOC);
+        public ModelAndView actualizarEstadoOrdenDeCompra(@PathVariable("id") Long id, @RequestParam("idEOC") Long idEOC) throws Exception {
+            OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);
+            EstadoOrdenDeCompra estadoOrdenDeCompra = estadoOrdenCompraService.getEstadoOrdenDeCompraById(idEOC);
 
-        ordenDeCompra.setEstadoOrdenDeCompra(estadoOrdenDeCompra);
-        ordenDeCompraService.save(ordenDeCompra);
+            ordenDeCompra.setEstadoOrdenDeCompra(estadoOrdenDeCompra);
+            ordenDeCompraService.save(ordenDeCompra);
         return new ModelAndView("redirect:/ordenDeCompra/" + id);
     }
 

@@ -5,7 +5,6 @@ import com.utn.prototipo1.moduloOrdenCompra.entities.Proveedor;
 import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
 
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 
 @Repository

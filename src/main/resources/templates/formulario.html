@@ -12,7 +12,8 @@
         <a th:href="@{/articulos}" class="btn btn-secondary">Volver a Artículos</a>
     </div>
 
-    <form th:action="@{/calcularPromedioMovil}" method="post" class="my-4">
+    <form id="formPromedioMovil" th:action="@{/calcularPromedioMovil}" method="post" class="my-4">
+
         <div class="form-group">
             <label for="demandaRealPM">Demanda Real (separada por comas):</label>
             <input type="text" th:value="${cantidadesDemanda}" id="demandaRealPM" name="demandaReal" class="form-control" required>
@@ -21,10 +22,14 @@
             <label for="periodosPM">Periodos:</label>
             <input type="number" id="periodosPM" name="periodos" class="form-control" required>
         </div>
+
         <button type="submit" class="btn btn-primary">Calcular Promedio Móvil</button>
     </form>
 
-    <form th:action="@{/calcularPromedioPonderado}" method="post" class="my-4">
+    <div id="resultadoPromedioMovil" class="my-4"></div>
+
+
+    <form id="formPromedioPonderado" th:action="@{/calcularPromedioPonderado}" method="post" class="my-4">
         <div class="form-group">
             <label for="demandaRealPP">Demanda Real (separada por comas):</label>
             <input type="text" th:value="${cantidadesDemanda}" id="demandaRealPP" name="demandaReal" class="form-control" required>
@@ -36,7 +41,9 @@
         <button type="submit" class="btn btn-primary">Calcular Promedio Ponderado</button>
     </form>
 
-    <form th:action="@{/calcularSuavizacionExponencial}" method="post" class="my-4">
+    <div id="resultadoPromedioPonderado" class="my-4"></div>
+
+    <form id="formSuavizacionExponencial" th:action="@{/calcularSuavizacionExponencial}" method="post" class="my-4">
         <div class="form-group">
             <label for="demandaRealSE">Demanda Real (separada por comas --> Pronostico Anterior,Demanda real):</label>
             <input type="text" th:value="${cantidadesDemanda}" id="demandaRealSE" name="demandaReal" class="form-control" required>
@@ -47,6 +54,36 @@
         </div>
         <button type="submit" class="btn btn-primary">Calcular Suavización Exponencial</button>
     </form>
+
+    <div id="resultadoSuavizacionExponencial" class="my-4"></div>
+
 </div>
+
+<!-- JavaScript para actualizar resultados en la misma página -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Función para capturar el evento submit de los formularios
+        $('form').submit(function (event) {
+            event.preventDefault(); // Prevenir el envío del formulario por defecto
+
+            var form = $(this); // Obtener el formulario actual
+            var action = form.attr('action'); // Obtener la URL de acción del formulario
+
+            // Hacer una solicitud POST al endpoint del formulario
+            $.post(action, form.serialize(), function (data) {
+                // Actualizar el contenido de resultados según el método utilizado
+                if (action.includes("calcularPromedioMovil")) {
+                    $('#resultadoPromedioMovil').html(data); // Actualizar resultados de promedio móvil
+                } else if (action.includes("calcularPromedioPonderado")) {
+                    $('#resultadoPromedioPonderado').html(data); // Actualizar resultados de promedio ponderado
+                } else if (action.includes("calcularSuavizacionExponencial")) {
+                    $('#resultadoSuavizacionExponencial').html(data); // Actualizar resultados de suavización exponencial
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

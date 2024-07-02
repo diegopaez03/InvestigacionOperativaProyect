@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -165,8 +166,8 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         int anoAnterior = inventarioArticulo.getInventario().getFechaDesde().getYear()-1;
 
         // Obtén la demanda del artículo específico para el año actual
-        Demanda demandaEspecifica = demandaRepository.findByArticuloAndPeriodoYear(articulo, anoAnterior);
-        if (demandaEspecifica == null) {
+        Optional<Demanda> demandaEspecifica = demandaRepository.findByArticuloAndPeriodoYear(articulo, anoAnterior);
+        if (demandaEspecifica.isEmpty()) {
             throw new RuntimeException("Demanda no encontrada para el artículo en el año actual");
         }
 
@@ -175,7 +176,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             throw new RuntimeException("Proveedor no encontrado para el artículo");
         }
 
-        double cantdemanda = demandaEspecifica.getCantidad();
+        double cantdemanda = demandaEspecifica.get().getCantidad();
         double costoPedido = proveedorArticulo.getCostoPedido();
         int tiempoPedido = proveedorArticulo.getTiempoDemoraArticulo();
         double precioArt = articulo.getPrecioVenta();

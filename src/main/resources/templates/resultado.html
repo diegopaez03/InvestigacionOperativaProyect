@@ -8,14 +8,25 @@
 <body>
 <div class="container mt-4">
     <h2>Resultados de Predicción de Demanda</h2>
-    <div class="my-4">
-        <p><strong>Método utilizado:</strong> <span th:text="${metodo}"></span></p>
-        <p><strong>Predicción:</strong> <span th:text="${prediccion}"></span></p>
-        <p><strong>Error:</strong> <span th:text="${error}"></span></p>
-        <p><strong>Error Absoluto:</strong> <span th:text="${errorAbsoluto}"></span></p>
+
+    <!-- Card de Resultados -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Detalles de Predicción</h5>
+            <div class="card-text">
+                <p><strong>Método utilizado:</strong> <span th:text="${metodo}"></span></p>
+                <p><strong>Predicción:</strong> <span th:text="${prediccion}"></span></p>
+                <p><strong>Error:</strong> <span th:text="${error}"></span></p>
+                <p><strong>Error Absoluto:</strong> <span th:text="${errorAbsoluto}"></span></p>
+            </div>
+        </div>
     </div>
+
 </div>
 </body>
 </html>
+
+
+
 
 
