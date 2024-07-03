@@ -15,7 +15,7 @@
             </div>
 
             <div class="mt-2">
-                <h4>Agregar Artículos</h4>
+                <h4>Agregar Artículos de Proveedor</h4>
                 <div class="mt-4" style="display: flex; align-items: flex-end;">
                     <div class="mb-3" style="width: 50%; margin-right: .5%;">
                         <label for="idArticulo" class="form-label">Artículo</label>
@@ -26,7 +26,7 @@
                     </div>
                     <div class="mb-3" style="width: 20%; margin-right: .5%;">
                         <label for="costoPedido" class="form-label">Costo de Pedido</label>
-                        <input type="number" id="costoPedido" class="form-control" step="0.01" value="1" required>
+                        <input type="number" id="costoPedido" class="form-control" step="1" value="1" required>
                     </div>
                     <div class="mb-3" style="width: 20%; margin-right: .5%;">
                         <label for="tiempoDemora" class="form-label">Tiempo de Demora (días)</label>
@@ -61,7 +61,7 @@
             </div>
 
             <div style="display: flex; justify-content: end;">
-                <a href="#" th:href="@{/proveedores/list}" class="btn btn-danger">Cancelar</a>
+                <a href="#" th:href="@{/proveedor/list}" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-primary" style="margin-left: .5%;">Guardar Proveedor</button>
             </div>
         </form>

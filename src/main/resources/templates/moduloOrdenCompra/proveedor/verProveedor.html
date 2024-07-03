@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Proveedor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Detalles del Proveedor</h2>
+        <div>
+            <p><strong>Nombre del Proveedor:</strong> <span th:text="${proveedor.nombreProveedor}"></span></p>
+            <h4>Artículos</h4>
+            <ul>
+                <li th:each="articulo : ${proveedor.proveedorArticulo}">
+                    <span th:text="${articulo.articulo.nombreArticulo} + ' - ' + ${articulo.costoPedido} + ' - ' + ${articulo.tiempoDemoraArticulo}"></span>
+                </li>
+            </ul>
+        </div>
+        <a th:href="@{/proveedor/list}" class="btn btn-primary">Volver al listado</a>
+    </div>
+</body>
+</html>
