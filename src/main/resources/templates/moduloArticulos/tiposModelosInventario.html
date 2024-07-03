@@ -40,11 +40,17 @@
 <body>
 
 <div class="container mt-4">
-    <h1 class="mb-4">Lista de Modelos de Inventario</h1>
     <div class="row mb-3">
-        <div class="col-lg-3">
-            <a th:href="@{/tiposModelosInventario/nuevo}" class="btn btn-primary btn-sm">Agregar Modelo de
-                Inventario</a>
+        <div class="col">
+            <h1 class="mb-0">Lista de Modelos de Inventario</h1>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-lg-6">
+            <a th:href="@{/tiposModelosInventario/nuevo}" class="btn btn-primary btn-sm">Agregar Modelo de Inventario</a>
+        </div>
+        <div class="col-lg-6 text-lg-right">
+            <a class="btn btn-success btn-sm" href="#" onclick="history.back()">Volver</a>
         </div>
     </div>
 
