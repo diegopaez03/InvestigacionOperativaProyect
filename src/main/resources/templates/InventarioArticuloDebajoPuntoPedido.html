@@ -20,7 +20,8 @@
             <th scope="col">Número de Inventario</th>
             <th scope="col">Artículo</th>
             <th scope="col">Stock Actual</th>
-            <th scope="col">PuntoPedido</th>
+            <th scope="col">Punto de Pedido</th>
+            <th scope="col">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -29,6 +30,9 @@
             <td th:text="${inventarioArticulo.articulo.nombreArticulo}"></td>
             <td th:text="${inventarioArticulo.stockActual}"></td>
             <td th:text="${inventarioArticulo.puntoPedido}"></td>
+            <td>
+                <a th:href="@{/ordenDeCompra/list}" class="btn btn-primary">Ir a Ordenes de Compra</a>
+            </td>
         </tr>
         </tbody>
     </table>

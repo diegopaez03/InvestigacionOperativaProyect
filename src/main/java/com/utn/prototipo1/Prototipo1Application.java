@@ -11,6 +11,7 @@ import com.utn.prototipo1.moduloOrdenCompra.entities.Proveedor;
 import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
 import com.utn.prototipo1.moduloOrdenCompra.repositories.EstadoOrdenDeCompraRepository;
 import com.utn.prototipo1.moduloOrdenCompra.repositories.OrdenDeCompraRepository;
+import com.utn.prototipo1.moduloOrdenCompra.repositories.ProveedorArticuloRepository;
 import com.utn.prototipo1.moduloOrdenCompra.repositories.ProveedorRepository;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
 import com.utn.prototipo1.moduloVenta.repositories.FacturaRepository;
@@ -43,7 +44,8 @@ public class Prototipo1Application {
 			FacturaRepository facturaRepository,
 			OrdenDeCompraRepository ordenDeCompraRepository,
 			EstadoOrdenDeCompraRepository estadoOrdenDeCompraRepository,
-			ProveedorRepository proveedorRepository
+			ProveedorRepository proveedorRepository,
+			ProveedorArticuloRepository proveedorArticuloRepository
 	) {
 		return args -> {
 
@@ -89,32 +91,145 @@ public class Prototipo1Application {
 			estadoOrdenDeCompraRepository.save(estadoOrdenDeCompra);
 
 
+			ArticuloCategoria articuloCategoria1 = ArticuloCategoria.builder()
+					.nombreCategoria("Electrodomesticos")
+					.tipoModeloInventario(tipoModeloInventario1)
+					.build();
+
+			ArticuloCategoria articuloCategoria2 = ArticuloCategoria.builder()
+					.nombreCategoria("Ropa")
+					.tipoModeloInventario(tipoModeloInventario2)
+					.build();
+
+			ArticuloCategoria articuloCategoria3 = ArticuloCategoria.builder()
+					.nombreCategoria("Herramientas")
+					.tipoModeloInventario(tipoModeloInventario2)
+					.build();
+			articuloCategoriaRepository.save(articuloCategoria1);
+			articuloCategoriaRepository.save(articuloCategoria2);
+			articuloCategoriaRepository.save(articuloCategoria3);
+
+
+			Articulo articulo1 = Articulo.builder()
+					.nombreArticulo("Televisor LED 55 pulgadas")
+					.precioCompra(550)
+					.precioVenta(900)
+					.fechaBaja(null)
+					.articuloCategoria(articuloCategoria1)
+					.build();
+
+			Articulo articulo2 = Articulo.builder()
+					.nombreArticulo("Camisa de vestir blanca")
+					.precioCompra(30)
+					.precioVenta(60)
+					.fechaBaja(null)
+					.articuloCategoria(articuloCategoria2)
+					.build();
+
+			Articulo articulo3 = Articulo.builder()
+					.nombreArticulo("Taladro inalámbrico Bosch")
+					.precioCompra(120)
+					.precioVenta(180)
+					.fechaBaja(null)
+					.articuloCategoria(articuloCategoria3)
+					.build();
+
+			Articulo articulo4 = Articulo.builder()
+					.nombreArticulo("Silla de oficina ergonómica")
+					.precioCompra(80)
+					.precioVenta(150)
+					.fechaBaja(null)
+					.articuloCategoria(articuloCategoria1)
+					.build();
+
+			Articulo articulo5 = Articulo.builder()
+					.nombreArticulo("Zapatillas deportivas Nike")
+					.precioCompra(60)
+					.precioVenta(100)
+					.fechaBaja(null)
+					.articuloCategoria(articuloCategoria2)
+					.build();
+
+			Articulo articulo6 = Articulo.builder()
+					.nombreArticulo("Destornillador eléctrico Black & Decker")
+					.precioCompra(45)
+					.precioVenta(80)
+					.fechaBaja(null)
+					.articuloCategoria(articuloCategoria3)
+					.build();
+
+			Articulo articulo7 = Articulo.builder()
+					.nombreArticulo("Cafetera automática Philips")
+					.precioCompra(70)
+					.precioVenta(120)
+					.fechaBaja(null)
+					.articuloCategoria(articuloCategoria1)
+					.build();
+
+			Articulo articulo8 = Articulo.builder()
+					.nombreArticulo("Jeans azules Levi's")
+					.precioCompra(40)
+					.precioVenta(80)
+					.fechaBaja(null)
+					.articuloCategoria(articuloCategoria2)
+					.build();
+
+			Articulo articulo9 = Articulo.builder()
+					.nombreArticulo("Martillo de carpintero Stanley")
+					.precioCompra(15)
+					.precioVenta(30)
+					.fechaBaja(null)
+					.articuloCategoria(articuloCategoria3)
+					.build();
+
+			Articulo articulo10 = Articulo.builder()
+					.nombreArticulo("Refrigerador Whirlpool 300L")
+					.precioCompra(400)
+					.precioVenta(700)
+					.fechaBaja(null)
+					.articuloCategoria(articuloCategoria1)
+					.build();
+
+			// Guardar los artículos en la base de datos
+			articuloRepository.save(articulo1);
+			articuloRepository.save(articulo2);
+			articuloRepository.save(articulo3);
+			articuloRepository.save(articulo4);
+			articuloRepository.save(articulo5);
+			articuloRepository.save(articulo6);
+			articuloRepository.save(articulo7);
+			articuloRepository.save(articulo8);
+			articuloRepository.save(articulo9);
+			articuloRepository.save(articulo10);
+
+
 
 			Proveedor proveedor = Proveedor.builder()
 					.nombreProveedor("Benjamin")
 					.build();
+
+			proveedorRepository.save(proveedor);
+
 			Proveedor proveedor1 = Proveedor.builder()
 					.nombreProveedor("Diego")
 					.build();
-			proveedorRepository.save(proveedor);
 			proveedorRepository.save(proveedor1);
-
 		};
 	};
 }
 
 	/*@Bean
 	CommandLineRunner init(
-		ArticuloRepository articuloRepository, 
-		TipoModeloInventarioRepository tipoModeloInventarioRepository, 
-		ArticuloCategoriaRepository articuloCategoriaRepository, 
-		FacturaRepository facturaRepository, 
+		ArticuloRepository articuloRepository,
+		TipoModeloInventarioRepository tipoModeloInventarioRepository,
+		ArticuloCategoriaRepository articuloCategoriaRepository,
+		FacturaRepository facturaRepository,
 		OrdenDeCompraRepository ordenDeCompraRepository,
 		EstadoOrdenDeCompraRepository estadoOrdenDeCompraRepository,
 		ProveedorRepository proveedorRepository
 		) {
 		return args -> {
-			
+
 		/*	TipoModeloInventario tipoModeloInventario1= TipoModeloInventario.builder()
 					.nombre("Lote fijo")
 					.build();
@@ -268,8 +383,3 @@ public class Prototipo1Application {
 
 		};
 	}*/
-
-
-
-
-
