@@ -195,11 +195,11 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             inventarioArticulo.setStockSeguridad(stockSeguridad);
 
         } else if ("Intervalo fijo".equals(tipoModeloInventarioNombre)) {
-            double lotefijo = Math.sqrt(2.0 * demandaEspecifica.get().getCantidad() * (costoPedido / costoalmacenamiento));
             double stockSeguridad = 1.64 * desviacion * Math.sqrt(tiempoPedido);
-            double cgi = precioArt * demandaEspecifica.get().getCantidad() + costoalmacenamiento * lotefijo / 2 + costoPedido * demandaEspecifica.get().getCantidad() / lotefijo;
-            inventarioArticulo.setLoteFijo(lotefijo);
-            inventarioArticulo.setCGI(cgi);
+            double puntoPedido =stockSeguridad + tiempoPedido * (demandaEspecifica.get().getCantidad() / 300.0);
+            inventarioArticulo.setLoteFijo(0);
+            inventarioArticulo.setCGI(0);
+            inventarioArticulo.setPuntoPedido(puntoPedido);
             inventarioArticulo.setStockSeguridad(stockSeguridad);
 
         } else {
