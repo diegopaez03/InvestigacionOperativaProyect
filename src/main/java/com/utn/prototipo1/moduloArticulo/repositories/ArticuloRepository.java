@@ -7,6 +7,8 @@ import com.utn.prototipo1.moduloOrdenCompra.entities.EstadoOrdenDeCompra;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 public interface ArticuloRepository extends JpaRepository<Articulo,Long> {
-    Articulo findByArticuloCategoria(ArticuloCategoria articuloCategoria);
+    List<Articulo>findByArticuloCategoria(ArticuloCategoria articuloCategoria);
 }

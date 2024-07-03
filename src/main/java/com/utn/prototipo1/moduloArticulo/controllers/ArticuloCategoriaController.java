@@ -69,18 +69,23 @@ public class ArticuloCategoriaController {
         return "moduloArticulos/editarCategoria";
     }
 
-    @PostMapping("categorias/{id}")
+    @PostMapping("/categorias/{id}")
     public String editarCategoria(@PathVariable Long id, @ModelAttribute("categoria") ArticuloCategoria articuloCategoria, Model modelo){
         ArticuloCategoria categoria1 = articuloCategoriaService.getCategoriaById(id);
+        boolean tipoModeloInventarioCambiado = !categoria1.getTipoModeloInventario().equals(articuloCategoria.getTipoModeloInventario());
+
         categoria1.setId(id);
         categoria1.setNombreCategoria(articuloCategoria.getNombreCategoria());
         categoria1.setFechaBaja(articuloCategoria.getFechaBaja());
         categoria1.setTipoModeloInventario(articuloCategoria.getTipoModeloInventario());
-        Articulo articulo = articuloRepository.findByArticuloCategoria(categoria1);
-        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articulo);
-        inventarioArticuloService.calcularVariables(inventarioArticulo.getId());
 
-
+        if (tipoModeloInventarioCambiado) {
+            List<Articulo> articulos = articuloRepository.findByArticuloCategoria(categoria1);
+            for (Articulo articulo : articulos) {
+                InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articulo);
+                inventarioArticuloService.calcularVariables(inventarioArticulo.getId());
+            }
+        }
 
         articuloCategoriaService.saveCategoria(categoria1);
         return "redirect:/categorias";
