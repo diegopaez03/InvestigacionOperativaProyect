@@ -119,7 +119,6 @@ public class OrdenDeCompraController {
     @Transactional
     @PostMapping("/generar")
     public ModelAndView generarOrdenDeCompra(@ModelAttribute("ordenDeCompra") OrdenDeCompraDTO ordenDeCompraDTO) {
-        System.out.println(ordenDeCompraDTO);
         try {
             Proveedor proveedor = this.proveedorService.getProveedorById(ordenDeCompraDTO.getIdProveedor());
 
@@ -146,10 +145,6 @@ public class OrdenDeCompraController {
 
             ordenDeCompraService.save(ordenDeCompra);
 
-            ordenDeCompra.getDetalleOrdenCompra().forEach(detalle -> {
-                inventarioArticuloService.sumarStock(detalle.getArticulo(), detalle.getCantidad());
-            });
-
             return new ModelAndView("redirect:/ordenDeCompra/list");
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -160,6 +155,14 @@ public class OrdenDeCompraController {
         public ModelAndView actualizarEstadoOrdenDeCompra(@PathVariable("id") Long id, @RequestParam("idEOC") Long idEOC) throws Exception {
             OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);
             EstadoOrdenDeCompra estadoOrdenDeCompra = estadoOrdenCompraService.getEstadoOrdenDeCompraById(idEOC);
+
+            EstadoOrdenDeCompra estadoEntregado = estadoOrdenCompraService.getEstadoOrdenDeCompraByNombre("Entregado");
+            
+            if (estadoOrdenDeCompra.getNombreEOC().equals(estadoEntregado.getNombreEOC())) {
+                ordenDeCompra.getDetalleOrdenCompra().forEach(detalle -> {
+                    inventarioArticuloService.sumarStock(detalle.getArticulo(), detalle.getCantidad());
+                });
+            }
 
             ordenDeCompra.setEstadoOrdenDeCompra(estadoOrdenDeCompra);
             ordenDeCompraService.save(ordenDeCompra);

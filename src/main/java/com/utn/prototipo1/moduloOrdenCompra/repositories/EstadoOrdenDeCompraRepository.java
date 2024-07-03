@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstadoOrdenDeCompraRepository extends BaseRepository<EstadoOrdenDeCompra,Long> {
+    public EstadoOrdenDeCompra findByNombreEOC(String nombreEOC);
 }

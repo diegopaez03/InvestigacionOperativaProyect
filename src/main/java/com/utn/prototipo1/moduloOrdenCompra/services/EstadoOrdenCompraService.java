@@ -34,4 +34,15 @@ public class EstadoOrdenCompraService implements IEstadoOrdenCompraService{
         estadoOrdenDeCompraRepository.delete(estadoOrdenDeCompra);
     }
 
+    @Override
+    public EstadoOrdenDeCompra getEstadoOrdenDeCompraByNombre(String nombre) throws Exception {
+        EstadoOrdenDeCompra estadoOrdenDeCompra = estadoOrdenDeCompraRepository.findByNombreEOC(nombre);
+        
+        if (estadoOrdenDeCompra == null) {
+            throw new Exception("No existe un estado con ese nombre");
+        }
+
+        return estadoOrdenDeCompra;
+    }
+
 }
