@@ -107,7 +107,6 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             // Aquí podrías inicializar el stock según tu lógica
             // Guardar el nuevo InventarioArticulo
             inventarioArticuloRepository.save(nuevoInventarioArticulo);
-            calcularVariables(nuevoInventarioArticulo.getId());
             inventarioArticuloRepository.save(nuevoInventarioArticulo);
 
         } else {
@@ -163,7 +162,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             throw new RuntimeException("Artículo asociado no encontrado en InventarioArticulo");
         }
 
-        int anoAnterior = inventarioArticulo.getInventario().getFechaDesde().getYear()-1;
+        int anoAnterior = inventarioArticulo.getInventario().getFechaDesde().getYear();
 
         // Obtén la demanda del artículo específico para el año actual
         Optional<Demanda> demandaEspecifica = demandaRepository.findByArticuloAndPeriodoYear(articulo, anoAnterior);

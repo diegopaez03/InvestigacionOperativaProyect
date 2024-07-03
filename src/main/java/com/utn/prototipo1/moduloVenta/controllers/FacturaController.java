@@ -6,6 +6,9 @@ import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloDemanda.dtos.CrearDemandaDto;
 import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 import com.utn.prototipo1.moduloDemanda.services.DemandaService;
+import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
+import com.utn.prototipo1.moduloInventario.repositories.InventarioArticuloRepository;
+import com.utn.prototipo1.moduloInventario.services.InventarioArticuloService;
 import com.utn.prototipo1.moduloVenta.entities.DetalleFactura;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
 import com.utn.prototipo1.moduloVenta.services.DetalleFacturaService;
@@ -32,10 +35,16 @@ public class FacturaController {
     private ArticuloService articuloService;
 
     @Autowired
+    private InventarioArticuloService inventarioArticuloService;
+
+    @Autowired
     private DetalleFacturaService detalleFacturaService;
 
     @Autowired
     DemandaService demandaService;
+
+    @Autowired
+    private InventarioArticuloRepository inventarioArticuloRepository;
 
     @GetMapping("/maestrofactura")
     public String mostrarTodasLasFacturas(Model model) {
@@ -144,6 +153,7 @@ public class FacturaController {
 
         }
 
+
         facturaService.actualizarTotalFactura(facturaId);
         facturaService.actualizarStockPorDetalleFactura(detalleFactura);
         facturaService.crearFactura(factura);
@@ -168,6 +178,9 @@ public class FacturaController {
 
         // Realizar la solicitud POST al endpoint de demanda
         Demanda demandaCreada = restTemplate.postForObject(demandaEndpoint, request, Demanda.class);
+
+        InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articulo);
+        inventarioArticuloService.calcularVariables(inventarioArticulo.getId());
 
         // Continuar con tu lógica actual después de crear la demanda
         return "redirect:/maestrofactura";

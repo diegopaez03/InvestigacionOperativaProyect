@@ -57,16 +57,16 @@ public class OrdenDeCompraController {
     @GetMapping("/{id}")
     public String verOrdenDeCompra(@PathVariable("id") Long id, Model model) throws Exception {
         OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);
-        
+
         if (ordenDeCompra!= null) {
-            
+
             float total = 0;
             if (ordenDeCompra.getDetalleOrdenCompra()!= null) {
                 for (DetalleOrdenCompra detalle : ordenDeCompra.getDetalleOrdenCompra()) {
                     total += detalle.getTotalDetalleOrdenCompra();
                 }
             }
-            
+
             model.addAttribute("totalOrden", total);
             model.addAttribute("ordenDeCompra", ordenDeCompra);
             return "moduloOrdenCompra/verOrdenDeCompra";
@@ -89,7 +89,7 @@ public class OrdenDeCompraController {
         model.addAttribute("ordenDeCompra", new OrdenDeCompraDTO());
         model.addAttribute("proveedores", proveedorService.getProveedor());
         model.addAttribute("estadoOrdenCompra", estadoOrdenCompraService.getEstadoOrdenCompra());
-        
+
         model.addAttribute("articulos", articuloService.getAllArticulos());
         model.addAttribute("inventario", inventario);
 
@@ -112,8 +112,8 @@ public class OrdenDeCompraController {
         model.addAttribute("estadosOrdenDeCompra", estadosOrdenDeCompra);
         return "moduloOrdenCompra/actualizarEstadoOC";
     }
-    
-    
+
+
 
     //Métodos de funcionamiento
     @Transactional
@@ -149,12 +149,12 @@ public class OrdenDeCompraController {
                 inventarioArticuloService.sumarStock(detalle.getArticulo(), detalle.getCantidad());
             });
 
-            return new ModelAndView("redirect:/ordenDeCompra/list"); 
+            return new ModelAndView("redirect:/ordenDeCompra/list");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    
+
     @PostMapping("/actualizarEOC/{id}")
         public ModelAndView actualizarEstadoOrdenDeCompra(@PathVariable("id") Long id, @RequestParam("idEOC") Long idEOC) throws Exception {
             OrdenDeCompra ordenDeCompra = ordenDeCompraService.findById(id);
