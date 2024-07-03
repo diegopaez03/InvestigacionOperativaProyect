@@ -1,15 +1,17 @@
 package com.utn.prototipo1.moduloOrdenCompra.controllers.Rest;
 
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
+import com.utn.prototipo1.moduloOrdenCompra.dto.RegistrarProveedorDTO;
 import com.utn.prototipo1.moduloOrdenCompra.entities.Proveedor;
 import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
+import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorArticuloService;
 import com.utn.prototipo1.moduloOrdenCompra.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -21,6 +23,9 @@ public class RestProveedorController {
     @Autowired
     private ProveedorService proveedorService;
 
+    @Autowired
+    private ProveedorArticuloService proveedorArticuloService;
+
     @GetMapping()
     public List<Proveedor> getAllProveedors(){
         return proveedorService.getProveedor();
@@ -30,6 +35,18 @@ public class RestProveedorController {
     public  Proveedor createProveedor(@RequestBody Proveedor proveedor){
         return  proveedorService.saveProveedor(proveedor);
     }
+
+    @PostMapping("/proveedorArticulo")
+    public ProveedorArticulo createProveedorArticulo(@RequestBody Long idArticulo, double costoPedido, int tiempoDemora) throws Exception {
+        
+        return proveedorArticuloService.generarProveedorArticulo(idArticulo, costoPedido, tiempoDemora);
+    }
+
+    @PostMapping("/registrar")
+    public  Proveedor registraProveedor(@RequestBody RegistrarProveedorDTO registrarProveedorDTO) throws Exception{
+        return  proveedorService.registrarProveedor(registrarProveedorDTO);
+    }
+    
 
     @GetMapping("/{idProveedor}/articulos")
     public List<Articulo> getArticulosDeProveedor(@PathVariable("idProveedor") Long idProveedor) {

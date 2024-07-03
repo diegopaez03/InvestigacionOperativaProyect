@@ -19,4 +19,6 @@ public interface IProveedorService {
 
     public ProveedorArticulo getProveedorArticuloConMenorDemora(Long idArticulo);
 
+    public Proveedor getProveedorByName(String nombre);
+
 }

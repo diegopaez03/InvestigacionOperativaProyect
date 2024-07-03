@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Proveedor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Crear Nuevo Proveedor</h2>
+        <form id="mainForm" th:action="@{/proveedor/registrar}" th:object="${proveedor}" method="post">
+            <div class="mb-3">
+                <label for="nombreProveedor" class="form-label">Nombre del Proveedor</label>
+                <input type="text" id="nombreProveedor" th:field="*{nombreProveedor}" class="form-control" required>
+            </div>
+
+            <div class="mt-2">
+                <h4>Agregar Artículos de Proveedor</h4>
+                <div class="mt-4" style="display: flex; align-items: flex-end;">
+                    <div class="mb-3" style="width: 50%; margin-right: .5%;">
+                        <label for="idArticulo" class="form-label">Artículo</label>
+                        <select id="idArticulo" class="form-control">
+                            <option value="">--Seleccione un artículo--</option>
+                            <option th:each="articulo : ${articulos}" th:value="${articulo.id}" th:text="${articulo.nombreArticulo}">Artículo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" style="width: 20%; margin-right: .5%;">
+                        <label for="costoPedido" class="form-label">Costo de Pedido</label>
+                        <input type="number" id="costoPedido" class="form-control" step="1" value="1" required>
+                    </div>
+                    <div class="mb-3" style="width: 20%; margin-right: .5%;">
+                        <label for="tiempoDemora" class="form-label">Tiempo de Demora (días)</label>
+                        <input type="number" id="tiempoDemora" class="form-control" value="1" required>
+                    </div>
+                    <div class="mb-3" style="width: 10%;">
+                        <button type="button" style="width: 100%;" class="btn btn-secondary" onclick="agregarDetalle()">
+                            Añadir Artículo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container" style="margin-top: 5; margin-bottom: auto;">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <table id="detallesProveedor" class="table table-striped">
+                            <caption>Detalle de los Artículos del Proveedor</caption>
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="centered">#</th>
+                                    <th class="centered">Artículo</th>
+                                    <th class="centered">Costo de Pedido</th>
+                                    <th class="centered">Tiempo de Demora</th>
+                                    <th class="centered">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody_detalles"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: end;">
+                <a href="#" th:href="@{/proveedor/list}" class="btn btn-danger">Cancelar</a>
+                <button type="submit" class="btn btn-primary" style="margin-left: .5%;">Guardar Proveedor</button>
+            </div>
+        </form>
+
+        <!-- jQuery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            function agregarDetalle() {
+                const idArticulo = document.getElementById('idArticulo').value;
+                const nombreArticulo = document.getElementById('idArticulo').selectedOptions[0].text;
+                const costoPedido = parseFloat(document.getElementById('costoPedido').value);
+                const tiempoDemora = parseInt(document.getElementById('tiempoDemora').value);
+
+                if (idArticulo && !isNaN(costoPedido) && !isNaN(tiempoDemora)) {
+                    const tableBody = document.getElementById('tableBody_detalles');
+                    let found = false;
+
+                    for (let i = 0; i < tableBody.rows.length; i++) {
+                        if (tableBody.rows[i].cells[1].textContent === nombreArticulo) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        const newRow = tableBody.insertRow();
+                        newRow.innerHTML = `
+                            <td>${tableBody.rows.length + 1}</td>
+                            <td>${nombreArticulo}</td>
+                            <td>${costoPedido.toFixed(2)}</td>
+                            <td>${tiempoDemora}</td>
+                            <td><button type="button" class="btn btn-danger" onclick="eliminarDetalle(this)">Eliminar</button></td>
+                            <input type="hidden" name="proveedorArticulos[${tableBody.rows.length}].idArticulo" value="${idArticulo}" />
+                            <input type="hidden" name="proveedorArticulos[${tableBody.rows.length}].costoPedido" value="${costoPedido}" />
+                            <input type="hidden" name="proveedorArticulos[${tableBody.rows.length}].tiempoDemoraArticulo" value="${tiempoDemora}" />
+                        `;
+                    }
+                }
+            }
+
+            function eliminarDetalle(button) {
+                const row = button.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+
+                const tableBody = document.getElementById('tableBody_detalles');
+                for (let i = 0; i < tableBody.rows.length; i++) {
+                    tableBody.rows[i].cells[0].textContent = i + 1;
+                }
+            }
+
+            document.getElementById('mainForm').addEventListener('submit', function(event) {
+                const detallesTableBody = document.getElementById('tableBody_detalles');
+                if (detallesTableBody.rows.length === 0) {
+                    alert('Por favor, agregue al menos un artículo antes de guardar el proveedor.');
+                    event.preventDefault();
+                    return;
+                }
+
+                // Remove empty inputs from the form
+                const emptyInputs = document.querySelectorAll('#tableBody_detalles input[name$=".idArticulo"][value=""]');
+                emptyInputs.forEach(input => input.closest('tr').remove());
+            });
+        </script>
+    </div>
+</body>
+</html>

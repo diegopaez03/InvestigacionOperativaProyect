@@ -5,16 +5,12 @@ import com.utn.prototipo1.Base.services.BaseServicesImpl;
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
 import com.utn.prototipo1.moduloOrdenCompra.entities.DetalleOrdenCompra;
-import com.utn.prototipo1.moduloOrdenCompra.repositories.DetalleOrdenCompraRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DetalleOrdenCompraService extends BaseServicesImpl<DetalleOrdenCompra, Long> implements IDetalleOrdenCompraService {
-
-    @Autowired
-    private DetalleOrdenCompraRepository detalleOrdenCompraRepository;
 
     @Autowired
     private ArticuloRepository articuloRepository;

@@ -119,6 +119,7 @@ public class OrdenDeCompraController {
     @Transactional
     @PostMapping("/generar")
     public ModelAndView generarOrdenDeCompra(@ModelAttribute("ordenDeCompra") OrdenDeCompraDTO ordenDeCompraDTO) {
+        System.out.println(ordenDeCompraDTO);
         try {
             Proveedor proveedor = this.proveedorService.getProveedorById(ordenDeCompraDTO.getIdProveedor());
 
