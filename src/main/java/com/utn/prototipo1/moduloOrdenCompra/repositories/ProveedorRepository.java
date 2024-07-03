@@ -13,4 +13,5 @@ public interface ProveedorRepository extends BaseRepository<Proveedor,Long> {
     Optional<Proveedor> findById(Long id);
     public Proveedor findProveedorByProveedorArticulo(ProveedorArticulo proveedorArticulo);
     
+    public Proveedor findProveedorByNombreProveedor(String nombreProveedor);
 }

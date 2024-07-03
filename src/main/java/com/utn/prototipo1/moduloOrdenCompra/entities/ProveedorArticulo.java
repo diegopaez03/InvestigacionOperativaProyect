@@ -12,6 +12,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@ToString
 public class ProveedorArticulo extends BaseEntidad {
 
     @Column(name = "tiempoDemoraArticulo")

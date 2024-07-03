@@ -69,6 +69,36 @@ public class Prototipo1Application {
 			facturaRepository.save(factura10);
 			facturaRepository.save(factura11);
 
+
+			TipoModeloInventario tipoModeloInventario1= TipoModeloInventario.builder()
+					.nombre("Lote fijo")
+					.build();
+
+			TipoModeloInventario tipoModeloInventario2= TipoModeloInventario.builder()
+					.nombre("Intervalo fijo")
+					.build();
+
+			tipoModeloInventarioRepository.save(tipoModeloInventario1);
+			tipoModeloInventarioRepository.save(tipoModeloInventario2);
+
+
+
+			EstadoOrdenDeCompra estadoOrdenDeCompra = EstadoOrdenDeCompra.builder()
+					.nombreEOC("Terminado")
+					.build();
+			estadoOrdenDeCompraRepository.save(estadoOrdenDeCompra);
+
+
+
+			Proveedor proveedor = Proveedor.builder()
+					.nombreProveedor("Benjamin")
+					.build();
+			Proveedor proveedor1 = Proveedor.builder()
+					.nombreProveedor("Diego")
+					.build();
+			proveedorRepository.save(proveedor);
+			proveedorRepository.save(proveedor1);
+
 		};
 	};
 }
