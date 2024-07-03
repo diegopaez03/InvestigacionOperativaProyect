@@ -29,6 +29,8 @@ public class InventarioArticulo extends BaseEntidad {
     private double LoteFijo;
     private double stockActual;
     private double CGI;
+    private int costoAlmacenamiento;
+    private int desviacion;
 
     @NonNull
     @ManyToOne(optional = false)

@@ -7,17 +7,22 @@
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="row">
-            <h1>Lista de InventarioArticulos</h1>
-            <a th:href="@{/maestroinventario}" class="btn btn-primary">Volver a Inventario</a>
+    <h1 class="mt-1">Lista de Articulos</h1>
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <a href="/inventarios/stockBajo" class="btn btn-primary w-100 mb-2">Lista de Articulos Faltantes</a>
+        </div>
+        <div class="col-md-4">
+            <a href="/inventarios/debajoPuntoPedido" class="btn btn-primary w-100 mb-2">Lista de Articulos a Reponer</a>
+        </div>
+        <div class="col-md-4">
+            <a th:href="@{/maestroinventario}" class="btn btn-success w-100 mb-2">Volver a Inventario</a>
         </div>
     </div>
     <br>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Número de Inventario</th>
             <th scope="col">Artículo</th>
             <th scope="col">Stock Actual</th>
             <th scope="col">Acciones</th>
@@ -25,16 +30,14 @@
         </thead>
         <tbody>
         <tr th:each="inventarioArticulo : ${inventarioArticulos}">
-            <td th:text="${inventarioArticulo.inventario.id}"></td>
             <td th:text="${inventarioArticulo.articulo.nombreArticulo}"></td>
             <td th:text="${inventarioArticulo.stockActual}"></td>
             <td>
-                <a th:href="@{/inventarios/{inventarioId}/inventarioArticulos/calcularVariablesForm/{id}(inventarioId=${inventarioArticulo.inventario.id}, id=${inventarioArticulo.id})}" class="btn btn-warning">Calcular Variables</a>
+                <a th:href="@{/inventarios/{inventarioId}/inventarioArticulos/VistaValoresCalculados/{id}(inventarioId=${inventarioArticulo.inventario.id}, id=${inventarioArticulo.id})}" class="btn btn-warning">Ver Datos</a>
             </td>
         </tr>
         </tbody>
     </table>
-
 </div>
 </body>
 </html>

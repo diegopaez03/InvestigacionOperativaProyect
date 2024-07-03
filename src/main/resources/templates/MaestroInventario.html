@@ -9,9 +9,7 @@
 <div class="container">
     <h1 class="mt-1">Lista de Inventarios</h1>
     <div class="row mt-3">
-        <div class="col-md-6 text-md-end">
             <a href="/" class="btn btn-success">Volver al Home</a>
-        </div>
     </div>
     <br>
     <table class="table">
@@ -20,7 +18,6 @@
             <th scope="col">Id Inventario </th>
             <th scope="col">FechaDesde</th>
             <th scope="col">FechaHasta</th>
-           <!-- <th scope="col">Total</th>-->
             <th scope="col">Acciones</th>
         </tr>
         </thead>
@@ -30,8 +27,7 @@
             <td th:text="${inventario.fechaDesde}"></td>
             <td th:text="${inventario.fechaHasta}"></td>
             <td>
-                <a th:href="@{inventarios/{inventarioId}/inventarioArticulos(inventarioId=${inventario.id})}" class="btn btn-warning">Ver InventarioArticulo</a>
-                <a th:href="@{/maestroinventario/{id}(id=${inventario.id})}" class="btn btn-danger">Eliminar</a>
+                <a th:href="@{inventarios/{inventarioId}/inventarioArticulos(inventarioId=${inventario.id})}" class="btn btn-warning">Ver Articulos</a>
             </td>
         </tr>
 

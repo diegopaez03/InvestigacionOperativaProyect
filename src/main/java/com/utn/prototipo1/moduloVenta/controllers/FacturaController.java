@@ -145,6 +145,7 @@ public class FacturaController {
         }
 
         facturaService.actualizarTotalFactura(facturaId);
+        facturaService.actualizarStockPorDetalleFactura(detalleFactura);
         facturaService.crearFactura(factura);
 
 
