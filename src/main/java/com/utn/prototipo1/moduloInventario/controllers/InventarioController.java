@@ -29,9 +29,20 @@ public class InventarioController {
 
     @GetMapping("/maestroinventario")
     public String mostrarTodosLosInventarios(Model model) {
-        model.addAttribute("inventarios", inventarioServices.findAll());
-        return "MaestroInventario";
+        List<Inventario> inventarios = inventarioServices.findAll();
+        model.addAttribute("inventarios", inventarios);
+
+        if (!inventarios.isEmpty()) {
+            // Redirige al último inventario creado
+            Inventario ultimoInventario = inventarios.get(inventarios.size() - 1);
+            return "redirect:/inventarios/" + ultimoInventario.getId() + "/inventarioArticulos";
+        }
+
+        // Redirige a la página de error si no hay inventarios
+        return "errorNoInventarios";
     }
+
+
 
     @GetMapping("/maestroinventario/nuevo")
     public String mostrarFormularioCrearInventario(Model model) {

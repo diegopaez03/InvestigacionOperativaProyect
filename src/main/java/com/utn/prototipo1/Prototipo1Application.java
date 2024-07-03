@@ -11,6 +11,7 @@ import com.utn.prototipo1.moduloOrdenCompra.entities.Proveedor;
 import com.utn.prototipo1.moduloOrdenCompra.entities.ProveedorArticulo;
 import com.utn.prototipo1.moduloOrdenCompra.repositories.EstadoOrdenDeCompraRepository;
 import com.utn.prototipo1.moduloOrdenCompra.repositories.OrdenDeCompraRepository;
+import com.utn.prototipo1.moduloOrdenCompra.repositories.ProveedorArticuloRepository;
 import com.utn.prototipo1.moduloOrdenCompra.repositories.ProveedorRepository;
 import com.utn.prototipo1.moduloVenta.entities.Factura;
 import com.utn.prototipo1.moduloVenta.repositories.FacturaRepository;
