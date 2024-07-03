@@ -152,20 +152,19 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
 
     @Override
     public void calcularVariables(Long inventarioArticuloId) {
-        Random random = new Random();
+
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findById(inventarioArticuloId)
                 .orElseThrow(() -> new RuntimeException("InventarioArticulo no encontrado"));
-        inventarioArticulo.setCostoAlmacenamiento(30 + random.nextInt(170));
-        inventarioArticulo.setDesviacion(1 + random.nextInt(8));
+
         Articulo articulo = inventarioArticulo.getArticulo();
         if (articulo == null) {
             throw new RuntimeException("Artículo asociado no encontrado en InventarioArticulo");
         }
 
-        int anoAnterior = inventarioArticulo.getInventario().getFechaDesde().getYear();
+        int Year = inventarioArticulo.getInventario().getFechaDesde().getYear();
 
         // Obtén la demanda del artículo específico para el año actual
-        Optional<Demanda> demandaEspecifica = demandaRepository.findByArticuloAndPeriodoYear(articulo, anoAnterior);
+        Optional<Demanda> demandaEspecifica = demandaRepository.findByArticuloAndPeriodoYear(articulo, Year);
         if (demandaEspecifica.isEmpty()) {
             throw new RuntimeException("Demanda no encontrada para el artículo en el año actual");
         }
@@ -175,7 +174,6 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             throw new RuntimeException("Proveedor no encontrado para el artículo");
         }
 
-        double cantdemanda = demandaEspecifica.get().getCantidad();
         double costoPedido = proveedorArticulo.getCostoPedido();
         int tiempoPedido = proveedorArticulo.getTiempoDemoraArticulo();
         double precioArt = articulo.getPrecioVenta();
@@ -186,10 +184,10 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
 
         if ("Lote fijo".equals(tipoModeloInventarioNombre)) {
 
-            double puntoPedido = tiempoPedido * (cantdemanda / 300.0);
-            double lotefijo = Math.sqrt(2.0 * cantdemanda * (costoPedido / costoalmacenamiento));
+            double puntoPedido = tiempoPedido * (demandaEspecifica.get().getCantidad() / 300.0);
+            double lotefijo = Math.sqrt(2.0 * demandaEspecifica.get().getCantidad() * (costoPedido / costoalmacenamiento));
             double stockSeguridad = 1.64 * desviacion * Math.sqrt(tiempoPedido);
-            double cgi = precioArt * cantdemanda + costoalmacenamiento * lotefijo / 2 + costoPedido * cantdemanda / lotefijo;
+            double cgi = precioArt * demandaEspecifica.get().getCantidad() + costoalmacenamiento * lotefijo / 2 + costoPedido * demandaEspecifica.get().getCantidad() / lotefijo;
 
             inventarioArticulo.setCGI(cgi);
             inventarioArticulo.setLoteFijo(lotefijo);
@@ -197,9 +195,9 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             inventarioArticulo.setStockSeguridad(stockSeguridad);
 
         } else if ("Intervalo fijo".equals(tipoModeloInventarioNombre)) {
-            double lotefijo = Math.sqrt(2.0 * cantdemanda * (costoPedido / costoalmacenamiento));
+            double lotefijo = Math.sqrt(2.0 * demandaEspecifica.get().getCantidad() * (costoPedido / costoalmacenamiento));
             double stockSeguridad = 1.64 * desviacion * Math.sqrt(tiempoPedido);
-            double cgi = precioArt * cantdemanda + costoalmacenamiento * lotefijo / 2 + costoPedido * cantdemanda / lotefijo;
+            double cgi = precioArt * demandaEspecifica.get().getCantidad() + costoalmacenamiento * lotefijo / 2 + costoPedido * demandaEspecifica.get().getCantidad() / lotefijo;
             inventarioArticulo.setLoteFijo(lotefijo);
             inventarioArticulo.setCGI(cgi);
             inventarioArticulo.setStockSeguridad(stockSeguridad);

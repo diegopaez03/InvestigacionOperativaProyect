@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class FacturaController {
@@ -150,9 +151,12 @@ public class FacturaController {
             detalleFactura.setArticulo(articulo);
             detalleFactura.calcularLinea(); // Llama al método que calcula el valor de la línea
             detalleFacturaService.save(detalleFactura);
-
+            InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articulo);
+            Random random = new Random();
+            inventarioArticulo.setCostoAlmacenamiento(30 + random.nextInt(70));
+            inventarioArticulo.setDesviacion(1 + random.nextInt(8));
+            inventarioArticuloRepository.save(inventarioArticulo);
         }
-
 
         facturaService.actualizarTotalFactura(facturaId);
         facturaService.actualizarStockPorDetalleFactura(detalleFactura);
@@ -181,6 +185,7 @@ public class FacturaController {
 
         InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articulo);
         inventarioArticuloService.calcularVariables(inventarioArticulo.getId());
+
 
         // Continuar con tu lógica actual después de crear la demanda
         return "redirect:/maestrofactura";

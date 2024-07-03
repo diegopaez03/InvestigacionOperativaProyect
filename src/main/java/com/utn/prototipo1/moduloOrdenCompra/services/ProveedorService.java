@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import javax.management.RuntimeErrorException;
 
@@ -67,19 +68,26 @@ public class ProveedorService implements IProveedorService{
 
     return proveedores;
     }
-    
+
     @Override
     public ProveedorArticulo getProveedorArticuloConMenorDemora(Long idArticulo) {
+        // Obtiene los proveedores que tienen el artículo específico
         List<Proveedor> proveedores = getProveedoresConArticulo(idArticulo);
 
-        ProveedorArticulo proveedorConMenorTiempo = proveedores.stream()
-            .map(proveedoresAll -> proveedoresAll.getProveedorArticulo())
-            .flatMap(articulo -> articulo.stream())
-            .min(Comparator.comparingInt(ProveedorArticulo::getTiempoDemoraArticulo))
-            .orElseThrow(() -> new NoSuchElementException("No se encontró"));
+        // Filtra los ProveedorArticulo para que solo se consideren aquellos del artículo específico
+        List<ProveedorArticulo> proveedorArticulosDelArticulo = proveedores.stream()
+                .flatMap(proveedor -> proveedor.getProveedorArticulo().stream())
+                .filter(proveedorArticulo -> proveedorArticulo.getArticulo().getId().equals(idArticulo))
+                .collect(Collectors.toList());
+
+        // Encuentra el ProveedorArticulo con el menor tiempo de demora
+        ProveedorArticulo proveedorConMenorTiempo = proveedorArticulosDelArticulo.stream()
+                .min(Comparator.comparingInt(ProveedorArticulo::getTiempoDemoraArticulo))
+                .orElseThrow(() -> new NoSuchElementException("No se encontró proveedor con menor demora para el artículo con ID: " + idArticulo));
 
         return proveedorConMenorTiempo;
     }
+
 
     public Proveedor getProveedorByProveedorArticulo(ProveedorArticulo proveedorArticulo) {
         return proveedorRepository.findProveedorByProveedorArticulo(proveedorArticulo);
