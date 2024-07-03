@@ -1,6 +1,7 @@
 package com.utn.prototipo1.moduloDemanda.services;
 
 import com.utn.prototipo1.moduloArticulo.entities.Articulo;
+import com.utn.prototipo1.moduloArticulo.repositories.ArticuloRepository;
 import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 import com.utn.prototipo1.moduloDemanda.entities.PrediccionDemanda;
 import com.utn.prototipo1.moduloDemanda.repositories.PrediccionDemandaRepository;

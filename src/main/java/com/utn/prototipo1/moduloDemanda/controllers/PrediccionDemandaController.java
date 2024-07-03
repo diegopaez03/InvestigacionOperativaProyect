@@ -34,7 +34,7 @@ public class PrediccionDemandaController {
         return "formulario";
     }
 
-    @PostMapping("/calcularPromedioMovil")
+   @PostMapping("/calcularPromedioMovil")
     public String calcularPromedioMovil(@RequestParam("demandaReal") String demandaRealStr,
                                         @RequestParam("periodos") int periodos,
                                         Model model) {
