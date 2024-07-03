@@ -14,7 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 
@@ -44,10 +47,9 @@ public class ProveedorController {
     //Función registrar Proveedor
     @PostMapping("/registrar")
     public ModelAndView registrarProveedor(@ModelAttribute("proveedor") RegistrarProveedorDTO registrarProveedorDTO) {
-        System.out.println(registrarProveedorDTO);
         try {
             proveedorService.registrarProveedor(registrarProveedorDTO);
-            return new ModelAndView("redirect:/ordenDeCompra/list"); 
+            return new ModelAndView("redirect:/proveedor/list"); 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -92,7 +94,48 @@ public class ProveedorController {
         return "redirect:/proveedor/list";
     }
     
+    //Vista de agregar articulos a proveedor
+    @GetMapping("/agregarArticulo/{id}")
+    public String vistaAgregarArticulo(@PathVariable("id") Long id, Model model) throws Exception {
+        Proveedor proveedor = proveedorService.getProveedorById(id);
+
+        List<Articulo> allArticulos = articuloRepository.findAll();
+
+        List<Articulo> articulos = allArticulos.stream()
+        .filter(articulo -> proveedor.getProveedorArticulo().stream()
+            .noneMatch(proveedorArticulo -> proveedorArticulo.getArticulo().equals(articulo)))
+        .distinct()
+        .collect(Collectors.toList());
+        
+        model.addAttribute("proveedor", proveedor);
+        model.addAttribute("articulos", articulos);
+
+        return "moduloOrdenCompra/proveedor/editarProveedor";
+    }
     
-    
+    //Funcion para agregar articulo
+    @PostMapping("/{id}/agregarArticulo")
+    public String agregarArticulo(@PathVariable("id") Long id, 
+                                @RequestParam("idArticulo") Long idArticulo, 
+                                @RequestParam("costoPedido") double costoPedido, 
+                                @RequestParam("tiempoDemora") Integer tiempoDemora, 
+                                Model model) throws Exception {
+
+        Proveedor proveedorExistente = proveedorService.getProveedorById(id);
+        Articulo articulo = articuloRepository.findById(idArticulo)
+                            .orElseThrow(() -> new Exception("Artículo no encontrado"));
+
+        ProveedorArticulo proveedorArticulo = new ProveedorArticulo();
+        proveedorArticulo.setArticulo(articulo);
+        proveedorArticulo.setCostoPedido(costoPedido);
+        proveedorArticulo.setTiempoDemoraArticulo(tiempoDemora);
+
+        proveedorExistente.getProveedorArticulo().add(proveedorArticulo);
+        proveedorService.saveProveedor(proveedorExistente);
+
+        return "redirect:/proveedor/list";
+    }
+
+
 
 }
