@@ -207,4 +207,25 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
         }
         inventarioArticuloRepository.save(inventarioArticulo);
     }
+
+    //Hecho por diego
+    public double getLoteOptimoByArticulo(Long idArticulo) {
+        Articulo articulo = articuloRepository.findById(idArticulo).orElseThrow(() -> new RuntimeException("Articulo no encontrado"));
+
+        Inventario ultimoInventario = inventarioServices.obtenerUltimoInventario();
+        List<InventarioArticulo> inventarioArticulos = inventarioArticuloRepository.findAll();
+
+        final Double[] loteOptimo = {0.0};
+
+        inventarioArticulos.forEach(inventarioArticulo -> {
+            if (inventarioArticulo.getInventario().equals(ultimoInventario)) {
+                if (inventarioArticulo.getArticulo().equals(articulo)) {
+                    loteOptimo[0] = inventarioArticulo.getLoteFijo();
+                }
+            }
+        });
+
+        return loteOptimo[0];
+    }
+
 }

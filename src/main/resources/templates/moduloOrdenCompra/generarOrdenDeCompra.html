@@ -25,16 +25,20 @@
                         <label for="cantidad" class="form-label">Cantidad</label>
                         <input type="number" class="form-control" id="cantidad" value="1">
                     </div>
-                    <div class="mb-3" style="width: 60%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
+                    <div class="mb-3" style="width: 50%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
                         <label for="idArticulo" class="form-label">Artículo</label>
-                        <select id="idArticulo" class="form-control" onchange="actualizarCantidadYPrecio()">
+                        <select id="idArticulo" class="form-control" onchange="actualizarArticulo()">
                             <option value="">--Seleccione un artículo--</option>
                             <!-- Las opciones de artículos se actualizarán dinámicamente -->
                         </select>
                     </div>
-                    <div class="mb-3" style="width: 15%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
+                    <div class="mb-3" style="width: 12.5%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
                         <label for="precio" class="form-label">Precio</label>
                         <input type="text" class="form-control" id="precio" readonly>
+                    </div>
+                    <div class="mb-3" style="width: 12.5%; margin-left: auto; margin-right: auto; padding-right: 0.5%;">
+                        <label for="loteOptimo" class="form-label">Lote Óptimo</label>
+                        <input type="text" class="form-control" id="loteOptimo" readonly>
                     </div>
                     <div class="mb-3" style="width: 15%; margin-left: auto; margin-right: auto;">
                         <button type="button" style="width: 100%;" class="btn btn-secondary" onclick="agregarDetalle()">

@@ -11,8 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 
@@ -79,11 +80,13 @@ public class ArticuloControllers {
     public String mostrarFormularioCalcularDemanda(@PathVariable("idArticulo") Long idArticulo, Model modelo) {
         List<Demanda> demandas = demandaService.getDemandasByArticulo(idArticulo);
         
-        List<Float> cantidadesDemanda = new ArrayList<Float>();
+        // Ordenar demandas por periodoYear de más reciente a menos reciente
+        demandas.sort(Comparator.comparing(Demanda::getPeriodoYear));
 
-        demandas.forEach(demanda -> {
-            cantidadesDemanda.add(demanda.getCantidad());
-        });
+        // Extraer las cantidades de demanda y convertir a String sin corchetes
+        String cantidadesDemanda = demandas.stream()
+                                        .map(demanda -> String.valueOf(demanda.getCantidad()))
+                                        .collect(Collectors.joining(", "));
 
         modelo.addAttribute("cantidadesDemanda", cantidadesDemanda);
         // Lógica adicional si es necesaria antes de mostrar el formulario

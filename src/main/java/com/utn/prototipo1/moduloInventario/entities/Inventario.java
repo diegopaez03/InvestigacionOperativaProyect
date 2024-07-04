@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 public class Inventario extends BaseEntidad {
 
     @Column(name = "fecha_desde")

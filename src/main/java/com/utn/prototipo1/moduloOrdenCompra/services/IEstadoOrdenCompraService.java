@@ -14,4 +14,6 @@ public interface IEstadoOrdenCompraService {
 
     public void deleteEstadoOrdenCompra(EstadoOrdenDeCompra estadoOrdenDeCompra);
 
+    public EstadoOrdenDeCompra getEstadoOrdenDeCompraByNombre(String nombre) throws Exception;
+
 }
