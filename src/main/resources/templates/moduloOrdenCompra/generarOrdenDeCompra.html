@@ -80,6 +80,11 @@
         <!-- jQuery -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
+
+        $(document).ready(function() {
+           actualizarArticulos();
+        });
+
             function actualizarArticulos() {
                 const proveedorId = document.getElementById('idProveedor').value;
                 if (!proveedorId) return;
@@ -105,11 +110,27 @@
                 });
             }
 
-            function actualizarCantidadYPrecio() {
+            function actualizarArticulo() {
                 const selectArticulo = document.getElementById('idArticulo');
                 const selectedOption = selectArticulo.options[selectArticulo.selectedIndex];
                 const precio = selectedOption.getAttribute('data-precio');
                 document.getElementById('precio').value = precio;
+
+                const idArticulo = document.getElementById('idArticulo').value;
+                $.ajax({
+                    url: `/restOrdenDeCompra/loteOptimo/${idArticulo}`,
+                    method: 'GET',
+                    success: function(loteOptimo) {
+                        if (loteOptimo != 0) {
+                            document.getElementById('loteOptimo').value = loteOptimo.toFixed(3);
+                        } else {
+                            document.getElementById('loteOptimo').value = "No existe";
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error al obtener el lote optimo: ', error);
+                    }
+                });
             }
 
             function agregarDetalle() {
