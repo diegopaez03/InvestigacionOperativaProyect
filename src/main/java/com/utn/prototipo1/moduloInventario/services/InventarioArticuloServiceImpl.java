@@ -161,7 +161,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             throw new RuntimeException("Artículo asociado no encontrado en InventarioArticulo");
         }
 
-        int Year = inventarioArticulo.getInventario().getFechaDesde().getYear();
+        int Year = inventarioArticulo.getInventario().getFechaDesde().getYear()-1;
 
         // Obtén la demanda del artículo específico para el año actual
         Optional<Demanda> demandaEspecifica = demandaRepository.findByArticuloAndPeriodoYear(articulo, Year);
