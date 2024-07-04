@@ -90,11 +90,13 @@ public class PrediccionDemandaServiceImpl implements PrediccionDemandaService{
 
     @Override
     public double calcularErrorPrediccion(double[] demandaReal, double[] predicciones) {
-        double error = 0.0;
         int length = Math.min(demandaReal.length, predicciones.length);
-        for (int i = 0; i < length; i++) {
-            error += demandaReal[i] - predicciones[i];
+        if (length == 0) {
+            throw new IllegalArgumentException("Los arreglos de demanda real y predicciones no pueden estar vacíos.");
         }
+        double ultimaDemandaReal = demandaReal[length - 1]; // Obtener la última demanda real
+        double ultimaPrediccion = predicciones[length - 1]; // Obtener la última predicción
+        double error = ultimaPrediccion - ultimaDemandaReal; // Calcular el error de la última predicción
         return error;
     }
 

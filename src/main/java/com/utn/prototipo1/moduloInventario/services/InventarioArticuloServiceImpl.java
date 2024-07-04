@@ -104,6 +104,13 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             nuevoInventarioArticulo.setArticulo(articulo);
             nuevoInventarioArticulo.setInventario(inventario);
             nuevoInventarioArticulo.setStockActual(cantidad);
+            Optional<Demanda> demandaEspecifica = demandaRepository.findByArticuloAndPeriodoYear(articulo, 2023);
+            if (demandaEspecifica.isEmpty()) {
+                Demanda nuevaDemanda = new Demanda();
+                nuevaDemanda.setArticulo(articulo);
+                nuevaDemanda.setPeriodoYear(2023);
+                demandaRepository.save(nuevaDemanda);
+            }
             Random random = new Random();
             nuevoInventarioArticulo.setCostoAlmacenamiento(30 + random.nextInt(70));
             nuevoInventarioArticulo.setDesviacion(1 + random.nextInt(8));

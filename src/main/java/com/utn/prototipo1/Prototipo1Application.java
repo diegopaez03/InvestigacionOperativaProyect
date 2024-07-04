@@ -40,7 +40,7 @@ public class Prototipo1Application {
 		SpringApplication.run(Prototipo1Application.class, args);
 		System.out.println("Estoy funcionando");
 	}
-
+/*
 	@Bean
 	CommandLineRunner init(
 			ArticuloRepository articuloRepository,
@@ -260,16 +260,16 @@ public class Prototipo1Application {
 			inventarioRepository.save(inventario);
 			Random random = new Random();
 			List<InventarioArticulo> inventarioArticulos = Arrays.asList(
-					InventarioArticulo.builder().articulo(articulo1).inventario(inventario).stockActual(1500).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
-					InventarioArticulo.builder().articulo(articulo2).inventario(inventario).stockActual(2000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
-					InventarioArticulo.builder().articulo(articulo3).inventario(inventario).stockActual(1652).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
-					InventarioArticulo.builder().articulo(articulo4).inventario(inventario).stockActual(1423).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
-					InventarioArticulo.builder().articulo(articulo5).inventario(inventario).stockActual(1754).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
-					InventarioArticulo.builder().articulo(articulo6).inventario(inventario).stockActual(1023).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
-					InventarioArticulo.builder().articulo(articulo7).inventario(inventario).stockActual(1978).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
-					InventarioArticulo.builder().articulo(articulo8).inventario(inventario).stockActual(1362).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
-					InventarioArticulo.builder().articulo(articulo9).inventario(inventario).stockActual(1048).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
-					InventarioArticulo.builder().articulo(articulo10).inventario(inventario).stockActual(1295).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build()
+					InventarioArticulo.builder().articulo(articulo1).inventario(inventario).stockActual(8000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
+					InventarioArticulo.builder().articulo(articulo2).inventario(inventario).stockActual(8000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
+					InventarioArticulo.builder().articulo(articulo3).inventario(inventario).stockActual(8000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
+					InventarioArticulo.builder().articulo(articulo4).inventario(inventario).stockActual(8000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
+					InventarioArticulo.builder().articulo(articulo5).inventario(inventario).stockActual(8000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
+					InventarioArticulo.builder().articulo(articulo6).inventario(inventario).stockActual(8000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
+					InventarioArticulo.builder().articulo(articulo7).inventario(inventario).stockActual(8000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
+					InventarioArticulo.builder().articulo(articulo8).inventario(inventario).stockActual(8000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
+					InventarioArticulo.builder().articulo(articulo9).inventario(inventario).stockActual(8000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build(),
+					InventarioArticulo.builder().articulo(articulo10).inventario(inventario).stockActual(8000).costoAlmacenamiento((int)(30 + random.nextInt(70))).desviacion((int)(1 + random.nextInt(8))).build()
 			);
 			inventarioArticuloRepository.saveAll(inventarioArticulos);
 
@@ -319,7 +319,7 @@ public class Prototipo1Application {
 			demandaRepository.saveAll(demandaList);
 		};
 
-	};
+	};*/
 }
 
 
