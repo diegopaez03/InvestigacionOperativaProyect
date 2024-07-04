@@ -152,10 +152,7 @@ public class FacturaController {
             detalleFactura.calcularLinea(); // Llama al método que calcula el valor de la línea
             detalleFacturaService.save(detalleFactura);
             InventarioArticulo inventarioArticulo = inventarioArticuloRepository.findByArticulo(articulo);
-            Random random = new Random();
-            inventarioArticulo.setCostoAlmacenamiento(30 + random.nextInt(70));
-            inventarioArticulo.setDesviacion(1 + random.nextInt(8));
-            inventarioArticuloRepository.save(inventarioArticulo);
+
         }
 
         facturaService.actualizarTotalFactura(facturaId);

@@ -5,6 +5,7 @@ import com.utn.prototipo1.moduloArticulo.services.ArticuloCategoriaService;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloDemanda.entities.Demanda;
 import com.utn.prototipo1.moduloDemanda.services.DemandaService;
+import com.utn.prototipo1.moduloOrdenCompra.entities.EstadoOrdenDeCompra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -81,12 +82,12 @@ public class ArticuloControllers {
         
         // Ordenar demandas por periodoYear de más reciente a menos reciente
         demandas.sort(Comparator.comparing(Demanda::getPeriodoYear));
-        
+
         // Extraer las cantidades de demanda y convertir a String sin corchetes
         String cantidadesDemanda = demandas.stream()
                                         .map(demanda -> String.valueOf(demanda.getCantidad()))
                                         .collect(Collectors.joining(", "));
-        
+
         modelo.addAttribute("cantidadesDemanda", cantidadesDemanda);
         // Lógica adicional si es necesaria antes de mostrar el formulario
         return "formulario"; // Esto debería apuntar a "formulario.html" en templates/

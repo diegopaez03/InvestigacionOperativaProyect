@@ -104,8 +104,9 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             nuevoInventarioArticulo.setArticulo(articulo);
             nuevoInventarioArticulo.setInventario(inventario);
             nuevoInventarioArticulo.setStockActual(cantidad);
-            // Aquí podrías inicializar el stock según tu lógica
-            // Guardar el nuevo InventarioArticulo
+            Random random = new Random();
+            nuevoInventarioArticulo.setCostoAlmacenamiento(30 + random.nextInt(70));
+            nuevoInventarioArticulo.setDesviacion(1 + random.nextInt(8));
             inventarioArticuloRepository.save(nuevoInventarioArticulo);
             inventarioArticuloRepository.save(nuevoInventarioArticulo);
 
@@ -161,7 +162,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             throw new RuntimeException("Artículo asociado no encontrado en InventarioArticulo");
         }
 
-        int Year = inventarioArticulo.getInventario().getFechaDesde().getYear();
+        int Year = inventarioArticulo.getInventario().getFechaDesde().getYear()-1;
 
         // Obtén la demanda del artículo específico para el año actual
         Optional<Demanda> demandaEspecifica = demandaRepository.findByArticuloAndPeriodoYear(articulo, Year);
@@ -211,7 +212,7 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
     //Hecho por diego
     public double getLoteOptimoByArticulo(Long idArticulo) {
         Articulo articulo = articuloRepository.findById(idArticulo).orElseThrow(() -> new RuntimeException("Articulo no encontrado"));
-        
+
         Inventario ultimoInventario = inventarioServices.obtenerUltimoInventario();
         List<InventarioArticulo> inventarioArticulos = inventarioArticuloRepository.findAll();
     
