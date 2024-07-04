@@ -28,7 +28,8 @@ public class RestOrdenDeCompraController {
 
     @GetMapping("/loteOptimo/{idArticulo}")
     public double getLoteOptimo(@PathVariable("idArticulo") Long idArticulo) {
-        return inventarioArticuloServiceImpl.getLoteOptimoByArticulo(idArticulo);
+        double loteOptimo = inventarioArticuloServiceImpl.getLoteOptimoByArticulo(idArticulo);
+        return loteOptimo;
     }
     
 }

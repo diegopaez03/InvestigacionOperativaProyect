@@ -158,7 +158,7 @@ public class OrdenDeCompraController {
 
             EstadoOrdenDeCompra estadoEntregado = estadoOrdenCompraService.getEstadoOrdenDeCompraByNombre("Entregado");
             
-            if (estadoOrdenDeCompra.getNombreEOC().equals(estadoEntregado.getNombreEOC())) {
+            if (estadoOrdenDeCompra.getNombreEOC().equals(estadoEntregado.getNombreEOC()) && ordenDeCompra.getEstadoOrdenDeCompra() != estadoEntregado) {
                 ordenDeCompra.getDetalleOrdenCompra().forEach(detalle -> {
                     inventarioArticuloService.sumarStock(detalle.getArticulo(), detalle.getCantidad());
                 });
