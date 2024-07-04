@@ -104,8 +104,9 @@ public class InventarioArticuloServiceImpl implements InventarioArticuloService 
             nuevoInventarioArticulo.setArticulo(articulo);
             nuevoInventarioArticulo.setInventario(inventario);
             nuevoInventarioArticulo.setStockActual(cantidad);
-            // Aquí podrías inicializar el stock según tu lógica
-            // Guardar el nuevo InventarioArticulo
+            Random random = new Random();
+            nuevoInventarioArticulo.setCostoAlmacenamiento(30 + random.nextInt(70));
+            nuevoInventarioArticulo.setDesviacion(1 + random.nextInt(8));
             inventarioArticuloRepository.save(nuevoInventarioArticulo);
             inventarioArticuloRepository.save(nuevoInventarioArticulo);
 

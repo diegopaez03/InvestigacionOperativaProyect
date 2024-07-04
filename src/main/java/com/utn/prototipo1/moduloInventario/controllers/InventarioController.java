@@ -4,6 +4,7 @@ import com.utn.prototipo1.moduloArticulo.entities.Articulo;
 import com.utn.prototipo1.moduloArticulo.services.ArticuloService;
 import com.utn.prototipo1.moduloInventario.entities.Inventario;
 import com.utn.prototipo1.moduloInventario.entities.InventarioArticulo;
+import com.utn.prototipo1.moduloInventario.repositories.InventarioArticuloRepository;
 import com.utn.prototipo1.moduloInventario.services.InventarioArticuloService;
 import com.utn.prototipo1.moduloInventario.services.InventarioServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class InventarioController {
 
     @Autowired
     private InventarioArticuloService inventarioArticuloService;
+    @Autowired
+    private InventarioArticuloRepository inventarioArticuloRepository;
 
     @GetMapping("/maestroinventario")
     public String mostrarTodosLosInventarios(Model model) {
@@ -35,6 +38,12 @@ public class InventarioController {
         if (!inventarios.isEmpty()) {
             // Redirige al último inventario creado
             Inventario ultimoInventario = inventarios.get(inventarios.size() - 1);
+            List<InventarioArticulo> inventarioArticulos = inventarioArticuloRepository.findByInventarioId(ultimoInventario.getId());
+            for (InventarioArticulo inventarioArticuloN : inventarioArticulos) {
+                inventarioArticuloService.calcularVariables(inventarioArticuloN.getId());
+                inventarioArticuloRepository.save(inventarioArticuloN);
+            }
+
             return "redirect:/inventarios/" + ultimoInventario.getId() + "/inventarioArticulos";
         }
 
